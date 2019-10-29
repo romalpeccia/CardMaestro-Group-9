@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  card_name: MyString
+  set_name: MyString
+  set_number: MyString
+  market_value: 1.5
+
+two:
+  card_name: MyString
+  set_name: MyString
+  set_number: MyString
+  market_value: 1.5
