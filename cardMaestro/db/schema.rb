@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_29_143257) do
+ActiveRecord::Schema.define(version: 2019_10_29_143940) do
+
 
   create_table "card_neededs", force: :cascade do |t|
     t.string "user"
@@ -28,6 +29,27 @@ ActiveRecord::Schema.define(version: 2019_10_29_143257) do
     t.float "value"
     t.string "quality"
     t.boolean "foil"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.string "card_name"
+    t.string "set_name"
+    t.string "set_number"
+    t.float "market_value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "fname"
+    t.string "lname"
+    t.string "city"
+    t.string "email"
+    t.string "enc_pwd"
+    t.string "salt"
+    t.boolean "public"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
