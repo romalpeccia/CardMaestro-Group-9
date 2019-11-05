@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_11_03_195316) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "card_neededs", force: :cascade do |t|
     t.string "user"
     t.string "card_name"
@@ -37,12 +40,6 @@ ActiveRecord::Schema.define(version: 2019_11_03_195316) do
     t.string "set_name"
     t.string "set_number"
     t.float "market_value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tests", force: :cascade do |t|
-    t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
