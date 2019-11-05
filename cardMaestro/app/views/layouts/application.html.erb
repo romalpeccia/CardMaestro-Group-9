@@ -6,6 +6,12 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+     <%= render 'layouts/navigation' %>
+    </head>
+
+  <body>
+
     <p class="navbar-text float-right">
       <% if user_signed_in? %>
         Logged in as <strong><%= current_user.email %></strong>.
@@ -16,8 +22,7 @@
         <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
       <% end %>
     </p>
-  </head>
-  <body>
+  
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
     <% end %>
