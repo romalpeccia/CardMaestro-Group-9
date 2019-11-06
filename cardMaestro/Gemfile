@@ -31,8 +31,8 @@ gem 'bootstrap_form'
 gem 'jquery-rails'
 
 
-
-
+#for getting magic the gathering card info
+gem 'mtg_sdk'
 
 gem 'devise'
 # Use Active Storage variant

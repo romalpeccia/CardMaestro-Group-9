@@ -2,10 +2,10 @@
 
 one:
   name: MyString
-  set: MyString
-  image_url: MyString
+  code: MyString
+  release_date: 2019-11-05 22:01:47
 
 two:
   name: MyString
-  set: MyString
-  image_url: MyString
+  code: MyString
+  release_date: 2019-11-05 22:01:47

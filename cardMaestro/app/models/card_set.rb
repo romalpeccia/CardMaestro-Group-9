@@ -1,0 +1,2 @@
+class CardSet < ApplicationRecord
+end
