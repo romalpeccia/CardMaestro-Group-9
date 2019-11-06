@@ -1,0 +1,6 @@
+<h1> Add a card to your collection or wishlist</h1>
+<% @sets.each do |set| %>
+    <p>
+    <%= set.name %><%=set.code%> <%=set.release_date%>
+    <p>
+<% end %>
