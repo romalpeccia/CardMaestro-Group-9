@@ -21,11 +21,11 @@
         </li>
         
         <li class="mobile-menu">
-            <%= link_to 'View Profile', root_path %>
+            <%= link_to 'View Collection', root_path %>
         </li>
         
          <li class="mobile-menu">
-            <%= link_to 'Trade Cards', root_path %>
+            <%= link_to 'Contact', root_path %>
         </li>
         
         <% end # if user is signed it %>
@@ -33,7 +33,7 @@
 
 
     <% if user_signed_in? %>
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search Cards" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     <% end # if user is signed it %>
 </form>

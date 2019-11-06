@@ -1,6 +1,48 @@
 <h1> Add a card to your collection or wishlist</h1>
+
+
+<%= form_with scope: :card, url: cards_path, local: true do |form| %>  
+    <%= form.hidden_field :user, value: current_user.email %>
+    <p>
+      <%= form.label :card_name %><br>
+      <%= form.text_field :card_name %>
+    </p>
+   <!--
+    <p>
+      <%= form.label :set %><br>
+      <%= form.text_area :set %>
+    </p>
+    -->
+    <p>
+    <%= form.check_box(:foil) %>
+    <%= form.label(:foil, "Foil") %>
+    </p>
+    <p>
+    <%= form.radio_button(:quality, "M") %>
+    <%= form.label(:quality, "Mint") %>
+    <%= form.radio_button(:quality, "NM") %>
+    <%= form.label(:quality, "Near-Mint") %>
+    <%= form.radio_button(:quality, "LP") %>
+    <%= form.label(:quality, "Light-Play") %>
+    <%= form.radio_button(:quality, "HP") %>
+    <%= form.label(:quality, "Heavy-Play") %>
+    </p>
+    
+    <p>
+    <%= form.label :value %><br>
+    <%= form.text_area :value %>
+    </p>
+    <p>
+      <%= form.submit 'Add to Collection' %>
+      <%= form.submit 'Add to Wishlist'%>
+    </p>
+   
+  <% end %>
+
+<!--
 <% @sets.each do |set| %>
     <p>
     <%= set.name %><%=set.code%> <%=set.release_date%>
     <p>
 <% end %>
+-->
