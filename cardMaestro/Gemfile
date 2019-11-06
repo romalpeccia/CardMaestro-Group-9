@@ -30,6 +30,10 @@ gem 'bootstrap_form'
 #JQUERY gem
 gem 'jquery-rails'
 
+#Visualize db
+group :development do
+  gem 'rails_db', '2.1.1'
+end
 
 #for getting magic the gathering card info
 gem 'mtg_sdk'
