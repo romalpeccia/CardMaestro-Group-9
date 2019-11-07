@@ -38,6 +38,10 @@ end
 #for getting magic the gathering card info
 gem 'mtg_sdk'
 
+# Support Select 2
+gem 'select2-rails'
+
+
 gem 'devise'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
