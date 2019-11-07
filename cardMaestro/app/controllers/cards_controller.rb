@@ -14,7 +14,7 @@ class CardsController < ApplicationController
     def create
         @cards = Card.all
         @sets = CardSet.all
-        if params[:commit] = 'Add to Collection'
+        if params[:commit] == 'Add to Collection'
 
             #Find the user
             user = User.find_by(email: params[:card][:user])
@@ -25,11 +25,12 @@ class CardsController < ApplicationController
             foil = params[:card][:foil]
             set = params[:card][:set]
             #attach a card owned object to the user
-            new_card = Card.find_by(name: card_name)
+            new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
-                new_card.card_owned.build(card_name: card_name,value: value, quality: quality, foil: foil )
-                user.card_owned.create(card_name: card_name,value: value, quality: quality, foil: foil )
-                if user.save
+                new_card_owned = new_card.card_owned.new(card_name: card_name,value: value, quality: quality, foil: foil )
+                user.card_owned << new_card_owned
+
+                if user.card_owned << new_card_owned 
                     flash[:notice] = params[:card][:card_name] + ' added to collection'
                 else
                     flash[:notice] = "error adding card to collection"
@@ -37,7 +38,7 @@ class CardsController < ApplicationController
             else
                 flash[:notice] = "card not in master card db"
             end
-        elsif params[:commit] = 'Add to Wishlist'
+        elsif params[:commit] == 'Add to Wishlist'
             #Find the user
             user = User.find_by(email: params[:card][:user])
             
@@ -48,14 +49,14 @@ class CardsController < ApplicationController
             set = params[:card][:set]
             #attach a card owned object to the user
 
-            new_card = Card.find_by(name: card_name)
+            new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
-                new_card.card_needed.build(card_name: card_name,value: value, quality: quality, foil: foil )
-                user.card_needed.create(card_name: card_name,value: value, quality: quality, foil: foil )
-                if user.save
-                    flash[:notice] = params[:card][:card_name] + ' added to collection'
+                new_card_wishlist = new_card.card_needed.new(card_name: card_name,value: value, quality: quality, foil: foil )
+                 
+                if user.card_needed << new_card_wishlist
+                    flash[:notice] = params[:card][:card_name] + ' added to wishlist'
                 else
-                    flash[:notice] = "error adding card to collection"
+                    flash[:notice] = "error adding card to wishlist"
                 end
             else
                 flash[:notice] = "card not in master card db"
