@@ -13,8 +13,20 @@ class CardsController < ApplicationController
         @cards = Card.all
         @sets = CardSet.all
         if params[:commit] = 'Add to Collection'
-            @newcard = CardOwned.new(card_params)
-            if @newcard.save
+
+            #Find the user
+            user = User.find_by(email: params[:card][:user])
+            
+            card_name = params[:card][:card_name]
+            value = params[:card][:value]
+            quality = params[:card][:quality]
+            foil = params[:card][:foil]
+            
+            #attach a card owned object to the user
+            user.card_owned.create(card_name: card_name,value: value, quality: quality, foil: foil )
+
+            
+            if user.save
                 flash[:notice] = params#[:card][:card_name] + ' added to collection'
             else
                 flash[:notice] = "error adding card to collection"
