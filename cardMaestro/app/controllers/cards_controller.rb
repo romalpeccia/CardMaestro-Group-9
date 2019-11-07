@@ -1,4 +1,6 @@
+#TODO remove User from card owned table, add set to card owned table
 #fix repeated instance variables
+#remo
 class CardsController < ApplicationController 
     def index
         @cards = Card.all
@@ -28,7 +30,6 @@ class CardsController < ApplicationController
             end 
         else
             flash[:notice] = 'form error'
-            
         end
         render 'new'
     end
