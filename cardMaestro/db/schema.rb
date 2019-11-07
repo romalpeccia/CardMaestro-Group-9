@@ -10,29 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_030804) do
+ActiveRecord::Schema.define(version: 2019_11_07_211435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "card_neededs", force: :cascade do |t|
-    t.string "user"
     t.string "card_name"
     t.float "value"
     t.string "quality"
     t.boolean "foil"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_card_neededs_on_user_id"
   end
 
   create_table "card_owneds", force: :cascade do |t|
-    t.string "user"
     t.string "card_name"
     t.float "value"
     t.string "quality"
     t.boolean "foil"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_card_owneds_on_user_id"
   end
 
   create_table "card_sets", force: :cascade do |t|
@@ -49,6 +51,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_030804) do
     t.string "image_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "card_set_id", null: false
+    t.index ["card_set_id"], name: "index_cards_on_card_set_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,4 +67,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_030804) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "card_neededs", "users"
+  add_foreign_key "card_owneds", "users"
+  add_foreign_key "cards", "card_sets"
 end
