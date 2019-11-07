@@ -22,7 +22,7 @@
     </select>
     -->
     <%= form.label :set, "Set" %><br>
-    <%= form.select(:set, @sets.collect { |set| [set.name] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
+    <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
     
 
       
