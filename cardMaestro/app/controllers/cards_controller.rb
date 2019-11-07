@@ -23,25 +23,43 @@ class CardsController < ApplicationController
             value = params[:card][:value]
             quality = params[:card][:quality]
             foil = params[:card][:foil]
-            
+            set = params[:card][:set]
             #attach a card owned object to the user
-            user.card_owned.create(card_name: card_name,value: value, quality: quality, foil: foil )
-
-            
-            if user.save
-                flash[:notice] = params#[:card][:card_name] + ' added to collection'
+            new_card = Card.find_by(name: card_name)
+            if (new_card)
+                new_card.card_owned.build(card_name: card_name,value: value, quality: quality, foil: foil )
+                user.card_owned.create(card_name: card_name,value: value, quality: quality, foil: foil )
+                if user.save
+                    flash[:notice] = params[:card][:card_name] + ' added to collection'
+                else
+                    flash[:notice] = "error adding card to collection"
+                end
             else
-                flash[:notice] = "error adding card to collection"
+                flash[:notice] = "card not in master card db"
             end
         elsif params[:commit] = 'Add to Wishlist'
-            @newcard = CardNeeded.new(card_params)
-            if @newcard.save
-                flash[:notice] = params[:card][:card_name] + ' added to wishlist'
+            #Find the user
+            user = User.find_by(email: params[:card][:user])
+            
+            card_name = params[:card][:card_name]
+            value = params[:card][:value]
+            quality = params[:card][:quality]
+            foil = params[:card][:foil]
+            set = params[:card][:set]
+            #attach a card owned object to the user
+
+            new_card = Card.find_by(name: card_name)
+            if (new_card)
+                new_card.card_needed.build(card_name: card_name,value: value, quality: quality, foil: foil )
+                user.card_needed.create(card_name: card_name,value: value, quality: quality, foil: foil )
+                if user.save
+                    flash[:notice] = params[:card][:card_name] + ' added to collection'
+                else
+                    flash[:notice] = "error adding card to collection"
+                end
             else
-                flash[:notice] = "error adding card to collection"
-            end 
-        else
-            flash[:notice] = 'form error'
+                flash[:notice] = "card not in master card db"
+            end
         end
         render 'new'
     end

@@ -1,5 +1,9 @@
-<-- TODO add autocomplete on card field, dropdown for set based on card selected -->
+<!-- TODO add autocomplete on card field, dropdown for set based on card selected -->
+<head>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 
+</head>
 <h1> Add a card to your collection or wishlist</h1>
 
 
@@ -11,11 +15,21 @@
     </p>
 
     <p>
-      <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"class_name") %>
-      <!--
-      <%= form.label :set %><br>
-      <%= form.text_area :set %>
-      -->
+    <!--
+    <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+      <option value = "test1"> test1 </option>
+      <option value = "test2"> test2 </option>
+    </select>
+    -->
+    <%= form.label :set, "Set" %><br>
+    <%= form.select(:set, @sets.collect { |set| [set.name] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
+    
+
+      
+
+
+
+
     </p>
 
     <p>

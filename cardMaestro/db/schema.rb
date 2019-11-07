@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_07_211435) do
+ActiveRecord::Schema.define(version: 2019_11_07_221554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_211435) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.bigint "card_id", null: false
+    t.index ["card_id"], name: "index_card_neededs_on_card_id"
     t.index ["user_id"], name: "index_card_neededs_on_user_id"
   end
 
@@ -34,6 +36,8 @@ ActiveRecord::Schema.define(version: 2019_11_07_211435) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.bigint "card_id", null: false
+    t.index ["card_id"], name: "index_card_owneds_on_card_id"
     t.index ["user_id"], name: "index_card_owneds_on_user_id"
   end
 
@@ -67,7 +71,9 @@ ActiveRecord::Schema.define(version: 2019_11_07_211435) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "card_neededs", "cards"
   add_foreign_key "card_neededs", "users"
+  add_foreign_key "card_owneds", "cards"
   add_foreign_key "card_owneds", "users"
   add_foreign_key "cards", "card_sets"
 end
