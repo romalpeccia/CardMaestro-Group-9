@@ -1,3 +1,5 @@
+<-- TODO add autocomplete on card field, dropdown for set based on card selected -->
+
 <h1> Add a card to your collection or wishlist</h1>
 
 
@@ -7,12 +9,15 @@
       <%= form.label :card_name %><br>
       <%= form.text_field :card_name %>
     </p>
-   <!--
+
     <p>
+      <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"class_name") %>
+      <!--
       <%= form.label :set %><br>
       <%= form.text_area :set %>
+      -->
     </p>
-    -->
+
     <p>
     <%= form.check_box(:foil) %>
     <%= form.label(:foil, "Foil") %>

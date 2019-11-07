@@ -2,6 +2,9 @@
 <div class="collapse navbar-collapse navbar-right" id="navbar-collapsible-content">
   <ul class="nav navbar-nav ">
     <% if user_signed_in? %>
+      <li class="mobile-menu">
+        <%= link_to 'Contact Information', pages_info_path %>
+      </li>
       <li class="dropdown pc-menu">
         <a id="user-settings" class="dropdown-toggle" data-toggle="dropdown" href="#">
           <span id="user-name"><%= current_user.email %></span>
