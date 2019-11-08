@@ -38,7 +38,7 @@ $(document).ready(function() {
 }
 </style>
 
-<% if !@collection_error %>
+<% if flash.empty? %>
   <% if !@is_self %>
     <p>User: <%= @target_email %>
     </p>
