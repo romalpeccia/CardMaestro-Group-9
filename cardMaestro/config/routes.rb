@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  
+  
+  get '/search' =>'searchpage#search', as: 'searchpage_search'
+
+
   devise_for :users
 
   devise_scope :user do
