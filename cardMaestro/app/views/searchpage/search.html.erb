@@ -16,7 +16,7 @@
       <% @results.each do |card| %>
         <tr>
         <td>
-            <%= link_to card.user.email, collection_path(current_user.id) %>
+            <%= link_to card.user.email, collection_path(card.user.id) %>
         </td>
           <td>
           
