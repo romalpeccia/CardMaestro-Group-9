@@ -1,7 +1,7 @@
-#TODO remove User from card owned table, add set to card owned table
+#TODO refactor 'add to collection' and 'add to wishlist '
 #fix repeated instance variables
-#remo
 class CardsController < ApplicationController 
+
     def index
         @cards = Card.all
         @sets = CardSet.all
@@ -28,15 +28,14 @@ class CardsController < ApplicationController
             new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
                 new_card_owned = new_card.card_owned.new(card_name: card_name,value: value, quality: quality, foil: foil )
-                user.card_owned << new_card_owned
-
+                #user.card_owned << new_card_owned
                 if user.card_owned << new_card_owned 
                     flash[:notice] = params[:card][:card_name] + ' added to collection'
                 else
-                    flash[:notice] = "error adding card to collection"
+                    flash[:alert] = "error adding card to collection"
                 end
             else
-                flash[:notice] = "card not in master card db"
+                flash[:alert] = "card not in master card db"
             end
         elsif params[:commit] == 'Add to Wishlist'
             #Find the user
@@ -56,10 +55,10 @@ class CardsController < ApplicationController
                 if user.card_needed << new_card_wishlist
                     flash[:notice] = params[:card][:card_name] + ' added to wishlist'
                 else
-                    flash[:notice] = "error adding card to wishlist"
+                    flash[:alert] = "error adding card to wishlist"
                 end
             else
-                flash[:notice] = "card not in master card db"
+                flash[:alert] = "card not in master card db"
             end
         end
         render 'new'

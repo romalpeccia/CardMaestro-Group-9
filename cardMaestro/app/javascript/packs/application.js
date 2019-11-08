@@ -9,6 +9,7 @@ require("@rails/activestorage").start()
 require("channels")
 
 //= require jquery
+//= require jquery_ujs
 //= require bootstrap-sprockets
 
 
@@ -18,3 +19,13 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+
+$(document).ready(function() {
+    console.log("script");
+      $('#card_name').hover(function() {
+          $('#popup').show();
+      }, function() {
+          $('#popup').hide();
+      });
+  });

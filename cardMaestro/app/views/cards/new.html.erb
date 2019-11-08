@@ -1,67 +1,60 @@
 <!-- TODO add autocomplete on card field, dropdown for set based on card selected -->
-<head>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 
-</head>
-<h1> Add a card to your collection or wishlist</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <h1> Add a card to your collection or wishlist</h1>
+      <%= form_with scope: :card, url: cards_path, local: true do |form| %>  
+          <%= form.hidden_field :user, value: current_user.email %>
+          <p>
+            <%= form.label :card_name %><br>
+            <%= form.text_field :card_name %>
+          </p>
 
+          <p>
+          <!--
+          <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+            <option value = "test1"> test1 </option>
+            <option value = "test2"> test2 </option>
+          </select>
+          -->
+          <%= form.label :set, "Set" %><br>
+          <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
+          </p>
 
-<%= form_with scope: :card, url: cards_path, local: true do |form| %>  
-    <%= form.hidden_field :user, value: current_user.email %>
-    <p>
-      <%= form.label :card_name %><br>
-      <%= form.text_field :card_name %>
-    </p>
+          <p>
+          <%= form.check_box(:foil) %>
+          <%= form.label(:foil, "Foil") %>
+          </p>
+          <p>
+          <%= form.radio_button(:quality, "M") %>
+          <%= form.label(:quality, "Mint") %>
+          <%= form.radio_button(:quality, "NM") %>
+          <%= form.label(:quality, "Near-Mint") %>
+          <%= form.radio_button(:quality, "LP") %>
+          <%= form.label(:quality, "Light-Play") %>
+          <%= form.radio_button(:quality, "HP") %>
+          <%= form.label(:quality, "Heavy-Play") %>
+          </p>
+          
+          <p>
+          <%= form.label :value %><br>
+          <%= form.text_area :value %>
+          </p>
+          <p>
+            <%= form.submit 'Add to Collection' %>
+            <%= form.submit 'Add to Wishlist'%>
+          </p>
+        
+        <% end %>
 
-    <p>
-    <!--
-    <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-      <option value = "test1"> test1 </option>
-      <option value = "test2"> test2 </option>
-    </select>
-    -->
-    <%= form.label :set, "Set" %><br>
-    <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
-    
-
-      
-
-
-
-
-    </p>
-
-    <p>
-    <%= form.check_box(:foil) %>
-    <%= form.label(:foil, "Foil") %>
-    </p>
-    <p>
-    <%= form.radio_button(:quality, "M") %>
-    <%= form.label(:quality, "Mint") %>
-    <%= form.radio_button(:quality, "NM") %>
-    <%= form.label(:quality, "Near-Mint") %>
-    <%= form.radio_button(:quality, "LP") %>
-    <%= form.label(:quality, "Light-Play") %>
-    <%= form.radio_button(:quality, "HP") %>
-    <%= form.label(:quality, "Heavy-Play") %>
-    </p>
-    
-    <p>
-    <%= form.label :value %><br>
-    <%= form.text_area :value %>
-    </p>
-    <p>
-      <%= form.submit 'Add to Collection' %>
-      <%= form.submit 'Add to Wishlist'%>
-    </p>
-   
-  <% end %>
-
-<!--
-<% @sets.each do |set| %>
-    <p>
-    <%= set.name %><%=set.code%> <%=set.release_date%>
-    <p>
-<% end %>
--->
+      <!--
+      <% @sets.each do |set| %>
+          <p>
+          <%= set.name %><%=set.code%> <%=set.release_date%>
+          <p>
+      <% end %>
+      -->
+    </div>
+  </div>
+</div>
