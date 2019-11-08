@@ -1,7 +1,32 @@
-<h3>Search Result</h3>  
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+
+    $('.col_card_name').hover(function(el) {
+        var target = $(el.target)
+        var id = target.attr('id')
+        console.log(id)
+        $('#'+id+'.col_popup').show();
+    }, function(el) {
+        var target = $(el.target)
+        var id = target.attr('id')
+        console.log(id)
+        $('#'+id+'.col_popup').hide();
+    });
+});
+</script>
+
+
+<style>
+.col_popup{
+  display: none;
+}
+</style>
+
+
+<h3>Search Results</h3>  
 
   <p>
-  <h4>Collection</h4>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
