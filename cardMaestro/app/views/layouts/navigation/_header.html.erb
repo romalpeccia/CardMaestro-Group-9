@@ -28,13 +28,24 @@
             <%= link_to 'Contact', root_path %>
         </li>
         -->
+
         <% end # if user is signed it %>
     </ul>
 
 
     <% if user_signed_in? %>
-        <input class="form-control mr-sm-2" type="search" placeholder="Search Cards" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+       
+        
+        <%= form_tag(searchpage_search_path, :method => "get",   
+            class: 'navbar-form navbar-left') do %>  
+        <div class="input-group">  
+            <%= search_field_tag :search, params[:search], placeholder: "Search", class: "form-control" %>  
+            <div class="input-group-btn">  
+            <%= button_tag "", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil%>  
+            </div>  
+        </div>  
+        <% end %>
+
     <% end # if user is signed it %>
 </form>
 
