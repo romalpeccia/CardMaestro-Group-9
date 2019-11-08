@@ -9,6 +9,7 @@ require("@rails/activestorage").start()
 require("channels")
 
 //= require jquery
+//= require jquery_ujs
 //= require bootstrap-sprockets
 
 
@@ -18,3 +19,4 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+

@@ -1,10 +1,50 @@
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+
+    $('.col_card_name').hover(function(el) {
+        var target = $(el.target)
+        var id = target.attr('id')
+        console.log(id)
+        $('#'+id+'.col_popup').show();
+    }, function(el) {
+        var target = $(el.target)
+        var id = target.attr('id')
+        console.log(id)
+        $('#'+id+'.col_popup').hide();
+    });
+
+    $('.wish_card_name').hover(function(el) {
+      var target = $(el.target)
+      var id = target.attr('id')
+      console.log(id)
+      $('#'+id+'.wish_popup').show();
+  }, function(el) {
+      var target = $(el.target)
+      var id = target.attr('id')
+      console.log(id)
+      $('#'+id+'.wish_popup').hide();
+  });
+});
+</script>
+
+
+<style>
+.col_popup{
+  display: none;
+}
+.wish_popup{
+  display: none;
+}
+</style>
+
 <% if !@collection_error %>
   <% if !@is_self %>
     <p>User: <%= @target_email %>
     </p>
   <% end %>
   <p>
-  <h4>Card Owned <% if !@is_self %> that I need <% end %>:</h4>
+  <h4>Collection<% if !@is_self %> that I need<% end %>:</h4>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
@@ -17,7 +57,11 @@
     <tbody>
       <% @collection_card_owned.each do |card| %>
         <tr>
-          <td><%= card.card.name %></td>
+          <td>
+          <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+          <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+          </td>
+
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
         </tr>
@@ -26,7 +70,7 @@
   </table>
   </p>
   <p>
-  <h4>Card Needed<% if !@is_self %> that I have <% end %>:</h4>
+  <h4>Wishlist<% if !@is_self %> that I have<% end %>:</h4>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
@@ -39,7 +83,10 @@
     <tbody>
       <% @collection_card_needed.each do |card| %>
         <tr>
-          <td><%= card.card.name %></td>
+          <td>
+            <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+            <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+          </td>
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
         </tr>
