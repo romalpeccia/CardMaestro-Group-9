@@ -17,11 +17,11 @@
         
 
         <li class="mobile-menu">
-            <%= link_to 'Add Cards',  new_card_path%>
+            <%= link_to 'Add Cards',  new_card_path %>
         </li>
         
         <li class="mobile-menu">
-            <%= link_to 'View Collection', root_path %>
+            <%= link_to 'View Collection', collection_path(current_user.id) %>
         </li>
         
          <li class="mobile-menu">

@@ -1,0 +1,44 @@
+<p>
+<h4>Card Owned:</h4>
+<table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <thead>
+    <tr>
+      <th data-field="name" data-sortable="true">Card Name</th>
+      <th data-field="set" data-sortable="true">Set Name</th>
+      <th data-field="value" data-sortable="true">Card Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @collection_card_owned.each do |card| %>
+      <tr>
+        <td><%= card.card.name %></td>
+        <td><%= card.card.card_set.name %></td>
+        <td><%= card.value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</p>
+<p>
+<h4>Card Needed:</h4>
+<table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <thead>
+    <tr>
+      <th data-field="name" data-sortable="true">Card Name</th>
+      <th data-field="set" data-sortable="true">Set Name</th>
+      <th data-field="value" data-sortable="true">Card Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @collection_card_needed.each do |card| %>
+      <tr>
+        <td><%= card.card.name %></td>
+        <td><%= card.card.card_set.name %></td>
+        <td><%= card.value %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</p>
