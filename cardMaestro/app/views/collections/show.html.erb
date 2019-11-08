@@ -3,23 +3,38 @@
 
 $(document).ready(function() {
 
-    $('.card_name').hover(function(el) {
+    $('.col_card_name').hover(function(el) {
         var target = $(el.target)
         var id = target.attr('id')
         console.log(id)
-        $('#'+id+'.popup').show();
+        $('#'+id+'.col_popup').show();
     }, function(el) {
         var target = $(el.target)
         var id = target.attr('id')
         console.log(id)
-        $('#'+id+'.popup').hide();
+        $('#'+id+'.col_popup').hide();
     });
+
+    $('.wish_card_name').hover(function(el) {
+      var target = $(el.target)
+      var id = target.attr('id')
+      console.log(id)
+      $('#'+id+'.wish_popup').show();
+  }, function(el) {
+      var target = $(el.target)
+      var id = target.attr('id')
+      console.log(id)
+      $('#'+id+'.wish_popup').hide();
+  });
 });
 </script>
 
 
 <style>
-.popup{
+.col_popup{
+  display: none;
+}
+.wish_popup{
   display: none;
 }
 </style>
@@ -39,8 +54,8 @@ $(document).ready(function() {
     <% @collection_card_owned.each do |card| %>
       <tr>
         <td>
-        <div class = 'card_name' id = <%= card.id %>><%= card.card.name %>  </div>
-        <div class = 'popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+        <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+        <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
         </td>
 
         <td><%= card.card.card_set.name %></td>
@@ -64,7 +79,10 @@ $(document).ready(function() {
   <tbody>
     <% @collection_card_needed.each do |card| %>
       <tr>
-        <td><%= card.card.name %></td>
+        <td>
+        <div class = 'wish_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+        <div class = 'wish_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div> 
+        </td>
         <td><%= card.card.card_set.name %></td>
         <td><%= card.value %></td>
       </tr>
