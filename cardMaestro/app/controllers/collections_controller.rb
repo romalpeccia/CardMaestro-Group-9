@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
         @collection_card_needed = card_owned_ids.collect { |id| @collection_card_needed.find_by(card_id: id)}.compact
       end
     else
-      flash[:alert] = "user not found"
+      flash.now[:alert] = "user not found"
       @collection_error = true
     end
   end
