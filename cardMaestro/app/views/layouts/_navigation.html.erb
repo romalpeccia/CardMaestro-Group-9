@@ -1,22 +1,76 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <%= link_to 'Card Maestro', root_path, class: 'navbar-brand' %>
+
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <% if user_signed_in? %>
+    <ul class="navbar-nav mr-auto">
+      
+      <li class="nav-item">
+        <a class="nav-link" href=<%=new_card_path%>>Add Cards</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href=<%=collection_path(current_user.id)%>>View Collection</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href=<%=pages_info_path%>>Send Message</a>
+      </li>
+
     
-    <div class="row">
 
-    <!--These are always part of the header and always visible-->
-      <div class="col-sm-7">
-        <%= render 'layouts/navigation/header' %>
-      </div>
+    </ul>
 
-       <!-- This is mainly for mobile to have collapsible elements--> 
-      <div class="col-sm-5">
-        <%= render 'layouts/navigation/collapsible_elements' %>
-      </div>
+    <%# <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search Cards" aria-label="Search">
+      <button class="btn btn-info glyphicon glyphicon-search" name =nil type="submit">Search</button>
+    </form> %>
 
-    </div>
-   
+    <%= form_tag(searchpage_search_path, :method => "get",   
+            class: 'navbar-form navbar-left') do %>  
+        <div class="input-group">  
+            <%= search_field_tag :search, params[:search], placeholder: "Search Cards", class: "form-control" %>  
+            <div class="input-group-btn">  
+            <%= button_tag "Search", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil%>  
+            </div>  
+        </div>  
+        <% end %>
 
 
+  <ul class="navbar-nav mr-0">
+  
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= current_user.email %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href=<%=edit_user_registration_path%>>Edit Profile</a>
+          <a class="dropdown-item" href=<%=destroy_user_session_path%> data-method="delete" rel="nofollow">Logout</a>
+        </div>
+      </li>
 
-  </div>
+    </ul>
+
+ 
+
+<% else # user not signed it %>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+          <a class="nav-link" href=<%=login_path%>>Login</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href=<%=signup_path%>>Signup</a>
+        </li>
+
+    </ul>
+<% end # if user is signed it %>
+
+
 </nav>
