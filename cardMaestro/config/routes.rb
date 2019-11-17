@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     get 'signup', to: 'devise/registrations#new'
   end
   
+  resources :conversations do
+    resources :messages
+  end
+
   get 'welcome/index'
   get 'pages/info'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
