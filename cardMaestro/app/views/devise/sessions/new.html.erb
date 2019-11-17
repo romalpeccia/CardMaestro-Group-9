@@ -1,6 +1,5 @@
-
 <div class="container">
-  <div class="row">
+  <div class="row justify-content-center align-items-center pt-4">
     <div class="col-sm-6 col-sm-offset-3">
       <h2 class="text-center">Log In</h2>
       
@@ -11,12 +10,12 @@
               <%= f.email_field :email, 
                                 autofocus: true, 
                                 class: 'form-control', 
-                                placeholder: 'email' %>
+                                placeholder: 'Email' %>
 
               <%= f.password_field  :password, 
                                     autocomplete: "off", 
                                     class: 'form-control',
-                                    placeholder: 'password' %>
+                                    placeholder: 'Password' %>
 
 
             <% if devise_mapping.rememberable? -%>

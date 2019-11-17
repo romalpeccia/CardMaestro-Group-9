@@ -1,4 +1,8 @@
 
+<div class="container-fluid">
+  <div class="row-fluid pt-2">
+    
+
 <style>
 .col_popup{
   display: none;
@@ -14,7 +18,7 @@
     </p>
   <% end %>
   <p>
-  <h4>Collection<% if !@is_self %> that I need<% end %>:</h4>
+  <h3>Collection<% if !@is_self %> that I need<% end %></h3>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
@@ -40,7 +44,7 @@
   </table>
   </p>
   <p>
-  <h4>Wishlist<% if !@is_self %> that I have<% end %>:</h4>
+  <h3>Wishlist<% if !@is_self %> that I have<% end %></h3>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
@@ -65,3 +69,7 @@
   </table>
   </p>
 <% end %>
+
+
+</div>
+</div>
