@@ -1,3 +1,6 @@
+<div class="container-fluid">
+  <div class="row-fluid pt-2">
+
 <style>
   .icon-flipped {
   transform: scaleX(-1);
@@ -9,6 +12,7 @@
     font-size: 20px;
 }
 </style>
+ <h1>Conversations</h1>  
 <div class="panel panel-default">
 <% if @over_5 %>
  <%= link_to 'Show All', '?m=all', class: 'btn btn-link pull-right' %>
@@ -49,4 +53,7 @@ $(document).ready(function(){
   <%= f.submit "Send Reply", class: "form-control btn btn-primary" %>
 </div>
 <% end %>
+</div>
+
+</div>
 </div>
