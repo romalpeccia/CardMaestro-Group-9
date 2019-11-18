@@ -1,9 +1,14 @@
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
   
+<% if user_signed_in? %>
+<% homepage_path = home_path%>
+<%else%>
+<%homepage_path = root_path%>
+<%end%>
 
    
-   <a class="navbar-left pt-0.5" href=<%=root_path%>>
+   <a class="navbar-left pt-0.5 pl-1.5" href=<%= homepage_path%>>
    <%= image_tag("CardMaestroLogo1.png")  %>
   </a>
   
