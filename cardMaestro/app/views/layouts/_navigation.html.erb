@@ -1,7 +1,12 @@
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-  <%= link_to 'Card Maestro', root_path, class: 'navbar-brand' %>
+  
 
+   
+   <a class="navbar-left pt-0.5" href=<%=root_path%>>
+   <%= image_tag("CardMaestroLogo1.png")  %>
+  </a>
+  
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -11,7 +16,7 @@
   <% if user_signed_in? %>
     <ul class="navbar-nav mr-auto">
       
-      <li class="nav-item">
+      <li class="nav-item pl-3">
         <a class="nav-link" href=<%=new_card_path%>>Add Cards</a>
       </li>
 
@@ -76,7 +81,8 @@
     $(function(){
         $('a').each(function(){
             if ($(this).prop('href') == window.location.href) {
-                $(this).addClass('active'); $(this).parents('li').addClass('active');
+                $(this).addClass('active'); 
+                $(this).parents('li').addClass('active');
             }
         });
     });
