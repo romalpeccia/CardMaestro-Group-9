@@ -70,3 +70,14 @@
 
 
 </nav>
+
+<!--This script highlights the current active page in the navigation bar that user navigated to  !-->
+<script>
+    $(function(){
+        $('a').each(function(){
+            if ($(this).prop('href') == window.location.href) {
+                $(this).addClass('active'); $(this).parents('li').addClass('active');
+            }
+        });
+    });
+</script>
