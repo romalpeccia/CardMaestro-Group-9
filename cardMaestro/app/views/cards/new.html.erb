@@ -1,25 +1,19 @@
 <!-- TODO add autocomplete on card field, dropdown for set based on card selected -->
 
-<div class="container">
+<div class="container-fluid">
   <div class="row justify-content-center align-items-center pt-4">
     <div class="col-sm-6 col-sm-offset-3">
       <h1> Add a card to your collection or wishlist</h1>
       <%= form_with scope: :card, url: cards_path, local: true do |form| %>  
           <%= form.hidden_field :user, value: current_user.email %>
           <p>
-            <%= form.label :card_name %><br>
-            <%= form.text_field :card_name %>
+          <%= form.label :set, "Set" %><br>
+          <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
           </p>
 
           <p>
-          <!--
-          <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-            <option value = "test1"> test1 </option>
-            <option value = "test2"> test2 </option>
-          </select>
-          -->
-          <%= form.label :set, "Set" %><br>
-          <%= form.select(:set, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
+            <%= form.label :card_name %><br>
+            <%= form.select(:card_name, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
           </p>
 
           <p>
