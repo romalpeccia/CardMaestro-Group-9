@@ -13,7 +13,7 @@
 
           <p>
             <%= form.label :card_name %><br>
-            <%= form.select(:card_name, @sets.collect { |set| [set.code] }, {:include_blank => 'Set Code'}, :class=>"js-searchable") %>
+            <%= form.text_field :card_name %>
           </p>
 
           <p>
