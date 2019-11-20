@@ -11,20 +11,13 @@ $(function () {
   $('[data-toggle="popover"]').popover()
 })
 </script>
-<style>
-.col_popup{
-  display: none;
-}
-.wish_popup{
-  display: none;
-}
-</style>
--->
+
 
 <% if flash.empty? %>
   <% if !@is_self %>
-    <p>User: <%= @target_email %>
-    </p>
+    <p>User: <%= @target_email %></p>
+    <%= link_to "trade with #{@target_email}", trades_new_path(user2: @target_email)  %>
+    
   <% end %>
   <p>
   <h3>Collection<% if !@is_self %> that I need<% end %></h3>
