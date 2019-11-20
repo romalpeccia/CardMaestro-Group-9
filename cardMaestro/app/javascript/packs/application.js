@@ -13,29 +13,31 @@ require("channels")
 
 $(document).ready(function() {
 
-    $('.col_card_name').hover(function(el) {
-        var target = $(el.target)
-        var id = target.attr('id')
-        console.log(id)
-        $('#'+id+'.col_popup').show();
-    }, function(el) {
-        var target = $(el.target)
-        var id = target.attr('id')
-        console.log(id)
-        $('#'+id+'.col_popup').hide();
-    });
+   // $('[data-toggle="popover"]').popover();
 
-    $('.wish_card_name').hover(function(el) {
-      var target = $(el.target)
-      var id = target.attr('id')
-      console.log(id)
-      $('#'+id+'.wish_popup').show();
-  }, function(el) {
-      var target = $(el.target)
-      var id = target.attr('id')
-      console.log(id)
-      $('#'+id+'.wish_popup').hide();
-  });
+//     $('.col_card_name').hover(function(el) {
+//         var target = $(el.target)
+//         var id = target.attr('id')
+//         console.log(id)
+//         $('#'+id+'.col_popup').show();
+//     }, function(el) {
+//         var target = $(el.target)
+//         var id = target.attr('id')
+//         console.log(id)
+//         $('#'+id+'.col_popup').hide();
+//     });
+
+//     $('.wish_card_name').hover(function(el) {
+//       var target = $(el.target)
+//       var id = target.attr('id')
+//       console.log(id)
+//       $('#'+id+'.wish_popup').show();
+//   }, function(el) {
+//       var target = $(el.target)
+//       var id = target.attr('id')
+//       console.log(id)
+//       $('#'+id+'.wish_popup').hide();
+//   });
 });
 
 // Uncomment to copy all static images under ../images to the output folder and reference

@@ -16,14 +16,7 @@
           </p>
           <p>
             <%= form.label :card_name %><br>
-            <%= form.text_area :card_name %>
-            <!--
-            <% @sets.each do |s| %>
-              <div class = "set_dropdown" id = <%= s %>>
-              <%= form.select(:card_name, @cards.where(set: s.code).collect { |card| [card.name] }, :class=>"js-searchable") %>
-              </div>  
-            <%end%>
-            -->
+            <%= form.text_field :card_name %>
           </p>
 
           <p>

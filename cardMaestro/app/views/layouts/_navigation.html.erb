@@ -22,16 +22,22 @@
     <ul class="navbar-nav mr-auto">
       
       <li class="nav-item pl-3">
-        <a class="nav-link" href=<%=new_card_path%>>Add Cards</a>
+        <a class="nav-link" href=<%=new_card_path%>> Add Cards</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href=<%=collection_path(current_user.id)%>>View Collection</a>
+        <a class="nav-link" href=<%=collection_path(current_user.id)%>>My Collection</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href=<%=conversations_path%>>Send Message</a>
+        <a class="nav-link" href="#">Trade</a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href=<%=conversations_path%>>Inbox</a>
+      </li>
+
+      
 
     
 
@@ -49,7 +55,7 @@
         <% end %>
 
 
-  <ul class="navbar-nav mr-0">
+  <ul class="navbar-nav mr-2 ml-2">
   
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,13 +72,13 @@
  
 
 <% else # user not signed it %>
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto mr-3">
       <li class="nav-item">
           <a class="nav-link" href=<%=login_path%>>Login</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href=<%=signup_path%>>Signup</a>
+          <a class="nav-link" href=<%=signup_path%>>Sign Up</a>
         </li>
 
     </ul>
