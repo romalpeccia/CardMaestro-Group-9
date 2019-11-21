@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  initiator_id: 
+  reciever_id: 
+  initiator_cards: MyString
+  reciever_cards: MyString
+  status: MyString
+  value: 1.5
+
+two:
+  initiator_id: 
+  reciever_id: 
+  initiator_cards: MyString
+  reciever_cards: MyString
+  status: MyString
+  value: 1.5
