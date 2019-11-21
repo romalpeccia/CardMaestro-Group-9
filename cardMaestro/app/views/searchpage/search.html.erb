@@ -4,20 +4,118 @@
 <script>
 $(function () {
   $('[data-toggle="popover"]').popover()
-})
+});
+
 </script>
 
 
-<h3>Search Results</h3>  
+<style>
 
-  <p>
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
-    <thead>
+
+#CardTable tr {
+  background-color: #ffff;
+}
+
+#CardTable th{
+  background-color: #f1f1f1;
+}
+
+#CardTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+
+</style>
+
+
+<h3>Search Results - <span class="text-muted">"<%=@search_term%>"</span></h3>  
+
+
+
+<div class="container-fluid">
+<h5><span class="text">Advanced Search</span></h5>
+
+	<div class="row">
+		
+    <div class="col">
+			<div class="form-group pt-1">
+				<select class="filter form-control">
+					<option value="">Select Condition</option>
+					<option value="">Mint</option>
+          <option value="">Near-Mint</option>
+          <option value="">Light-Play</option>
+          <option value="">Heavy-Play</option>
+				</select>
+			</div>
+    </div>
+
+      <div class="col">
+			<div class="form-group pt-1">
+				<select class="filter form-control">
+					<option value="">Select Set</option>
+					<%=@sets.each do |set| %>
+            <option value=""> <%=set.code%></option>
+          <%end%>
+				</select>
+			</div>
+      </div>
+
+      <div class="col">
+			<div class="form-group pt-1">
+				<select class="filter form-control">
+					<option value="">Select Foil</option>
+					<option value="">True</option>
+          <option value="">False</option>
+				</select>
+			</div>
+      </div>
+
+    <div class="col">
+      <div class="form-group pt-1">
+				<select class="filter form-control">
+					<option value="">Select Location</option>
+					<% CS.states(:us).each do |key, value| %>
+          <option value="<%= key %>"><%= value %></option>
+          <% end %>
+				</select>
+			</div>
+      </div>
+      
+
+      <div class="col">
+			<div class="form-group pt-1">
+				<input type="number" class="form-control" placeholder= "Minimum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
+			</div>
+      </div>
+
+      <div class="col">
+			<div class="form-group pt-1">
+				<input type="number" class="form-control" placeholder= "Maximum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
+			</div>
+      </div>
+
+		
+	</div>
+
+  <div class="group-btn float-right mb-2">
+  <button class="btn btn-outline-danger mr-2 " id="delete">Reset</button>
+  <button class="btn btn-info glyphicon glyphicon-search ml-2">Advanced Search</button>
+</div>
+
+
+
+
+
+
+  <table class=" table table-striped pt-2" id="CardTable" data-sort-name="name" data-sort-order="desc">
+    <thead id="tableHead">
       <tr>
         <th data-field="user" data-sortable="true">User</th>
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
+        <th data-field="quality" data-sortable="true">Card Quality</th>
+        <th data-field="foil" data-sortable="true">Foil</th>
       </tr>
     </thead>
 
@@ -35,11 +133,13 @@ $(function () {
 
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
+          <td><%= card.quality %></td>
+          <td><%= card.foil %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  </p>
+  
 
 </div>
 </div>

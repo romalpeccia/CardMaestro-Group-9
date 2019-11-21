@@ -35,9 +35,20 @@
       <%= f.password_field :current_password%>
     </div>
 
+    <div class="field">
+      <%= f.text_field :city, autofocus: true, autocomplete: "city" %>
+    </div>
+    <div class="field">
+      <%= f.text_field :province, autofocus: true, autocomplete: "province" %>
+    </div>
+    <div class="field">
+      <%= f.text_field :country, autofocus: true, autocomplete: "country" %>
+    </div>
+
     <div class="actions">
       <%= f.submit "Update", class: "btn btn-primary" %>
     </div>
+    
   <% end %>
 
   <h3>Cancel my account</h3>
