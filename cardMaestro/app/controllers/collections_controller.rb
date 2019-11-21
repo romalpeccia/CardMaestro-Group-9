@@ -6,11 +6,15 @@ class CollectionsController < ApplicationController
     @is_self = false
     @collection_error = false
 
-    target_user = User.find_by(id: target_id)
-    if target_user
-      @target_email = target_user.email
-      @collection_card_owned = target_user.card_owned
-      @collection_card_needed = target_user.card_needed
+    @target_user = User.find_by(id: target_id)
+    if @target_user
+      @target_email = @target_user.email
+      @collection_card_owned = @target_user.card_owned
+      @collection_card_needed = @target_user.card_needed
+      if target_id == current_user.id
+        @is_self = true;
+      end
+=begin
       if target_id == current_user.id
         @is_self = true;
       else
@@ -20,6 +24,7 @@ class CollectionsController < ApplicationController
         @collection_card_owned = card_needed_ids.collect { |id| @collection_card_owned.find_by(card_id: id)}.compact
         @collection_card_needed = card_owned_ids.collect { |id| @collection_card_needed.find_by(card_id: id)}.compact
       end
+=end
     else
       flash.now[:alert] = "user not found"
       @collection_error = true

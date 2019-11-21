@@ -1,2 +1,71 @@
-<p>Trade with user <%= @user2 %></p>
+<p>Trade with user <%= @target_user.email %></p>
 
+
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+<div class="container-fluid">
+    <div class="row-fluid pt-2">
+
+    <h3>Collection<% if !@is_self %> that I need<% end %></h3>
+    <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+      <thead>
+        <tr>
+          <th data-field="name" data-sortable="true">Card Name</th>
+          <th data-field="set" data-sortable="true">Set Name</th>
+          <th data-field="value" data-sortable="true">Card Value</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <% @collection_card_owned.each do |card| %>
+          <tr>
+            <td>
+            <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+            <!--
+            <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+            <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+            -->
+            </td>
+  
+            <td><%= card.card.card_set.name %></td>
+            <td><%= card.value %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </p>
+    <p>
+    <h3>Wishlist<% if !@is_self %> that I have<% end %></h3>
+    <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+      <thead>
+        <tr>
+          <th data-field="name" data-sortable="true">Card Name</th>
+          <th data-field="set" data-sortable="true">Set Name</th>
+          <th data-field="value" data-sortable="true">Card Value</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <% @collection_card_needed.each do |card| %>
+          <tr>
+            <td>
+              <a href = "" data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+              <!--
+              <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+              <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+              -->
+            </td>
+            <td><%= card.card.card_set.name %></td>
+            <td><%= card.value %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </p>
+
+    </div>
+</div

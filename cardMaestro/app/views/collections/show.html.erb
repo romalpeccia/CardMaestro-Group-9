@@ -1,8 +1,3 @@
-<!-- TODO fix bug where JS doesnt always work 
-fix bootstrap styles
--->
-
-
 <div class="container-fluid">
   <div class="row-fluid pt-2">
 
@@ -12,15 +7,14 @@ $(function () {
 })
 </script>
 
-
 <% if flash.empty? %>
   <% if !@is_self %>
-    <p>User: <%= @target_email %></p>
-    <%= link_to "trade with #{@target_email}", trades_new_path(user2: @target_email)  %>
+    <p>User: <%= @target_user.email %></p>
+    <%= link_to "trade with #{@target_user.email}", trades_new_path(id: @target_user.id)  %>
     
   <% end %>
   <p>
-  <h3>Collection<% if !@is_self %> that I need<% end %></h3>
+  <h3>Collection</h3>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
@@ -49,7 +43,7 @@ $(function () {
   </table>
   </p>
   <p>
-  <h3>Wishlist<% if !@is_self %> that I have<% end %></h3>
+  <h3>Wishlist</h3>
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
