@@ -1,22 +1,93 @@
 <div class="container-fluid">
+<div class="container-fluid">
   <div class="row-fluid pt-2 pl-2">
 <style>
 
 </style>
-  <div class="row justify-content-center align-items-center pt-4">
-  <ul class="nav nav-pills nav-stacked">
-    <li><button type="button" class="btn btn-outline-primary"
-    data-toggle="collapse" data-target="#mail"><h4>Conversations
-    <i class="glyphicon glyphicon-inbox"></i></h4></button></li>
-  
-  
-    <li><button type="button" class="btn btn-outline-primary"
-    data-toggle="collapse" data-target="#new"><h4>New Message
-      <i class="glyphicon glyphicon-new-window" style="vertical-align:right;"></i></h4></button></li>
-  </div>
-  </ul>
+
+
 
 <h1>My Inbox</h1>
+
+<div class="row">
+<div class="card col-sm-4" style="overflow:scroll;">
+
+<div class="row dflex justify-content-between py-2">
+<h4 class="mb-1 pl-3">Conversations</h4>
+
+<button type="button" class="btn btn-outline-primary mx-3"
+    data-toggle="collapse" data-target="#new">
+  New Message    
+</button>
+
+</div>
+
+      <ul class="list-group list-group-flush">
+
+         <% @conversations.each do |conversation| %>
+            <% if conversation.sender_id == current_user.id || conversation.recipient_id == current_user.id %>
+            <% if conversation.sender_id == current_user.id %>
+              <% recipient = User.find(conversation.recipient_id) %>
+            <% else %>
+              <% recipient = User.find(conversation.sender_id) %>
+            <% end %>
+            
+
+          <li class="list-group-item user-select bg-light" id="15" name='user-select'>
+            <div class="d-flex">
+              <h5><%= link_to recipient.email, conversation_messages_path(conversation)%></h5>
+            </div>
+          </li>
+
+
+            <% end %>
+          <% end %>
+
+
+      </ul>
+    </div>
+
+
+      <div class="col-sm-8">
+        <div class="chatbody">
+
+          <table class="table">
+            <tr>
+              <td></td>
+            </tr>
+          </table>
+          
+          <div id="messages" class="messages">
+            No Messages 
+          </div>
+        </div>
+        
+
+            <div class="row col-sm-8">
+              <form action="/users/21" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+                <div class="col-xs-12">
+                  <textarea class="form-control" name="message[text]" id="message_text">
+                </textarea><br/>
+                </div>
+
+                <div class="col-xs-3 capitalize">
+                  <button name="button" type="button" onclick="javascript:sendMessage()" class="btn btn-info btn-block">Send Message</button>
+                </div>
+              </form>      
+            </div>
+
+</div>
+   
+
+
+
+
+
+
+
+
+
+
 <div class="panel panel-default">
 <div class="col-lg-6">
   <div id="mail" class="collapse">
@@ -52,5 +123,8 @@
 </div>
 </div>
 
+
+
+</div>
 </div>
 </div>
