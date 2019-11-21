@@ -27,6 +27,8 @@ $(function () {
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
+        <th data-field="quality" data-sortable="true">Card Quality</th>
+        <th data-field="foil" data-sortable="true">Foil</th>
       </tr>
     </thead>
 
@@ -43,6 +45,8 @@ $(function () {
 
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
+          <td><%= card.quality %></td>
+          <td><%= card.foil %></td>
         </tr>
       <% end %>
     </tbody>
@@ -56,6 +60,8 @@ $(function () {
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
+        <th data-field="quality" data-sortable="true">Card Quality</th>
+        <th data-field="foil" data-sortable="true">Foil</th>
       </tr>
     </thead>
 
@@ -71,6 +77,8 @@ $(function () {
           </td>
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
+          <td><%= card.quality %></td>
+          <td><%= card.foil %></td>
         </tr>
       <% end %>
     </tbody>
