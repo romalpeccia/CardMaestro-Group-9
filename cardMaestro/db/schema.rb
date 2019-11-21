@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_152309) do
+ActiveRecord::Schema.define(version: 2019_11_21_002828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,14 @@ ActiveRecord::Schema.define(version: 2019_11_17_152309) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "city"
+    t.string "province"
+    t.string "country"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.bigint "conversation_id"
@@ -74,6 +82,19 @@ ActiveRecord::Schema.define(version: 2019_11_17_152309) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.string "sender_cards"
+    t.string "reciever_cards"
+    t.string "status"
+    t.float "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "sender_id"
+    t.bigint "reciever_id"
+    t.index ["reciever_id"], name: "index_trades_on_reciever_id"
+    t.index ["sender_id"], name: "index_trades_on_sender_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,4 +114,6 @@ ActiveRecord::Schema.define(version: 2019_11_17_152309) do
   add_foreign_key "card_owneds", "cards"
   add_foreign_key "card_owneds", "users"
   add_foreign_key "cards", "card_sets"
+  add_foreign_key "trades", "users", column: "reciever_id"
+  add_foreign_key "trades", "users", column: "sender_id"
 end

@@ -7,4 +7,6 @@ class User < ApplicationRecord
   #associations
   has_many :card_owned, dependent: :destroy
   has_many :card_needed, dependent: :destroy
+  has_many :sent_trades, :class_name => 'Trade', :foreign_key => 'sender_id'
+  has_many :recieved_trades, :class_name => 'Trade', :foreign_key => 'reciever_id'
 end
