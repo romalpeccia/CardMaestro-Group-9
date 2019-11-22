@@ -10,7 +10,7 @@ $(function () {
 <% if flash.empty? %>
   <% if !@is_self %>
     <p>User: <%= @target_user.email %></p>
-    <%= link_to "trade with #{@target_user.email}", trades_new_path(id: @target_user.id)  %>
+    <%= link_to "trade with #{@target_user.email}", new_trade_path(id: @target_user.id)  %>
     
   <% end %>
   <p>
