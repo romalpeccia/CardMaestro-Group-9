@@ -29,4 +29,23 @@ class TradesController < ApplicationController
       
       render 'new'
   end
+  def create
+      flash[:notice] = params
+      reciever_id = params[:reciever_id]
+      sender_id = params[:sender_id]
+      sender_value = 0
+      reciever_value = 0
+      params.each do |key, value|
+          if key.include? "card_owned" 
+            card = CardOwned.find_by(id: value)
+            sender_value = sender_value + card.value
+          elsif key.include? "card_needed"
+            card = CardNeeded.find_by(id: value)
+            reciever_value = reciever_value + card.value
+          end
+      end
+      trade_value = sender_value - reciever_value
+      puts trade_value
+      render 'trade_list'
+  end
 end
