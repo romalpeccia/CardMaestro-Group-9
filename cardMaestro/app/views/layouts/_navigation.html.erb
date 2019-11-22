@@ -22,19 +22,19 @@
     <ul class="navbar-nav mr-auto">
       
       <li class="nav-item pl-3">
-        <a class="nav-link" href=<%=new_card_path%>> Add Cards</a>
+        <a class="nav-link" href=<%=new_card_path%>><%=fa_icon "th-large"%> Add Cards</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href=<%=collection_path(current_user.id)%>>My Collection</a>
+        <a class="nav-link" href=<%=collection_path(current_user.id)%>><%=fa_icon "clone"%> My Collection</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="#">Trade</a>
+        <a class="nav-link" href="#"> <%=fa_icon "users"%> Trade</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href=<%=conversations_path%>>Inbox</a>
+        <a class="nav-link" href=<%=conversations_path%>><%=fa_icon "comments"%> Inbox</a>
       </li>
 
       
@@ -59,7 +59,7 @@
   
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <%= current_user.email %>
+          <%=fa_icon "user-circle"%> <%= current_user.email %>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href=<%=edit_user_registration_path%>>Edit Profile</a>

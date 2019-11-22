@@ -33,7 +33,15 @@ $(function () {
 
 
 <div class="container-fluid">
-<h5><span class="text">Advanced Search</span></h5>
+
+
+
+<button type="button" class="btn btn-primary my-2"
+    data-toggle="collapse" data-target="#filterForm">
+  <%=fa_icon "filter"%> Advanced Search
+</button>
+
+<div class="collapse" id = "filterForm">
 
 	<div class="row">
 		
@@ -70,18 +78,6 @@ $(function () {
 			</div>
       </div>
 
-    <div class="col">
-      <div class="form-group pt-1">
-				<select class="filter form-control">
-					<option value="">Select Location</option>
-					<% CS.states(:us).each do |key, value| %>
-          <option value="<%= key %>"><%= value %></option>
-          <% end %>
-				</select>
-			</div>
-      </div>
-      
-
       <div class="col">
 			<div class="form-group pt-1">
 				<input type="number" class="form-control" placeholder= "Minimum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
@@ -97,10 +93,64 @@ $(function () {
 		
 	</div>
 
-  <div class="group-btn float-right mb-2">
+
+<div class="row">
+      <div class="col">
+      <div class="form-group pt-1">
+      
+      <select class="filter form-control">
+        <option value="">Select Country</option>
+        <% CS.countries.each do |key, value| %>
+        <option value="<%= key %>"><%= value %></option>
+        <% end %>
+      </select>
+
+			</div>
+      </div>
+
+      <div class="col">
+      <div class="form-group pt-1">
+      
+      <select class="filter form-control">
+        <option value="">Select State</option>
+        <% CS.countries.each do |key, value| %>
+        <option value="<%= key %>"><%= value %></option>
+        <% end %>
+      </select>
+
+			</div>
+      </div>
+
+      <div class="col">
+      <div class="form-group pt-1">
+      
+      <select class="filter form-control">
+        <option value="">Select City</option>
+        <% CS.countries.each do |key, value| %>
+        <option value="<%= key %>"><%= value %></option>
+        <% end %>
+      </select>
+
+			</div>
+      </div>
+
+<div class="col">
+
+</div>
+
+
+<div class="col">
+      <div class="group-btn float-right mb-2">
   <button class="btn btn-outline-danger mr-2 " id="delete">Reset</button>
   <button class="btn btn-info glyphicon glyphicon-search ml-2">Advanced Search</button>
 </div>
+</div>
+
+</div>
+
+</div>
+
+
 
 
 
