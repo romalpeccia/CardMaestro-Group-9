@@ -48,6 +48,8 @@ gem 'city-state'
 #autocomplete
 gem 'rails-jquery-autocomplete'
 
+gem "font-awesome-rails"
+
 gem 'devise'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
