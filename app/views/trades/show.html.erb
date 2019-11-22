@@ -1,7 +1,33 @@
 <h1>LIST OF TRADES</h1>
 
 <h1>SENT TRADES</h1>
-<%= @sent_trades %>
+<h4>Pending</h4>
+<% @pending_sent_trades.each do |trade| %>
+    <p> Trade sent to <%= trade.reciever.email %></p>
+    <h5> <%=fa_icon "clone"%> Cards You Offered</h5>
+    <table class=" table table-striped" id="trade_sent"data-sort-name="name" data-sort-order="desc">
+    <thead>
+      <tr>
+        <th data-field="name" data-sortable="true">Card Name</th>
+        <th data-field="set" data-sortable="true">Set Name</th>
+        <th data-field="value" data-sortable="true">Card Value</th>
+        <th data-field="quality" data-sortable="true">Card Quality</th>
+        <th data-field="foil" data-sortable="true">Foil</th>
+      </tr>
+    </thead>
+    </table>
+    <h5> <%=fa_icon "clone"%> Cards You Will Recieve</h5>
+    <table class=" table table-striped" id="trade_recieve"data-sort-name="name" data-sort-order="desc">
+    <thead>
+      <tr>
+        <th data-field="name" data-sortable="true">Card Name</th>
+        <th data-field="set" data-sortable="true">Set Name</th>
+        <th data-field="value" data-sortable="true">Card Value</th>
+        <th data-field="quality" data-sortable="true">Card Quality</th>
+        <th data-field="foil" data-sortable="true">Foil</th>
+      </tr>
+    </thead>
+    </table>
+<% end %>
 
-<h1>RECIEVED TRADES</h1>
-<%= @recieved_trades %>
+<h1>RECEIVED TRADES</h1>

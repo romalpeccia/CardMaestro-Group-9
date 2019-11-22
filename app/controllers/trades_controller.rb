@@ -1,4 +1,7 @@
 class TradesController < ApplicationController
+  def index
+    render 'show'
+  end
   def new
       target_id = params[:id].to_i
       
@@ -71,7 +74,11 @@ class TradesController < ApplicationController
   end
 
   def show
-      @sent_trades = Trade.find_by(sender_id: current_user.id)
-      @recieved_trades = Trade.find_by(reciever_id: current_user.id)
+      @pending_sent_trades = Trade.where(sender_id: current_user.id, status: "Pending")
+      @accepted_sent_trades = Trade.where(sender_id: current_user.id, status: "Accepted")
+      @completed_sent_trades = Trade.where(sender_id: current_user.id, status: "Completed")
+      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
+      @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
+      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
   end
 end
