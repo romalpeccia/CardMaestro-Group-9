@@ -29,4 +29,49 @@ class TradesController < ApplicationController
       
       render 'new'
   end
+  def create
+      #temporary flash for debugging
+      flash[:notice] = params
+
+      sender = User.find_by(id: params[:sender_id]) 
+      reciever = User.find_by(id: params[:reciever_id])
+      sender_value = 0
+      reciever_value = 0
+      sender_cards = ""
+      reciever_cards = ""
+      params.each do |key, value|
+          if key.include? "card_owned" 
+            card = CardOwned.find_by(id: value)
+            sender_value = sender_value + card.value
+            #save card to list of sender_cards
+            sender_cards = sender_cards + card.card.id.to_s + ","
+
+          elsif key.include? "card_needed"
+            card = CardNeeded.find_by(id: value)
+            reciever_value = reciever_value + card.value
+            #save card to list of reciever_cards
+            reciever_cards = reciever_cards + card.card.id.to_s + ","
+          end
+      end
+
+      #saving the associations and trade object
+      trade = Trade.new(sender_cards: sender_cards , reciever_cards: reciever_cards , sender_value: sender_value, reciever_value: reciever_value, status: "Pending")
+      trade.sender = sender
+      trade.reciever = reciever
+      
+      sender.sent_trades << trade 
+      reciever.recieved_trades << trade
+
+      trade.save
+      #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
+
+      
+
+      render 'show'
+  end
+
+  def show
+      @sent_trades = Trade.find_by(sender_id: current_user.id)
+      @recieved_trades = Trade.find_by(reciever_id: current_user.id)
+  end
 end

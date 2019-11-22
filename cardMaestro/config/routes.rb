@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   
   
-  get 'trades/new'
+  #get 'trades/new'
   get '/search' =>'searchpage#search', as: 'searchpage_search'
   get '/home' =>'home#index', as: 'home'
 
+  get 'states/:country', to: 'searchpage#states'
+  get 'cities/:state/:country', to: 'searchpage#cities'
 
   devise_for :users
 
@@ -26,5 +28,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   
-  resources :cards, :collections, :trade
+  resources :cards, :collections, :trades
 end

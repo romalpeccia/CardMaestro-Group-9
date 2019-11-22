@@ -7,15 +7,46 @@ $(function () {
 })
 </script>
 
+<style>
+
+
+#CollectionTable tr {
+  background-color: #ffff;
+}
+
+#CollectionTable th{
+  background-color: #f1f1f1;
+}
+
+#CollectionTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+#WishlistTable tr {
+  background-color: #ffff;
+}
+
+#WishlistTable th{
+  background-color: #f1f1f1;
+}
+
+#WishlistTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+
+</style>
+
+
 <% if flash.empty? %>
   <% if !@is_self %>
     <p>User: <%= @target_user.email %></p>
-    <%= link_to "trade with #{@target_user.email}", trades_new_path(id: @target_user.id)  %>
+    <%= link_to "trade with #{@target_user.email}", new_trade_path(id: @target_user.id)  %>
     
   <% end %>
   <p>
-  <h3>Collection</h3>
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <h3> <%=fa_icon "clone"%> Collection</h3>
+  <table class=" table table-striped" id="CollectionTable"data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
         <th data-field="name" data-sortable="true">Card Name</th>
@@ -47,8 +78,8 @@ $(function () {
   </table>
   </p>
   <p>
-  <h3>Wishlist</h3>
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <h3> <%=fa_icon "clone"%> Wishlist</h3>
+  <table class=" table table-striped" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
         <th data-field="name" data-sortable="true">Card Name</th>

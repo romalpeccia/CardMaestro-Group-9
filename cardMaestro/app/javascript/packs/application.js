@@ -10,6 +10,11 @@ require("channels")
 //=require('jquery')
 
 //= require bootstrap
+//= require jquery_ujs
+//= require jquery-ui/widgets/autocomplete
+//= require autocomplete-rails
+//= require font-awesome
+//=require font-awesome-rails
 
 $(document).ready(function() {
 

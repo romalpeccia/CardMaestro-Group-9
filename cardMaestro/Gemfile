@@ -38,10 +38,6 @@ end
 #for getting magic the gathering card info
 gem 'mtg_sdk'
 
-# Support Select 2
-gem 'select2-rails'
-
-
 #city state gem
 gem 'city-state'
 
@@ -49,6 +45,8 @@ gem 'countries'
 
 #autocomplete
 gem 'rails-jquery-autocomplete'
+
+gem "font-awesome-rails"
 
 gem 'devise'
 # Use Active Storage variant
