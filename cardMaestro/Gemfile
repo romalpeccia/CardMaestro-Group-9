@@ -45,6 +45,8 @@ gem 'select2-rails'
 #city state gem
 gem 'city-state'
 
+gem 'countries'
+
 #autocomplete
 gem 'rails-jquery-autocomplete'
 
