@@ -1,0 +1,2 @@
+class CardOffer < ApplicationRecord
+end
