@@ -45,13 +45,19 @@ class TradesController < ApplicationController
       params.each do |key, value|
           if key.include? "card_owned" 
             card = CardOwned.find_by(id: value)
-            sender_value = sender_value + card.value
+            if card.value != nil
+              sender_value = sender_value + card.value
+            end
+            
             #save card to list of sender_cards
             sender_cards = sender_cards + card.card.id.to_s + ","
 
           elsif key.include? "card_needed"
             card = CardNeeded.find_by(id: value)
-            reciever_value = reciever_value + card.value
+            if card.value != nil
+              reciever_value = reciever_value + card.value
+            end
+
             #save card to list of reciever_cards
             reciever_cards = reciever_cards + card.card.id.to_s + ","
           end
@@ -70,15 +76,17 @@ class TradesController < ApplicationController
 
       
 
-      render 'show'
+      redirect_to trade_path(current_user.id)
   end
 
   def show
+      
       @pending_sent_trades = Trade.where(sender_id: current_user.id, status: "Pending")
       @accepted_sent_trades = Trade.where(sender_id: current_user.id, status: "Accepted")
       @completed_sent_trades = Trade.where(sender_id: current_user.id, status: "Completed")
       @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
       @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
       @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
+      flash[:notice] = @pending_sent_trades.ids
   end
 end
