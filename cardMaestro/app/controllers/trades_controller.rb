@@ -30,7 +30,9 @@ class TradesController < ApplicationController
       render 'new'
   end
   def create
+      #temporary flash for debugging
       flash[:notice] = params
+
       sender = User.find_by(id: params[:sender_id]) 
       reciever = User.find_by(id: params[:reciever_id])
       sender_value = 0
@@ -39,16 +41,23 @@ class TradesController < ApplicationController
           if key.include? "card_owned" 
             card = CardOwned.find_by(id: value)
             sender_value = sender_value + card.value
+            #save card to list of sender_cards
           elsif key.include? "card_needed"
             card = CardNeeded.find_by(id: value)
             reciever_value = reciever_value + card.value
+            #save card to list of reciever_cards
           end
       end
-      trade_value = sender_value - reciever_value
+
+      #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
+
+      
 
       render 'show'
   end
 
   def show
+      @sent_trades = Trade.find_by(sender_id: current_user.id)
+      @recieved_trades = Trade.find_by(reciever_id: current_user.id)
   end
 end
