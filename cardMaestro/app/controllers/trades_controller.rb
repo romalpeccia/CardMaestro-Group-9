@@ -42,12 +42,23 @@ class TradesController < ApplicationController
             card = CardOwned.find_by(id: value)
             sender_value = sender_value + card.value
             #save card to list of sender_cards
+
+
           elsif key.include? "card_needed"
             card = CardNeeded.find_by(id: value)
             reciever_value = reciever_value + card.value
             #save card to list of reciever_cards
           end
       end
+
+      #saving the associations and trade object
+      trade = Trade.new
+      trade.sender = sender
+      trade.reciever = reciever
+      
+      sender.sent_trades << trade 
+      reciever.recieved_trades << trade
+
 
       #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
 
