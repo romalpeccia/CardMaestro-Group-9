@@ -31,8 +31,8 @@ class TradesController < ApplicationController
   end
   def create
       flash[:notice] = params
-      reciever_id = params[:reciever_id]
-      sender_id = params[:sender_id]
+      sender = User.find_by(id: params[:sender_id]) 
+      reciever = User.find_by(id: params[:reciever_id])
       sender_value = 0
       reciever_value = 0
       params.each do |key, value|
@@ -45,7 +45,10 @@ class TradesController < ApplicationController
           end
       end
       trade_value = sender_value - reciever_value
-      puts trade_value
-      render 'trade_list'
+
+      render 'show'
+  end
+
+  def show
   end
 end
