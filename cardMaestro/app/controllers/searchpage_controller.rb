@@ -1,8 +1,18 @@
 class SearchpageController < ApplicationController
   
   def index
-    
+   
   end 
+
+  def states
+    render json: CS.states(params[:country]).to_json
+  end
+
+  def cities
+    render json: CS.cities(params[:state], params[:country]).to_json
+  end
+
+
   def search
 
     @cards = Card.all

@@ -9,6 +9,9 @@ $(function () {
 </script>
 
 
+
+
+
 <style>
 
 
@@ -98,7 +101,7 @@ $(function () {
       <div class="col">
       <div class="form-group pt-1">
       
-      <select class="filter form-control">
+      <select class="filter form-control" id="country">
         <option value="">Select Country</option>
         <% CS.countries.each do |key, value| %>
         <option value="<%= key %>"><%= value %></option>
@@ -111,11 +114,9 @@ $(function () {
       <div class="col">
       <div class="form-group pt-1">
       
-      <select class="filter form-control">
+      <select class="filter form-control" id="state">
         <option value="">Select State</option>
-        <% CS.countries.each do |key, value| %>
-        <option value="<%= key %>"><%= value %></option>
-        <% end %>
+       
       </select>
 
 			</div>
@@ -124,15 +125,19 @@ $(function () {
       <div class="col">
       <div class="form-group pt-1">
       
-      <select class="filter form-control">
+      <select class="filter form-control" id="city">
         <option value="">Select City</option>
-        <% CS.countries.each do |key, value| %>
-        <option value="<%= key %>"><%= value %></option>
-        <% end %>
+        
       </select>
 
 			</div>
       </div>
+
+      
+
+
+
+
 
 <div class="col">
 
@@ -194,4 +199,57 @@ $(function () {
 </div>
 </div>
 
-       
+
+ <!-- load states and cities based on the selected information -->
+  <script>
+  var country = document.getElementById("country");
+  var state = document.getElementById("state");
+
+
+  country.addEventListener("change", function(){
+        
+        var state = document.getElementById("state");
+
+        //loop through all returned cities for state
+        $.getJSON('/states/' + $(this).val(), function (data) {
+          
+          //clears any options in dropdown
+          while (state.firstChild) state.removeChild(state.firstChild);
+
+          //default value
+          state.options[0] = new Option("Select State");
+
+          //loop and add optoons
+          Object.keys(data).forEach(key=>{
+            state.options[state.options.length] = new Option(data[key], key);
+          });
+          
+        
+        });
+      });
+
+      state.addEventListener("change", function(){
+        
+        var city = document.getElementById("city");
+        var country = document.getElementById("country");
+
+        //loop through all returned cities for state
+        $.getJSON('/cities/' + $(this).val()+'/'+ country.options[country.options.selectedIndex].value, function (data) {
+          
+          //clears any options in dropdown
+          while (city.firstChild) city.removeChild(city.firstChild);
+
+          //default value
+          city.options[0] = new Option("Select City");
+
+          //loop and add optoons
+          for(var i = 0; i < data.length; i++)
+          {
+            
+            city.options[city.options.length] = new Option(data[i]);
+          }
+          
+        
+        });
+      });
+  </script>      
