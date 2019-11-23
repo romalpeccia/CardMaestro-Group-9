@@ -12,8 +12,6 @@ class CardsController < ApplicationController
         @sets = CardSet.all
     end
     def create
-        @cards = Card.all
-        @sets = CardSet.all
         if params[:commit] == 'Add to Collection'
 
             #Find the user
