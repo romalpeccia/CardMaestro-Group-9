@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_22_183221) do
+ActiveRecord::Schema.define(version: 2019_11_23_014455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,21 @@ ActiveRecord::Schema.define(version: 2019_11_22_183221) do
     t.bigint "card_id", null: false
     t.index ["card_id"], name: "index_card_neededs_on_card_id"
     t.index ["user_id"], name: "index_card_neededs_on_user_id"
+  end
+
+  create_table "card_offers", force: :cascade do |t|
+    t.string "card_name"
+    t.float "value"
+    t.string "quality"
+    t.boolean "foil"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "sender_cards_id"
+    t.bigint "reciever_cards_id"
+    t.bigint "card_id", null: false
+    t.index ["card_id"], name: "index_card_offers_on_card_id"
+    t.index ["reciever_cards_id"], name: "index_card_offers_on_reciever_cards_id"
+    t.index ["sender_cards_id"], name: "index_card_offers_on_sender_cards_id"
   end
 
   create_table "card_owneds", force: :cascade do |t|
@@ -115,6 +130,9 @@ ActiveRecord::Schema.define(version: 2019_11_22_183221) do
 
   add_foreign_key "card_neededs", "cards"
   add_foreign_key "card_neededs", "users"
+  add_foreign_key "card_offers", "cards"
+  add_foreign_key "card_offers", "trades", column: "reciever_cards_id"
+  add_foreign_key "card_offers", "trades", column: "sender_cards_id"
   add_foreign_key "card_owneds", "cards"
   add_foreign_key "card_owneds", "users"
   add_foreign_key "cards", "card_sets"

@@ -40,45 +40,78 @@ class TradesController < ApplicationController
       reciever = User.find_by(id: params[:reciever_id])
       sender_value = 0
       reciever_value = 0
-      sender_cards = ""
-      reciever_cards = ""
+
+      trade = Trade.new(status: "Pending")
+      
       params.each do |key, value|
           if key.include? "card_owned" 
             card = CardOwned.find_by(id: value)
-            sender_value = sender_value + card.value
+            if card.value != nil
+              sender_value = sender_value + card.value
+            end
+            
             #save card to list of sender_cards
-            sender_cards = sender_cards + card.card.id.to_s + ","
+            card_offer = CardOffer.new
+            card_offer.card_name = card.card_name
+            card_offer.quality = card.quality
+            card_offer.value = card.value
+            card_offer.foil = card.foil
+            card_offer.card = card.card
+
+            card.card.card_offer << card_offer
+          
+            trade.sender_cards << card_offer
 
           elsif key.include? "card_needed"
             card = CardNeeded.find_by(id: value)
-            reciever_value = reciever_value + card.value
+            if card.value != nil
+              reciever_value = reciever_value + card.value
+            end
+
             #save card to list of reciever_cards
-            reciever_cards = reciever_cards + card.card.id.to_s + ","
+            card_offer = CardOffer.new
+            card_offer.card_name = card.card_name
+            card_offer.quality = card.quality
+            card_offer.value = card.value
+            card_offer.foil = card.foil
+            card_offer.card = card.card
+
+            card.card.card_offer << card_offer
+          
+            
+    
+            trade.reciever_cards << card_offer
+
           end
       end
 
       #saving the associations and trade object
-      trade = Trade.new(sender_cards: sender_cards , reciever_cards: reciever_cards , sender_value: sender_value, reciever_value: reciever_value, status: "Pending")
+
+      trade.sender_value = sender_value
+      trade.reciever_value = reciever_value
       trade.sender = sender
       trade.reciever = reciever
-      
+
       sender.sent_trades << trade 
       reciever.recieved_trades << trade
 
-      trade.save
-      #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
 
       
+      trade.save
+      flash[:notice] = trade
+      flash[:alert] = trade.errors
 
-      render 'show'
+      redirect_to trade_path(current_user.id)
   end
 
   def show
+      
       @pending_sent_trades = Trade.where(sender_id: current_user.id, status: "Pending")
       @accepted_sent_trades = Trade.where(sender_id: current_user.id, status: "Accepted")
       @completed_sent_trades = Trade.where(sender_id: current_user.id, status: "Completed")
       @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
       @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
       @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
+      #flash[:notice] = @pending_sent_trades.ids
   end
 end
