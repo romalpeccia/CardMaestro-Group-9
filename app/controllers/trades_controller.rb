@@ -40,8 +40,9 @@ class TradesController < ApplicationController
       reciever = User.find_by(id: params[:reciever_id])
       sender_value = 0
       reciever_value = 0
-      sender_cards = []
-      reciever_cards = []
+
+      trade = Trade.new(status: "Pending")
+      
       params.each do |key, value|
           if key.include? "card_owned" 
             card = CardOwned.find_by(id: value)
@@ -55,12 +56,10 @@ class TradesController < ApplicationController
             card_offer.quality = card.quality
             card_offer.value = card.value
             card_offer.foil = card.foil
-
           
 
 
-
-            sender_cards << card_offer
+            trade.sender_cards << card_offer
 
           elsif key.include? "card_needed"
             card = CardNeeded.find_by(id: value)
@@ -74,27 +73,28 @@ class TradesController < ApplicationController
             card_offer.quality = card.quality
             card_offer.value = card.value
             card_offer.foil = card.foil
+          
 
-
-            reciever_cards << card_offer
+            trade.reciever_cards << card_offer
 
           end
       end
 
       #saving the associations and trade object
-      trade = Trade.new(sender_value: sender_value, reciever_value: reciever_value, status: "Pending")
+
+      trade.sender_value = sender_value
+      trade.reciever_value = reciever_value
       trade.sender = sender
       trade.reciever = reciever
 
-      trade.sender_cards = sender_cards
-      trade.reciever_cards = reciever_cards
-      
       sender.sent_trades << trade 
       reciever.recieved_trades << trade
 
-      
+
 
       trade.save
+
+
       #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
 
       
