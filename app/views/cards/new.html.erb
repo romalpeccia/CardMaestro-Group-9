@@ -12,11 +12,13 @@
           <%= form.hidden_field :user, value: current_user.email %>
           <p>
             <%= form.label :set, "Set" %><br>
-            <%= form.select(:set, @sets.collect { |set| [set.code] },  :class=>"js-searchable") %>
+            <%= form.select(:set, [['Select A Set', nil],],  :class=>"js-searchable") %>
           </p>
           <p>
             <%= form.label :card_name %><br>
-            <%= form.text_field :card_name %>
+            <%= form.select(:card_name, [['Select A Card', nil],],  :class=>"js-searchable") %>
+
+            <!--<%= form.text_field :card_name %> -->
           </p>
 
           <p>
@@ -55,3 +57,49 @@
     </div>
   </div>
 </div>
+
+
+
+<script>
+  var set = document.getElementById("card_set");
+  var card_field = document.getElementById("card_card_name");
+
+  //initialize the set
+  var allSets = <%=@sets.to_json.html_safe %>
+
+  //loop and add options to the set
+  for(var i = 0; i < allSets.length; i++)
+  {
+    set.options[set.options.length] = new Option(allSets[i].code);
+  }  
+
+  //add change listener to the set
+  set.addEventListener("change", function(){
+        
+        //grab selected set value
+        var set_value = set.options[set.options.selectedIndex].value;
+        var allCards = <%=@cards.to_json.html_safe %>
+
+        //filter cards based on set
+        var filteredCards = allCards.filter(function (el) {
+          return el.set == set_value;
+                
+        });
+
+
+        //clears any options in dropdown
+          while (card_field.firstChild) card_field.removeChild(card_field.firstChild);
+
+          //default value
+          card_field.options[0] = new Option("Select A Card");
+
+          //loop and add options to the card dropdown
+          for(var i = 0; i < filteredCards.length; i++)
+          {
+            
+            card_field.options[card_field.options.length] = new Option(filteredCards[i].name);
+          }  
+        
+      });
+
+  </script>      
