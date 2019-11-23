@@ -9,8 +9,6 @@ $(function () {
 <p>
 <div class="container-fluid">
     <div class="row-fluid pt-2">
-
-    
     <form id = "trade_form" action = <%= trades_path %> method = "post" >  
     <input type="hidden" id="reciever_id" name="reciever_id" value= <%= @target_user.id %>>
     <input type="hidden" id="sender_id" name="sender_id" value= <%= current_user.id %>>

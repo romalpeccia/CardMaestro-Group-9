@@ -107,11 +107,20 @@ class TradesController < ApplicationController
   def show
       
       @pending_sent_trades = Trade.where(sender_id: current_user.id, status: "Pending")
+      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
+
+
       @accepted_sent_trades = Trade.where(sender_id: current_user.id, status: "Accepted")
       @completed_sent_trades = Trade.where(sender_id: current_user.id, status: "Completed")
-      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
+
       @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
       @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
       #flash[:notice] = @pending_sent_trades.ids
   end
+
+  def update
+    flash[:notice] = "hello"
+    redirect_to trade_path(current_user.id)
+  end
+
 end
