@@ -56,9 +56,10 @@ class TradesController < ApplicationController
             card_offer.quality = card.quality
             card_offer.value = card.value
             card_offer.foil = card.foil
+            card_offer.card = card.card
+
+            card.card.card_offer << card_offer
           
-            
- 
             trade.sender_cards << card_offer
 
           elsif key.include? "card_needed"
@@ -73,6 +74,9 @@ class TradesController < ApplicationController
             card_offer.quality = card.quality
             card_offer.value = card.value
             card_offer.foil = card.foil
+            card_offer.card = card.card
+
+            card.card.card_offer << card_offer
           
             
     

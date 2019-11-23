@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_23_003131) do
+ActiveRecord::Schema.define(version: 2019_11_23_014455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 2019_11_23_003131) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "sender_cards_id"
     t.bigint "reciever_cards_id"
+    t.bigint "card_id", null: false
+    t.index ["card_id"], name: "index_card_offers_on_card_id"
     t.index ["reciever_cards_id"], name: "index_card_offers_on_reciever_cards_id"
     t.index ["sender_cards_id"], name: "index_card_offers_on_sender_cards_id"
   end
@@ -128,6 +130,7 @@ ActiveRecord::Schema.define(version: 2019_11_23_003131) do
 
   add_foreign_key "card_neededs", "cards"
   add_foreign_key "card_neededs", "users"
+  add_foreign_key "card_offers", "cards"
   add_foreign_key "card_offers", "trades", column: "reciever_cards_id"
   add_foreign_key "card_offers", "trades", column: "sender_cards_id"
   add_foreign_key "card_owneds", "cards"
