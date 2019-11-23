@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center pt-4">
+    <div class="col-sm-6 col-sm-offset-3">
+      <h1> Edit card</h1>
+      <%= form_with scope: :collection, method: "put", url: collection_path, local: true do |form| %>  
+          <%= form.hidden_field :user, value: current_user.email %>
+          <p>
+            <%= form.label :set, "Set" %><br>
+            <%= form.select(:set, @sets.collect { |set| [set.code] },  :class=>"js-searchable", selected:@target_set) %>
+          </p>
+          <p>
+            <%= form.label :card_name %><br>
+            <%= form.text_field :card_name, value:@target_card.card_name %>
+          </p>
+
+          <p>
+          <%= form.check_box(:foil, checked:@target_card.foil) %>
+          <%= form.label(:foil, "Foil") %>
+          </p>
+          <p>
+          <%= form.radio_button(:quality, "M", checked:@target_card.quality=='M') %>
+          <%= form.label(:quality, "Mint") %>
+          <%= form.radio_button(:quality, "NM", checked:@target_card.quality=='NM') %>
+          <%= form.label(:quality, "Near-Mint") %>
+          <%= form.radio_button(:quality, "LP", checked:@target_card.quality=='LP') %>
+          <%= form.label(:quality, "Light-Play") %>
+          <%= form.radio_button(:quality, "HP", checked:@target_card.quality=='HP') %>
+          <%= form.label(:quality, "Heavy-Play") %>
+          </p>
+          
+          <p>
+          <%= form.label :value %><br>
+          <%= form.text_area :value, value:@target_card.value %>
+          </p>
+          <p>
+            <%= form.submit 'Submit change to ' + @target_type %>
+          </p>
+        
+        <% end %>
+    </div>
+  </div>
+</div>

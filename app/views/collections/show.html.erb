@@ -38,7 +38,7 @@ $(function () {
 </style>
 
 
-<% if flash.empty? %>
+<% if !@collection_error %>
   <% if @is_self %>
   <%= link_to "Add card to collection", new_card_path %>
   <% else %>
@@ -57,6 +57,7 @@ $(function () {
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
+
       </tr>
     </thead>
 
@@ -75,6 +76,7 @@ $(function () {
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
           <td><%= card.foil %></td>
+          <td><%= link_to "edit", edit_collection_path(card_id: card.id, edit_type: "collection") %></td>
         </tr>
       <% end %>
     </tbody>

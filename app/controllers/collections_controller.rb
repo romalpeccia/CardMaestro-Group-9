@@ -30,4 +30,15 @@ class CollectionsController < ApplicationController
       @collection_error = true
     end
   end
+  def edit
+    @target_type = params[:edit_type]
+    @sets = CardSet.all
+    @target_card = CardOwned.find_by(id: params[:card_id])
+    @target_set = @target_card.card.set
+  end
+  def update
+    flash[:notice] ='Changes are saved'
+    show
+    render 'show'
+  end
 end
