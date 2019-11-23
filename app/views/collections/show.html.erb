@@ -57,8 +57,9 @@ $(function () {
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
+        <% if @is_self %>
         <th data-field="operation" data-sortable="true">operation</th>
-
+        <% end %>
       </tr>
     </thead>
 
@@ -77,11 +78,13 @@ $(function () {
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
           <td><%= card.foil %></td>
+          <% if @is_self %>
           <td>
           <%= link_to "edit", edit_collection_path(card_id: card.id, edit_type: "collection") %>
              /   
           <%= link_to 'delete', collection_path(card_id: card.id, edit_type: "collection"), :method => :delete %>
           </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
@@ -97,7 +100,9 @@ $(function () {
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
+        <% if @is_self %>
         <th data-field="operation" data-sortable="true">operation</th>
+        <% end %>
       </tr>
     </thead>
 
@@ -115,11 +120,13 @@ $(function () {
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
           <td><%= card.foil %></td>
+          <% if @is_self %>
           <td>
           <%= link_to "edit", edit_collection_path(card_id: card.id, edit_type: "wishlist") %>
              /   
           <%= link_to 'delete', collection_path(card_id: card.id, edit_type: "wishlist"), :method => :delete %>
           </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
