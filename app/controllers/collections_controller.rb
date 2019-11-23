@@ -41,4 +41,9 @@ class CollectionsController < ApplicationController
     show
     render 'show'
   end
+  def destroy
+    flash[:notice] ='Card deleted from ' + params[:edit_type]
+    show
+    render 'show'
+  end
 end
