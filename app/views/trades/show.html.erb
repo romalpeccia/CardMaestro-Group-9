@@ -1,3 +1,10 @@
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+
 <h1><%=fa_icon "users"%> My Trades  </h1>
 <div class = "container-fluid" id = "my_trades">
 <div class = "row">
@@ -30,6 +37,24 @@
                     <th data-field="foil" data-sortable="true">Foil</th>
                   </tr>
                 </thead>
+                <tbody>
+                <% trade.sender_cards.each do |card| %>
+                  <tr>
+                    <td>
+                    <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                    <!--
+                    <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+                    <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+                    -->
+                    </td>
+          
+                    <td><%= card.card.card_set.name %></td>
+                    <td><%= card.value %></td>
+                    <td><%= card.quality %></td>
+                    <td><%= card.foil %></td>
+                  </tr>
+                <% end %>
+                </tbody>
                 </table>
                 <h5> <%=fa_icon "clone"%> Cards You Will Recieve</h5>
                 <table class=" table table-striped" id="trade_recieve"data-sort-name="name" data-sort-order="desc">
@@ -41,6 +66,24 @@
                     <th data-field="quality" data-sortable="true">Card Quality</th>
                     <th data-field="foil" data-sortable="true">Foil</th>
                   </tr>
+                  <tbody>
+                  <% trade.reciever_cards.each do |card| %>
+                    <tr>
+                      <td>
+                      <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                      <!--
+                      <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
+                      <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
+                      -->
+                      </td>
+            
+                      <td><%= card.card.card_set.name %></td>
+                      <td><%= card.value %></td>
+                      <td><%= card.quality %></td>
+                      <td><%= card.foil %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
                 </thead>
                 </table>
             </div>
