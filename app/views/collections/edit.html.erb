@@ -2,7 +2,7 @@
   <div class="row justify-content-center align-items-center pt-4">
     <div class="col-sm-6 col-sm-offset-3">
       <h1> Edit card</h1>
-      <%= form_with scope: :collection, method: "put", url: collection_path, local: true do |form| %>  
+      <%= form_with scope: :card, method: "put", url: collection_path(card_id:@target_card.id), local: true do |form| %>  
           <%= form.hidden_field :user, value: current_user.email %>
           <p>
             <%= form.label :set, "Set" %><br>

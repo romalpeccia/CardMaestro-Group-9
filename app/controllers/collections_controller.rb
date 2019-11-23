@@ -30,20 +30,41 @@ class CollectionsController < ApplicationController
       @collection_error = true
     end
   end
+
   def edit
     @target_type = params[:edit_type]
     @sets = CardSet.all
     @target_card = CardOwned.find_by(id: params[:card_id])
     @target_set = @target_card.card.set
   end
+
   def update
-    flash[:notice] ='Changes are saved'
-    show
-    render 'show'
+    if params[:commit] == 'Submit change to collection'
+      @target_card = CardOwned.find_by(id: params[:card_id])
+    else
+      @target_card = CardNeeded.find_by(id: params[:card_id])
+    end
+    card_name = params[:card][:card_name]
+    value = params[:card][:value]
+    quality = params[:card][:quality]
+    foil = params[:card][:foil]
+    set = params[:card][:set]
+    if @target_card.update(card_name: card_name,value: value, quality: quality, foil: foil)
+      flash[:notice] ='Changes are saved'
+    else
+      flash[:alert] ='Changes are not saved'
+    end
+    redirect_to collection_path
   end
+
   def destroy
+    if params[:edit_type] == 'collection'
+      @target_card = CardOwned.find_by(id: params[:card_id])
+    else
+      @target_card = CardNeeded.find_by(id: params[:card_id])
+    end
+    @target_card.destroy
     flash[:notice] ='Card deleted from ' + params[:edit_type]
-    show
-    render 'show'
+    redirect_to collection_path
   end
 end
