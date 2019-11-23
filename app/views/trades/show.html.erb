@@ -23,7 +23,7 @@ $(function () {
             <button type="button" class="btn btn-primary my-2"
             data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> Trade sent to <%= trade.reciever.email %>
             </button>
-            
+            <p> View <%= link_to trade.reciever.email, collection_path(trade.reciever.id) %></p>
             <div class = "collapse" id = <%="trade#{trade.id}"%> >
             <div>Created on <%= trade.created_at %> </div>
                 <h5> <%=fa_icon "clone"%> Cards You Offered</h5>

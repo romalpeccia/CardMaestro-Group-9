@@ -57,8 +57,8 @@ class TradesController < ApplicationController
             card_offer.value = card.value
             card_offer.foil = card.foil
           
-
-
+            
+ 
             trade.sender_cards << card_offer
 
           elsif key.include? "card_needed"
@@ -74,7 +74,8 @@ class TradesController < ApplicationController
             card_offer.value = card.value
             card_offer.foil = card.foil
           
-
+            
+    
             trade.reciever_cards << card_offer
 
           end
@@ -91,13 +92,10 @@ class TradesController < ApplicationController
       reciever.recieved_trades << trade
 
 
-
-      trade.save
-
-
-      #save sender, reciever, sender_cards, reciever_cards, sender_value, reciever_value to trade table
-
       
+      trade.save
+      flash[:notice] = trade
+      flash[:alert] = trade.errors
 
       redirect_to trade_path(current_user.id)
   end
@@ -110,6 +108,6 @@ class TradesController < ApplicationController
       @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
       @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
       @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
-      flash[:notice] = @pending_sent_trades.ids
+      #flash[:notice] = @pending_sent_trades.ids
   end
 end
