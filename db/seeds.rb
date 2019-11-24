@@ -24,10 +24,16 @@ end
 cards = MTG::Card.all
 cards.each do |card|
     if card
+        puts card.name
         if (card.image_url)
             card_set = CardSet.find_by(code: card.set)
-            card_set.card.create(name: card.name, set: card.set, image_url: card.image_url)
-            Card.create(name: card.name, set: card.set, image_url: card.image_url)
+
+            if(!card_set.card.find_by(name: card.name))
+                card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+
+            end
+            
         end
     end
     '''

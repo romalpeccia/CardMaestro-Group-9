@@ -7,9 +7,9 @@ class CardsController < ApplicationController
         @sets = CardSet.all
         render 'new'
     end
-    def new
-        @cards = Card.all 
+    def new 
         @sets = CardSet.all
+        @cards = Card.all 
     end
     def create
         if params[:commit] == 'Add to Collection'
@@ -59,7 +59,11 @@ class CardsController < ApplicationController
                 flash[:alert] = "card not in master card db"
             end
         end
-        render 'new'
+
+        flash[:notice] = @Cards
+        flash[:notice] = @Sets
+
+        redirect_to new_card_path
     end
 private
     def card_params
