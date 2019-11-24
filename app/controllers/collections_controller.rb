@@ -34,8 +34,13 @@ class CollectionsController < ApplicationController
   def edit
     @target_type = params[:edit_type]
     @sets = CardSet.all
-    @target_card = CardOwned.find_by(id: params[:card_id])
-    @target_set = @target_card.card.set
+    if @target_type == "collection"
+      @target_card = CardOwned.find_by(id: params[:card_id])
+      @target_set = @target_card.card.set
+    elsif @target_type == "wishlist"
+      @target_card = CardNeeded.find_by(id: params[:card_id])
+      @target_set = @target_card.card.set
+    end 
   end
 
   def update
