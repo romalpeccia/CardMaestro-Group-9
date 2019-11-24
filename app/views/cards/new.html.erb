@@ -6,53 +6,68 @@
 
 <div class="container-fluid">
   <div class="row justify-content-center align-items-center pt-4">
-    <div class="col-sm-6 col-sm-offset-3">
-      <h1> Add a card to your collection or wishlist</h1>
-      <%= form_with scope: :card, url: cards_path, local: true do |form| %>  
+    <div class="col-sm-4 col-sm-offset-0">
+    <div class="row-fluid">
+      <h1><%=fa_icon "th-large"%> Add Card to Collections</h1>
+    </div>
+      <%= bootstrap_form_for :card, 
+                       :as => :card, 
+                       :url => cards_path do |form| %>
           <%= form.hidden_field :user, value: current_user.email %>
-          <div class="row-fluid my-2">
-            <%= form.label :set, "Set" %><br>
+          <div class="row pt-3 ptb-2 mx-4">
             <%= form.select(:set, [['Select A Set', nil],],  :class=>"js-searchable") %>
           </div>
-         <div class="row-fluid my-2">
-            <%= form.label :card_name, "Card Name" %><br>
+         <div class="row pb-2 mx-4">
             <%= form.select(:card_name, [['Select A Card', nil],],  :class=>"js-searchable") %>
           </div>
 
-          <div class="row-fluid my-2">
+          <div class="row pb-3 mx-4">
           <%= form.check_box(:foil) %>
-          <%= form.label(:foil, "Foil") %>
          </div>
-          <div class="row-fluid my-2">
-          <%= form.radio_button(:quality, "Mint") %>
-          <%= form.label(:quality, "Mint") %>
-          <%= form.radio_button(:quality, "Near-Mint") %>
-          <%= form.label(:quality, "Near-Mint") %>
-          <%= form.radio_button(:quality, "Light-Play") %>
-          <%= form.label(:quality, "Light-Play") %>
-          <%= form.radio_button(:quality, "Heavy-Play") %>
-          <%= form.label(:quality, "Heavy-Play") %>
+          <div class="row pb-3 mx-4">
+          <%= form.radio_button(:quality,0, label: "Mint", inline: true) %>
+        
+          <%= form.radio_button(:quality,1, label: "Near-Mint", inline: true) %>
+          
+          <%= form.radio_button(:quality,2, label:"Light-Play", inline: true) %>
+          
+          <%= form.radio_button(:quality,3, label:"Heavy-Play", inline: true) %>
+          
          </div>
           
-          <div class="row-fluid my-2">
-          <%= form.label :value %><br>
+          <div class="row pb-2 mx-4">
           <%= form.text_area :value %>
           </div>
-          <div class="row-fluid my-2">
-            <%= form.submit 'Add to Collection' %>
-            <%= form.submit 'Add to Wishlist'%>
+          <div class="row-fluid mt-2 mx-4 mb-5">
+
+          <%= form.submit "Add to Collection", class: "btn btn-primary" %>
+
+          <%= form.submit "Add to Wishlist", class: "btn btn-primary" %>
+
           </div>
         
         <% end %>
 
      
     </div>
+    <div class="col-sm-2 pt-20">
+    
+    <img src="#" id="cardImg"  class="img-fluid" alt="Responsive image">
+    
+
+    </div>
   </div>
 </div>
 
 
+<input type="hidden" name="hiddenelement" id="hiddenelement" />
+
 
 <script>
+
+  //set empty placeholder image
+  document.getElementById("cardImg").src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        
   var set = document.getElementById("card_set");
   var card_field = document.getElementById("card_card_name");
 
@@ -62,7 +77,7 @@
   //loop and add options to the set
   for(var i = 0; i < allSets.length; i++)
   {
-    set.options[set.options.length] = new Option(allSets[i].code);
+    set.options[set.options.length] = new Option(allSets[i].name);
   }  
 
   //add change listener to the set
@@ -85,13 +100,48 @@
           //default value
           card_field.options[0] = new Option("Select A Card");
 
+          var element1 = document.getElementById("hiddenelement");
+          
           //loop and add options to the card dropdown
           for(var i = 0; i < filteredCards.length; i++)
           {
             
             card_field.options[card_field.options.length] = new Option(filteredCards[i].name);
-          }  
+            element1.value = element1.value + filteredCards[i].name + "*" + filteredCards[i].image_url + ",";
+            
+          } 
+
+
+          //set empty placeholder image
+          document.getElementById("cardImg").src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         
       });
+
+  //add change listener to the card name
+  card_field.addEventListener("change", function(){
+
+      //dynamically change card image based on card and set selected
+      var cardImg = document.getElementById("cardImg");
+      var set_value = set.options[set.options.selectedIndex].value;
+      var cardName = card_field.options[card_field.options.selectedIndex].value;
+
+      var cardImgHidden = document.getElementById("hiddenelement").value;
+      var pairs = cardImgHidden.split(",");
+
+      for(var i=0; i < pairs.length; i++){
+        var entry = pairs[i].split("*");
+
+        if(entry[0] ===cardName){
+          cardImg.src = entry[1];
+
+        }
+
+
+      }
+
+     
+
+
+  });
 
   </script>      
