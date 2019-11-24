@@ -18,13 +18,13 @@
           <%= form.label(:foil, "Foil") %>
           </p>
           <p>
-          <%= form.radio_button(:quality, "M", checked:@target_card.quality=='M') %>
+          <%= form.radio_button(:quality, "Mint", checked:@target_card.quality=='Mint') %>
           <%= form.label(:quality, "Mint") %>
-          <%= form.radio_button(:quality, "NM", checked:@target_card.quality=='NM') %>
+          <%= form.radio_button(:quality, "Near-Mint", checked:@target_card.quality=='Near-Mint') %>
           <%= form.label(:quality, "Near-Mint") %>
-          <%= form.radio_button(:quality, "LP", checked:@target_card.quality=='LP') %>
+          <%= form.radio_button(:quality, "Light-Play", checked:@target_card.quality=='Light-Play') %>
           <%= form.label(:quality, "Light-Play") %>
-          <%= form.radio_button(:quality, "HP", checked:@target_card.quality=='HP') %>
+          <%= form.radio_button(:quality, "Heavy-Play", checked:@target_card.quality=='Heavy-Play') %>
           <%= form.label(:quality, "Heavy-Play") %>
           </p>
           
