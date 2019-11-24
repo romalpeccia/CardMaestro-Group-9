@@ -75,8 +75,8 @@ $(function () {
 			<div class="form-group pt-1">
 				<select class="filter form-control">
 					<option value="">Select Foil</option>
-					<option value="">True</option>
-          <option value="">False</option>
+					<option value="">true</option>
+          <option value="">false</option>
 				</select>
 			</div>
       </div>
@@ -145,10 +145,33 @@ $(function () {
 
 
 <div class="col">
-      <div class="group-btn float-right mb-2">
-  <button class="btn btn-outline-danger mr-2 " id="delete">Reset</button>
-  <button class="btn btn-info glyphicon glyphicon-search ml-2">Advanced Search</button>
-</div>
+
+  <div class="btn-group">
+
+          <%= link_to "Reset", 
+             {:controller => :searchpage, :action => :search, 
+             :search => @search_term
+              },
+             :class => "btn btn-success align-center" %>
+        </div>
+
+          <%= link_to "Advanced Search", 
+             {:controller => :searchpage, :action => :search, 
+             :search => @search_term,
+             :mode => "Advanced",
+             :foil => "true",
+             :condition => "Heavy-Play",
+             :set => "10E"
+              },
+             :class => "btn btn-success align-center" %>
+        </div>
+
+
+
+  <%# <div class="group-btn float-right mb-2">
+    <button class="btn btn-outline-danger mr-2 " id="delete">Reset</button>
+    <button class="btn btn-info glyphicon glyphicon-search ml-2">Advanced Search</button>
+  </div> %>
 </div>
 
 </div>
