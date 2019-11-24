@@ -85,31 +85,36 @@
         
         //grab selected set value
         var set_value = set.options[set.options.selectedIndex].value;
-        var allCards = <%=@cards.to_json.html_safe %>
 
-        //filter cards based on set
-        var filteredCards = allCards.filter(function (el) {
-          return el.set == set_value;
-                
-        });
+        $.ajax({
+              type: "GET",
+              url: "/cards/"+set_value,
+              datatype:"html", // check more option
+              success: function(data) {
+                       
+                    //clears any options in dropdown
+                    while (card_field.firstChild) card_field.removeChild(card_field.firstChild);
+
+                    //default value
+                    card_field.options[0] = new Option("Select A Card");
+
+                    var element1 = document.getElementById("hiddenelement");
+                    
+                    //loop and add options to the card dropdown
+                    for(var i = 0; i < data.length; i++)
+                    {
+                      
+                      card_field.options[card_field.options.length] = new Option(data[i].name);
+                      element1.value = element1.value + data[i].name + "*" + data[i].image_url + ",";
+                      
+                    } 
+
+                       },
+              async:   true
+            });    
 
 
-        //clears any options in dropdown
-          while (card_field.firstChild) card_field.removeChild(card_field.firstChild);
-
-          //default value
-          card_field.options[0] = new Option("Select A Card");
-
-          var element1 = document.getElementById("hiddenelement");
-          
-          //loop and add options to the card dropdown
-          for(var i = 0; i < filteredCards.length; i++)
-          {
-            
-            card_field.options[card_field.options.length] = new Option(filteredCards[i].name);
-            element1.value = element1.value + filteredCards[i].name + "*" + filteredCards[i].image_url + ",";
-            
-          } 
+        
 
 
           //set empty placeholder image

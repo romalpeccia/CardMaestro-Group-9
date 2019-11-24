@@ -3,13 +3,24 @@
 class CardsController < ApplicationController 
 
     def index
-        @cards = Card.all
         @sets = CardSet.all
+
         render 'new'
+        
     end
+
+    def show
+        #this method returns all the cards associated with a set
+        
+        set = params[:id]
+        card_list = Card.where(set: set)
+
+        render json: card_list
+
+    end
+
     def new 
         @sets = CardSet.all
-        @cards = Card.all 
     end
     def create
         if params[:commit] == 'Add to Collection'
@@ -60,7 +71,6 @@ class CardsController < ApplicationController
             end
         end
 
-        flash[:notice] = @Cards
         flash[:notice] = @Sets
 
         redirect_to new_card_path
