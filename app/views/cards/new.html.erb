@@ -1,8 +1,3 @@
-<!-- TODO add autocomplete on card field, dropdown for set based on card selected -->
-
-
-
-
 
 <div class="container-fluid">
   <div class="row justify-content-center align-items-center pt-4">
@@ -25,13 +20,13 @@
           <%= form.check_box(:foil) %>
          </div>
           <div class="row pb-3 mx-4">
-          <%= form.radio_button(:quality,0, label: "Mint", inline: true) %>
+          <%= form.radio_button(:quality,"Mint", label: "Mint", inline: true) %>
         
-          <%= form.radio_button(:quality,1, label: "Near-Mint", inline: true) %>
+          <%= form.radio_button(:quality,"Near-Mint", label: "Near-Mint", inline: true) %>
           
-          <%= form.radio_button(:quality,2, label:"Light-Play", inline: true) %>
+          <%= form.radio_button(:quality,"Light-Play", label:"Light-Play", inline: true) %>
           
-          <%= form.radio_button(:quality,3, label:"Heavy-Play", inline: true) %>
+          <%= form.radio_button(:quality,"Heavy-Play", label:"Heavy-Play", inline: true) %>
           
          </div>
           
