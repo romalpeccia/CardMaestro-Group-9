@@ -41,7 +41,7 @@ class TradesController < ApplicationController
       sender_value = 0
       reciever_value = 0
 
-      trade = Trade.new(status: "Pending")
+      trade = Trade.new(sender_status: "Accepted", reciever_status: "Pending")
       
       params.each do |key, value|
           if key.include? "card_owned" 
@@ -78,8 +78,6 @@ class TradesController < ApplicationController
 
             card.card.card_offer << card_offer
           
-            
-    
             trade.reciever_cards << card_offer
 
           end
@@ -106,21 +104,57 @@ class TradesController < ApplicationController
 
   def show
       
-      @pending_sent_trades = Trade.where(sender_id: current_user.id, status: "Pending")
-      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Pending")
+      @pending_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Pending" )
+      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Pending")
 
 
-      @accepted_sent_trades = Trade.where(sender_id: current_user.id, status: "Accepted")
-      @completed_sent_trades = Trade.where(sender_id: current_user.id, status: "Completed")
+      
+      @accepted_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Accepted")
+      @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Accepted")
 
-      @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Accepted")
-      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, status: "Completed")
+
+
+      @completed_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Completed")
+      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Completed")
       #flash[:notice] = @pending_sent_trades.ids
   end
 
   def update
-    flash[:notice] = "hello"
+    flash[:notice] = params
+    trade = Trade.find_by(id: params[:id])
+    #figure out whether the current user is the sender or the reciever of the trade
+    if (current_user.id == trade.reciever.id)
+      curr_user_type = "R"
+      other_user = User.find_by(id: trade.sender.id)
+    elsif (current_user.id == trade.sender.id)
+      curr_user_type = "S"
+      other_user = User.find_by(id: trade.reciever.id)
+    else
+        flash[:alert] = "user somehow tried to update a trade that wasn't theirs"
+        redirect_to trade_path(current_user.id)
+    end
+
+    #deal with the types of possible updates 
+    if params[:commit] == "pending_accepted"
+        update_helper(trade, curr_user_type, "Accepted")
+        flash[:notice] = "Trade with #{other_user.email} accepted!"
+    elsif params[:commit] == "pending_declined"
+        update_helper(trade, curr_user_type, "Declined")
+        flash[:alert] = "Trade with #{other_user.email} declined!"
+    else
+      flash[:alert] = "error updating trade"
+    end
+    
     redirect_to trade_path(current_user.id)
   end
 
+  
+end
+
+def update_helper(t, c, s) #trade, current_user_type, status - wasnt sure how scoping works in ruby, playing it safe
+  if c == "R"
+    t.update(reciever_status: s)
+  elsif c == "S"
+    t.update(sender_status: s)
+  end
 end

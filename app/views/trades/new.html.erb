@@ -1,4 +1,4 @@
-<p>Trade with user <%= @target_user.email %></p>
+
 
 
 <script>
@@ -6,16 +6,16 @@ $(function () {
   $('[data-toggle="popover"]').popover()
 })
 </script>
-<p>
+
+<p>Trading with user <%= link_to @target_user.email, collection_path(@target_user.id) %></p>
 <div class="container-fluid">
     <div class="row-fluid pt-2">
     <form id = "trade_form" action = <%= trades_path %> method = "post" >  
     <input type="hidden" id="reciever_id" name="reciever_id" value= <%= @target_user.id %>>
     <input type="hidden" id="sender_id" name="sender_id" value= <%= current_user.id %>>
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-    <button form = "trade_form"  type="submit" class="btn btn-primary">Submit</button>
 
-    <h3>Collection that I need</h3>
+    <h3><%= @target_user.email %>'s Cards That You Need</h3>
     <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
         <tr>
@@ -37,7 +37,13 @@ $(function () {
             <td><%= card.card.card_set.name %></td>
             <td><%= card.value %></td>
             <td><%= card.quality %></td>
-            <td><%= card.foil %></td>
+            <td>
+                <% if card.foil == true %>
+                    <%=fa_icon "check" %>
+                <% else %>
+                    <%=fa_icon "times" %>  
+                <% end %> 
+            </td>
             <td>  <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_owned_check#{card.id}" %>>
             </td>
         </tr>
@@ -46,7 +52,7 @@ $(function () {
     </table>
     </p>
     <p>
-    <h3>Wishlist that I have</h3>
+    <h3><%= @target_user.email %>'s Wishlist That You have</h3>
     <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
         <tr>
@@ -68,7 +74,13 @@ $(function () {
             <td><%= card.card.card_set.name %></td>
             <td><%= card.value %></td>
             <td><%= card.quality %></td>
-            <td><%= card.foil %></td>
+            <td>
+            <% if card.foil == true %>
+                <%=fa_icon "check" %>
+            <% else %>
+                <%=fa_icon "times" %>  
+            <% end %> 
+            </td>
             <td>  <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_needed_check#{card.id}"%>>
             </td>
         </tr>
@@ -77,7 +89,24 @@ $(function () {
     </table>
     </p>
     
-
+    <div class = "row" id = "trade_form_fields">
+        
+        <div class="form-group col">
+            <label for="sender_value">Sender:</label>
+            <input type="number" class="form-control" id="sender_value" aria-describedby="sender_helper" placeholder="Enter amount">
+            <small id="sender_helper" class="form-text text-muted">Add Money to your side of the trade</small>
+            <small id="sender_helper2" class="form-text text-muted">(Leave blank if you are not sending money)</small>
+        </div>
+        <div class="form-group col">
+            <label for="reciever_value">Reciever:</label>
+            <input type="number" class="form-control" id="reciever_value" aria-describedby="reciever_helper" placeholder="Enter amount">
+            <small id="reciever_helper" class="form-text text-muted">Add amount of Money you want to recieve</small>
+            <small id="reciever_helper2" class="form-text text-muted">(Leave blank if you are not recieving money)</small>
+        </div>
+        <div class = "col">
+        <button form = "trade_form"  type="submit" class="btn btn-primary">Send Trade</button>
+        </div>
+    </div>
     </form>
     </div>
 </div>

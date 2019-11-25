@@ -111,7 +111,13 @@ $('[data-toggle="tooltip"]').tooltip();
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
-          <td><%= card.foil %></td>
+          <td>
+          <% if card.foil == true %>
+              <%=fa_icon "check" %>
+          <% else %>
+              <%=fa_icon "times" %>  
+          <% end %> 
+          </td>
           <% if @is_self %>
           <td>
             <div class="row">
@@ -178,7 +184,21 @@ $('[data-toggle="tooltip"]').tooltip();
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
-          <td><%= card.foil %></td>
+          <td>
+          <% if card.foil == true %>
+              <%=fa_icon "check" %>
+          <% else %>
+              <%=fa_icon "times" %>  
+          <% end %> 
+          </td>
+          <% if @is_self %>
+          <td>
+          <% if card.foil == true %>
+              <%=fa_icon "check" %>
+          <% else %>
+              <%=fa_icon "times" %>  
+          <% end %> 
+          </td>
           <% if @is_self %>
           <td>
             <div class="row">
