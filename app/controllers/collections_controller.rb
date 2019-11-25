@@ -44,7 +44,7 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    if params[:commit] == 'Save Changes'
+    if params[:commit] == 'Save changes to collection'
       @target_card = CardOwned.find_by(id: params[:card_id])
     else
       @target_card = CardNeeded.find_by(id: params[:card_id])
