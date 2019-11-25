@@ -18,12 +18,21 @@ Rails.application.routes.draw do
     get 'signup', to: 'devise/registrations#new'
   end
   
-  resources :conversations do
-    resources :messages
-  end
+  resources :conversations
+
 
   get 'welcome/index'
   get 'pages/info'
+
+  get 'about/index'
+  get 'terms/index'
+  get 'sitemap/index'
+  get 'faq/index'
+  get 'contact/index'
+  get 'privacy/index'
+
+
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root 'welcome#index'
 
