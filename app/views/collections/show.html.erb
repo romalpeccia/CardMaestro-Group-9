@@ -193,14 +193,6 @@ $('[data-toggle="tooltip"]').tooltip();
           </td>
           <% if @is_self %>
           <td>
-          <% if card.foil == true %>
-              <%=fa_icon "check" %>
-          <% else %>
-              <%=fa_icon "times" %>  
-          <% end %> 
-          </td>
-          <% if @is_self %>
-          <td>
             <div class="row">
                 <%= link_to edit_collection_path(card_id: card.id, edit_type: "wishlist"), :class => "btn btn-primary mx-3", title: 'Edit Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
                     <i class="fa fa-pencil"></i> 
