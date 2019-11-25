@@ -4,52 +4,73 @@
 <script>
 $(function () {
   $('[data-toggle="popover"]').popover()
-})
+});
+
+$('[data-toggle="tooltip"]').tooltip(); 
 </script>
 
 <style>
 
 
-#CollectionTable tr {
-  background-color: #ffff;
-}
+
 
 #CollectionTable th{
   background-color: #f1f1f1;
-}
-
-#CollectionTable tr:hover {
-  background-color: #f1f1f1;
-}
-
-#WishlistTable tr {
-  background-color: #ffff;
 }
 
 #WishlistTable th{
   background-color: #f1f1f1;
 }
 
-#WishlistTable tr:hover {
-  background-color: #f1f1f1;
+.v-divider{
+ margin-left:5px;
+ margin-right:5px;
+ width:1px;
+ height:100%;
+ border-left:1px solid gray;
 }
+
+
 
 
 </style>
 
 
 <% if !@collection_error %>
-  <% if @is_self %>
-  <%= link_to "Add card to collection", new_card_path %>
-  <% else %>
-    <p>User: <%= @target_user.email %></p>
-    <%= link_to "trade with #{@target_user.email}", new_trade_path(id: @target_user.id)  %>
-    </br>
-    <%= link_to "message with #{@target_user.email}", conversations_path %>
-  <% end %>
+
   <p>
-  <h3> <%=fa_icon "clone"%> Collection</h3>
-  <table class=" table table-striped" id="CollectionTable"data-sort-name="name" data-sort-order="desc">
+  <div class="row">
+
+    <div class="col-xs-3 pl-3">
+      <h3> <%=fa_icon "clone"%> Collection</h3>
+    </div>
+
+    <div class="col-sm-1">
+         <% if @is_self %>
+        <div class="btn-group">
+        
+
+                <%= link_to new_card_path, :class => "btn btn-primary", title: 'Add to your collection', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+                    <i class="fa fa-plus"></i> Add Cards
+                  <% end %>
+                  
+        </div>
+
+      
+        <% else %>
+          <p>User: <%= @target_user.email %></p>
+          <%= link_to "trade with #{@target_user.email}", new_trade_path(id: @target_user.id)  %>
+          </br>
+          <%= link_to "message with #{@target_user.email}", conversations_path %>
+        <% end %>
+
+        </div>
+
+  </div>
+
+  
+
+  <table class="table table-hover mt-2" id="CollectionTable"data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
         <th data-field="name" data-sortable="true">Card Name</th>
@@ -58,7 +79,7 @@ $(function () {
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
         <% if @is_self %>
-        <th data-field="operation" data-sortable="true">operation</th>
+        <th data-field="operation" data-sortable="true"></th>
         <% end %>
       </tr>
     </thead>
@@ -68,10 +89,6 @@ $(function () {
         <tr>
           <td>
           <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-          <!--
-          <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
-          <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
-          -->
           </td>
 
           <td><%= card.card.card_set.name %></td>
@@ -80,9 +97,14 @@ $(function () {
           <td><%= card.foil %></td>
           <% if @is_self %>
           <td>
-          <%= link_to "edit", edit_collection_path(card_id: card.id, edit_type: "collection") %>
-             /   
-          <%= link_to 'delete', collection_path(card_id: card.id, edit_type: "collection"), :method => :delete %>
+            <div class="row">
+                <%= link_to edit_collection_path(card_id: card.id, edit_type: "collection"), :class => "btn btn-primary mx-3", title: 'Edit Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                    <i class="fa fa-pencil"></i> 
+                  <% end %>
+                   <%= link_to collection_path(card_id: card.id, edit_type: "collection"), :method => :delete, :class => "btn btn-danger" , title: 'Delete Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                    <i class="fa fa-trash"></i>
+                  <% end %>    
+             </div>
           </td>
           <% end %>
         </tr>
@@ -91,18 +113,39 @@ $(function () {
   </table>
   </p>
   <p>
-  <h3> <%=fa_icon "clone"%> Wishlist</h3>
-  <table class=" table table-striped" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
+
+<div class="row">
+
+    <div class="col-xs-3 pl-3">
+      <h3> <%=fa_icon "clone"%> Wishlist</h3>
+    </div>
+
+    <div class="col-sm-1">
+        
+        <div class="btn-group">
+
+                <%= link_to new_card_path, :class => "btn btn-primary", title: 'Add to your wishlist', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+                    <i class="fa fa-plus"></i> Add Cards
+                  <% end %>
+                  
+        </div>
+
+
+  </div>
+
+  <table class="table table-hover mt-2" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
+        <tr>
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
         <% if @is_self %>
-        <th data-field="operation" data-sortable="true">operation</th>
+        <th data-field="operation" data-sortable="true"></th>
         <% end %>
+      </tr>
       </tr>
     </thead>
 
@@ -111,10 +154,6 @@ $(function () {
         <tr>
           <td>
             <a href = "" data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-            <!--
-            <div class = 'col_card_name' id = <%= card.id %>><%= card.card.name %>  </div>
-            <div class = 'col_popup' id = <%= card.id %>> <%= image_tag card.card.image_url %> </div>
-            -->
           </td>
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
@@ -122,10 +161,15 @@ $(function () {
           <td><%= card.foil %></td>
           <% if @is_self %>
           <td>
-          <%= link_to "edit", edit_collection_path(card_id: card.id, edit_type: "wishlist") %>
-             /   
-          <%= link_to 'delete', collection_path(card_id: card.id, edit_type: "wishlist"), :method => :delete %>
-          </td>
+            <div class="row">
+                <%= link_to edit_collection_path(card_id: card.id, edit_type: "wishlist"), :class => "btn btn-primary mx-3", title: 'Edit Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                    <i class="fa fa-pencil"></i> 
+                  <% end %>
+                   <%= link_to collection_path(card_id: card.id, edit_type: "wishlist"), :method => :delete, :class => "btn btn-danger" , title: 'Delete Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                    <i class="fa fa-trash"></i>
+                  <% end %>    
+             </div>
+            </td>
           <% end %>
         </tr>
       <% end %>
