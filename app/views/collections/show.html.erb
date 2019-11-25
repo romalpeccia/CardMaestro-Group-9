@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <div class="row-fluid pt-2">
 
 <script>
 $(function () {
@@ -34,15 +33,20 @@ $('[data-toggle="tooltip"]').tooltip();
 
 
 </style>
+<div class="row-fluid pt-2">
+      <h1><%=fa_icon "clone"%> My Collections</h1>
+</div>
+
+<div class="row-fluid pt-2 mx-3">
+  <div class="row">
 
 
 <% if !@collection_error %>
 
   <p>
-  <div class="row">
 
     <div class="col-xs-3 pl-3">
-      <h3> <%=fa_icon "clone"%> Collection</h3>
+      <h3><%=fa_icon "clone"%> Collection</h3>
     </div>
 
     <div class="col-sm-1">
@@ -64,7 +68,7 @@ $('[data-toggle="tooltip"]').tooltip();
           <%= link_to "message with #{@target_user.email}", conversations_path %>
         <% end %>
 
-        </div>
+      </div>
 
   </div>
 
@@ -112,12 +116,12 @@ $('[data-toggle="tooltip"]').tooltip();
     </tbody>
   </table>
   </p>
-  <p>
 
+<p>
 <div class="row">
 
     <div class="col-xs-3 pl-3">
-      <h3> <%=fa_icon "clone"%> Wishlist</h3>
+      <h3><%=fa_icon "clone"%> Wishlist</h3>
     </div>
 
     <div class="col-sm-1">
@@ -131,7 +135,8 @@ $('[data-toggle="tooltip"]').tooltip();
         </div>
 
 
-  </div>
+      </div>
+</div>
 
   <table class="table table-hover mt-2" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
     <thead>
@@ -175,9 +180,11 @@ $('[data-toggle="tooltip"]').tooltip();
       <% end %>
     </tbody>
   </table>
-  </p>
+
+</p>
 <% end %>
 
 
 </div>
 </div>
+
