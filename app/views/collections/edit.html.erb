@@ -1,42 +1,153 @@
+
+
+
+
 <div class="container-fluid">
   <div class="row justify-content-center align-items-center pt-4">
-    <div class="col-sm-6 col-sm-offset-3">
-      <h1> Edit card</h1>
-      <%= form_with scope: :card, method: "put", url: collection_path(card_id:@target_card.id), local: true do |form| %>  
+    <div class="col-sm-4 col-sm-offset-0">
+    <div class="row-fluid">
+      <h1><%=fa_icon "th-large"%> Edit Card - <span class="text-muted"><%=@target_card.card_name%></h1>
+    </div>
+      <%= bootstrap_form_for :card, 
+                       :as => :card, 
+                       :method => "put",
+                       :url => collection_path(card_id:@target_card.id) do |form| %>
           <%= form.hidden_field :user, value: current_user.email %>
-          <p>
-            <%= form.label :set, "Set" %><br>
-            <%= form.select(:set, @sets.collect { |set| [set.code] },  :class=>"js-searchable", selected:@target_set) %>
-          </p>
-          <p>
-            <%= form.label :card_name %><br>
-            <%= form.text_field :card_name, value:@target_card.card_name %>
-          </p>
+          <div class="row pt-3 ptb-2 mx-4">
+            <%= form.select(:set,@sets.collect { |set| [set.name] }, :selected =>@target_set, :class=>"js-searchable") %>
+          </div>
+         <div class="row pb-2 mx-4">
+            <%= form.select(:card_name, [['Select A Card', nil],],  :class=>"js-searchable") %>
+          </div>
 
-          <p>
+          <div class="row pb-3 mx-4">
           <%= form.check_box(:foil, checked:@target_card.foil) %>
-          <%= form.label(:foil, "Foil") %>
-          </p>
-          <p>
-          <%= form.radio_button(:quality, "Mint", checked:@target_card.quality=='Mint') %>
-          <%= form.label(:quality, "Mint") %>
-          <%= form.radio_button(:quality, "Near-Mint", checked:@target_card.quality=='Near-Mint') %>
-          <%= form.label(:quality, "Near-Mint") %>
-          <%= form.radio_button(:quality, "Light-Play", checked:@target_card.quality=='Light-Play') %>
-          <%= form.label(:quality, "Light-Play") %>
-          <%= form.radio_button(:quality, "Heavy-Play", checked:@target_card.quality=='Heavy-Play') %>
-          <%= form.label(:quality, "Heavy-Play") %>
-          </p>
+         </div>
+          <div class="row pb-3 mx-4">
+          <%= form.radio_button(:quality,"Mint", label: "Mint", inline: true, checked: @target_card.quality=='Mint') %>
+        
+          <%= form.radio_button(:quality,"Near-Mint", label: "Near-Mint", inline: true, checked: @target_card.quality=='Near-Mint') %>
           
-          <p>
-          <%= form.label :value %><br>
-          <%= form.text_area :value, value:@target_card.value %>
-          </p>
-          <p>
-            <%= form.submit 'Submit change to ' + @target_type %>
-          </p>
+          <%= form.radio_button(:quality,"Light-Play", label:"Light-Play", inline: true, checked: @target_card.quality=='Light-Play') %>
+          
+          <%= form.radio_button(:quality,"Heavy-Play", label:"Heavy-Play", inline: true, checked: @target_card.quality=='Heavy-Play') %>
+          
+         </div>
+          
+          <div class="row pb-2 mx-4">
+          <%= form.text_area :value ,value:@target_card.value %>
+          </div>
+          <div class="row-fluid mt-2 mx-4 mb-5">
+
+           <%= form.submit 'Save Changes', class: "btn btn-primary"%>
+
+
+          </div>
         
         <% end %>
+
+     
+    </div>
+    <div class="col-sm-2 pt-20">
+    
+    <img src="#" id="cardImg"  class="img-fluid" alt="Responsive image">
+    
+
     </div>
   </div>
 </div>
+
+
+<input type="hidden" name="hiddenelement" id="hiddenelement" />
+
+
+<script>
+
+  //set empty placeholder image
+  document.getElementById("cardImg").src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        
+  var set = document.getElementById("card_set");
+  var card_field = document.getElementById("card_card_name");
+
+  //initialize the set
+  var allSets = <%=@sets.to_json.html_safe %>
+
+  //loop and add options to the set
+  for(var i = 0; i < allSets.length; i++)
+  {
+    set.options[set.options.length] = new Option(allSets[i].name);
+  } 
+  
+  card_field.options[0] = new Option(<%=@target_card.card_name.to_json.html_safe %>);
+
+
+  //add change listener to the set
+  set.addEventListener("change", function(){
+        
+        //grab selected set value
+        var set_value = set.options[set.options.selectedIndex].value;
+
+        $.ajax({
+              type: "GET",
+              url: "/cards/"+set_value,
+              datatype:"html", // check more option
+              success: function(data) {
+                       
+                    //clears any options in dropdown
+                    while (card_field.firstChild) card_field.removeChild(card_field.firstChild);
+
+                    //default value
+                    card_field.options[0] = new Option("Select A Card");
+
+                    var element1 = document.getElementById("hiddenelement");
+                    
+                    //loop and add options to the card dropdown
+                    for(var i = 0; i < data.length; i++)
+                    {
+                      
+                      card_field.options[card_field.options.length] = new Option(data[i].name);
+                      element1.value = element1.value + data[i].name + "*" + data[i].image_url + ",";
+                      
+                    } 
+
+                       },
+              async:   true
+            });    
+
+
+        
+
+
+          //set empty placeholder image
+          document.getElementById("cardImg").src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        
+      });
+
+  //add change listener to the card name
+  card_field.addEventListener("change", function(){
+
+      //dynamically change card image based on card and set selected
+      var cardImg = document.getElementById("cardImg");
+      var set_value = set.options[set.options.selectedIndex].value;
+      var cardName = card_field.options[card_field.options.selectedIndex].value;
+
+      var cardImgHidden = document.getElementById("hiddenelement").value;
+      var pairs = cardImgHidden.split(",");
+
+      for(var i=0; i < pairs.length; i++){
+        var entry = pairs[i].split("*");
+
+        if(entry[0] ===cardName){
+          cardImg.src = entry[1];
+
+        }
+
+
+      }
+
+     
+
+
+  });
+
+  </script>      

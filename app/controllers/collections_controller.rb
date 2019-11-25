@@ -44,17 +44,18 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    if params[:commit] == 'Submit change to collection'
+    if params[:commit] == 'Save Changes'
       @target_card = CardOwned.find_by(id: params[:card_id])
     else
       @target_card = CardNeeded.find_by(id: params[:card_id])
     end
+
     card_name = params[:card][:card_name]
     value = params[:card][:value]
     quality = params[:card][:quality]
     foil = params[:card][:foil]
     set = params[:card][:set]
-    if @target_card.update(card_name: card_name,value: value, quality: quality, foil: foil)
+    if @target_card.update(card_name: card_name, value: value, quality: quality, foil: foil)
       flash[:notice] ='Changes are saved'
     else
       flash[:alert] ='Changes are not saved'
