@@ -79,6 +79,9 @@
   } 
   
   card_field.options[0] = new Option(<%=@target_card.card_name.to_json.html_safe %>);
+  
+  //set image
+  document.getElementById("cardImg").src=<%=@target_card.card.image_url.to_json.html_safe %>;
 
 
   //add change listener to the set
@@ -118,8 +121,7 @@
         
 
 
-          //set empty placeholder image
-          document.getElementById("cardImg").src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+          
         
       });
 
