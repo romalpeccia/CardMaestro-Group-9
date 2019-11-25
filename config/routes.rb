@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   get 'states/:country', to: 'searchpage#states'
   get 'cities/:state/:country', to: 'searchpage#cities'
 
+  get 'states/:country', to: 'devise/registrations#states'
+  get 'cities/:state/:country', to: 'devise/registrations#cities'
+
   devise_for :users
 
   devise_scope :user do
