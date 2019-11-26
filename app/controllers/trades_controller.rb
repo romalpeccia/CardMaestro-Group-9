@@ -34,93 +34,128 @@ class TradesController < ApplicationController
   end
   def create
       #temporary flash for debugging
-      flash[:notice] = params
-
-      sender = User.find_by(id: params[:sender_id]) 
-      reciever = User.find_by(id: params[:reciever_id])
-      sender_value = 0
-      reciever_value = 0
-
-      trade = Trade.new(sender_status: "Accepted", reciever_status: "Pending")
+      @target_user = User.find_by(id: params[:reciever_id])
+      if (params[:sender_value] != 0 and params[:reciever_value]  != 0) and (params[:sender_value] != "" and params[:reciever_value]  != "")
+        flash[:alert] = "You cannot send and recieve money in the same trade"
+        flash[:notice] = params
+        redirect_to new_trade_path(id: @target_user.id)
       
-      params.each do |key, value|
-          if key.include? "card_owned" 
-            card = CardOwned.find_by(id: value)
-            if card.value != nil
-              sender_value = sender_value + card.value
-            end
-            
-            #save card to list of sender_cards
-            card_offer = CardOffer.new
-            card_offer.card_name = card.card_name
-            card_offer.quality = card.quality
-            card_offer.value = card.value
-            card_offer.foil = card.foil
-            card_offer.card = card.card
+      else
+        s_v = params[:sender_value].to_i
+        r_v = params[:reciever_value].to_i
+        if s_v == "" or s_v == nil
+          s_v = 0
+        end
+        if r_v == "" or r_v == nil
+          r_v = 0
+        end
+        if s_v < 0 or r_v < 0 #ideally user shouldn't ever get to this point unless they are trying to cheat the post request
+          flash[:alert] = "error: cannot trade negative money"
+          redirect_to new_trade_path(id: @target_user.id)
+        else
+          flash[:notice] = params
 
-            card.card.card_offer << card_offer
-          
-            trade.sender_cards << card_offer
+          sender = User.find_by(id: params[:sender_id]) 
+          reciever = User.find_by(id: params[:reciever_id])
+          sender_value = 0 #note we arent using these atm
+          reciever_value = 0
 
-          elsif key.include? "card_needed"
-            card = CardNeeded.find_by(id: value)
-            if card.value != nil
-              reciever_value = reciever_value + card.value
-            end
+          trade = Trade.new(sender_status: "Accepted", reciever_status: "Pending")
+          no_card_flag = 1
+          params.each do |key, value|
+              if key.include? "card_owned" 
+                no_card_flag = 0
+                card = CardOwned.find_by(id: value)
+                if card.value != nil
+                  sender_value = sender_value + card.value
+                end
+                
+                #save card to list of sender_cards
+                card_offer = CardOffer.new
+                card_offer.card_name = card.card_name
+                card_offer.quality = card.quality
+                card_offer.value = card.value
+                card_offer.foil = card.foil
+                card_offer.card = card.card
 
-            #save card to list of reciever_cards
-            card_offer = CardOffer.new
-            card_offer.card_name = card.card_name
-            card_offer.quality = card.quality
-            card_offer.value = card.value
-            card_offer.foil = card.foil
-            card_offer.card = card.card
+                card.card.card_offer << card_offer
+              
+                trade.sender_cards << card_offer
 
-            card.card.card_offer << card_offer
-          
-            trade.reciever_cards << card_offer
+              elsif key.include? "card_needed"
+                no_card_flag = 0
+                card = CardNeeded.find_by(id: value)
+                if card.value != nil
+                  reciever_value = reciever_value + card.value
+                end
 
+                #save card to list of reciever_cards
+                card_offer = CardOffer.new
+                card_offer.card_name = card.card_name
+                card_offer.quality = card.quality
+                card_offer.value = card.value
+                card_offer.foil = card.foil
+                card_offer.card = card.card
+
+                card.card.card_offer << card_offer
+              
+                trade.reciever_cards << card_offer
+
+              end
           end
-      end
-
-      #saving the associations and trade object
-
-      trade.sender_value = sender_value
-      trade.reciever_value = reciever_value
-      trade.sender = sender
-      trade.reciever = reciever
-
-      sender.sent_trades << trade 
-      reciever.recieved_trades << trade
-
-
+          if no_card_flag == 1
+            flash[:alert] = "Select at least one card"
+            redirect_to new_trade_path(id: @target_user.id)
+          else
+            trade.sender_value = s_v
+            trade.reciever_value = r_v
+            trade.sender = sender
+            trade.reciever = reciever
+    
+            sender.sent_trades << trade 
+            reciever.recieved_trades << trade
+    
+    
+              #saving the associations and trade object
+            trade.save
+            flash[:notice] = trade
+            flash[:alert] = trade.errors
+            redirect_to trade_path(current_user.id)
+          end #end if no cards were selected
+        end #end if sender and reciever values were nonnegative
+      end #end if sender AND reciever values are both inputted
       
-      trade.save
-      flash[:notice] = trade
-      flash[:alert] = trade.errors
-
-      redirect_to trade_path(current_user.id)
   end
 
   def show
       
+      #sender_status is by default "Accepted" 
+        #trades the current user sent, waiting for reciever to change status to accepted
       @pending_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Pending" )
+        #trades the current user recieved, waiting for current user to change status to accepted
       @pending_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Pending")
 
+        
 
-      
-      @accepted_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Accepted")
-      @accepted_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Accepted")
+      #@accepted_sent_trades = Trade.where(sender_id: current_user.id , reciever_status: "Accepted").or(Trade.where(sender_id: current_user.id , sender_status: "Accepted"))
+      #@accepted_recieved_trades = Trade.where(reciever_id: current_user.id , reciever_status: "Accepted").or(Trade.where(reciever_id: current_user.id , sender_status: "Accepted"))
+
+      all_curr_user_trades = Trade.where(sender_id: current_user.id).or(Trade.where(reciever_id: current_user.id))
+      #get all trades where neither person has completed
+      #get all trades where user is the one not completed
+      #get all trades where the user is waiting for the other person to complete
+      @accepted_trades = all_curr_user_trades.where(reciever_status: "Accepted", sender_status: "Accepted").or(all_curr_user_trades.where(reciever_status: "Completed", sender_status: "Accepted")).or(all_curr_user_trades.where(reciever_status: "Accepted", sender_status: "Completed"))
 
 
 
-      @completed_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Completed")
-      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Completed")
-      #flash[:notice] = @pending_sent_trades.ids
+
+      @completed_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Completed", sender_status: "Completed")
+      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Completed", sender_status: "Completed")
+
   end
 
   def update
-    flash[:notice] = params
+
     trade = Trade.find_by(id: params[:id])
     #figure out whether the current user is the sender or the reciever of the trade
     if (current_user.id == trade.reciever.id)
@@ -129,7 +164,7 @@ class TradesController < ApplicationController
     elsif (current_user.id == trade.sender.id)
       curr_user_type = "S"
       other_user = User.find_by(id: trade.reciever.id)
-    else
+    else #should never reach here unless user tries to break the put request
         flash[:alert] = "user somehow tried to update a trade that wasn't theirs"
         redirect_to trade_path(current_user.id)
     end
@@ -139,7 +174,8 @@ class TradesController < ApplicationController
         update_helper(trade, curr_user_type, "Accepted")
         flash[:notice] = "Trade with #{other_user.email} accepted!"
     elsif params[:commit] == "pending_declined"
-        update_helper(trade, curr_user_type, "Declined")
+        update_helper(trade, "R", "Declined")
+        update_helper(trade, "S", "Declined")
         flash[:alert] = "Trade with #{other_user.email} declined!"
     else
       flash[:alert] = "error updating trade"
@@ -154,7 +190,8 @@ end
 def update_helper(t, c, s) #trade, current_user_type, status - wasnt sure how scoping works in ruby, playing it safe
   if c == "R"
     t.update(reciever_status: s)
-  elsif c == "S"
+  end
+  if c == "S"
     t.update(sender_status: s)
   end
 end
