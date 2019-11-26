@@ -34,7 +34,7 @@ $('[data-toggle="tooltip"]').tooltip();
 
 </style>
 <div class="row-fluid pt-2">
-     <% if @is_self %>
+     <% if @is_self and @target_user != nil %>
       <h1><%=fa_icon "clone"%> My Collections</h1>
       <% else %>
           <h1><%=fa_icon "clone"%> View Collections - <span class="text-muted"><%=@target_user.email%></span></h1>
@@ -54,7 +54,7 @@ $('[data-toggle="tooltip"]').tooltip();
     </div>
 
     <div class="col-sm-1">
-         <% if @is_self %>
+        <% if @is_self and @target_user != nil%>
         <div class="btn-group">
         
 

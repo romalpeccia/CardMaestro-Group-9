@@ -9,22 +9,24 @@ require 'mtg_sdk'
 
 #relevant info: name code release_date
 
-'''
+
 sets = MTG::Set.all
 sets.each do |set|
     if (set.online_only != true)
-        CardSet.create(name: set.name, code: set.code, release_date: set.release_date)
-
+        card_set = CardSet.find_by(name: set.name)
+        if (!card_set)
+            CardSet.create(name: set.name, code: set.code, release_date: set.release_date)
+        end
     end
 end
-'''
+
 
 
 #cards = MTG::Card.where(page: 5).where(pageSize: 10).all
 cards = MTG::Card.all
 cards.each do |card|
-    if card
-        puts card.name
+    if card != nil
+        #puts card.name
         if (card.image_url)
             card_set = CardSet.find_by(code: card.set)
 
@@ -36,9 +38,5 @@ cards.each do |card|
             
         end
     end
-    '''
-    puts card.name
-    puts card.set
-    puts card.image_url
-    '''
+
 end
