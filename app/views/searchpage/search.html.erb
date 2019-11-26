@@ -31,20 +31,15 @@ $(function () {
 </style>
 
 
-<h3>Search Results - <span class="text-muted">"<%=@search_term%>"</span></h3>  
+<h3><%=fa_icon "search"%> Search Results - <span class="text-muted">"<%=@search_term%>"</span></h3>  
 
 
 
 <div class="container-fluid">
 
 
+<h4><%=fa_icon "filter"%><span class="text-muted"> Advanced Search</h4>
 
-<button type="button" class="btn btn-primary my-2"
-    data-toggle="collapse" data-target="#filterForm">
-  <%=fa_icon "filter"%> Advanced Search
-</button>
-
-<div class="collapse" id = "filterForm">
 
 	<div class="row">
 		
@@ -152,7 +147,7 @@ $(function () {
              {:controller => :searchpage, :action => :search, 
              :search => @search_term
               },
-             :class => "btn btn-success align-center" %>
+             :class => "btn btn-danger align-center" %>
         </div>
 
           <%= link_to "Advanced Search", 
@@ -163,7 +158,7 @@ $(function () {
              :condition => "Heavy-Play",
              :set => "10E"
               },
-             :class => "btn btn-success align-center" %>
+             :class => "btn btn-primary align-center" %>
         </div>
 
 
