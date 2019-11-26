@@ -41,8 +41,8 @@
     <div class="field">
       <%= f.text_field :province, autofocus: true, autocomplete: "province" %>
     </div>
-    <div class="field">
-      <%= f.text_field :country, autofocus: true, autocomplete: "country" %>
+    <div class="select">
+      <%= f.select :country, options_for_select(CS.countries.map { |c| [c[1], c[0]] } ) %>
     </div>
 
     <div class="actions">

@@ -20,19 +20,84 @@
             <%= f.password_field :password_confirmation, 
                                 placeholder: 'Password confirmation', 
                                 class: 'form-control' %>
+            
+            <%= f.select :country, options_for_select(CS.countries.map { |c| [c[1], c[0]] } ) %>
+            
             <%= f.text_field :city, 
-                                placeholder: 'city', 
+                                placeholder: 'City', 
                                 class: 'form-control' %>
             <%= f.text_field :province, 
-                                placeholder: 'province', 
+                                placeholder: 'Province', 
                                 class: 'form-control' %>
-            <%= f.text_field :country, 
-                                placeholder: 'country', 
-                                class: 'form-control' %>
+            <%#= f.select :province, options_for_select(CS.countries.cities(:country)) %>
+            <%#= f.select :city, options_for_select(CS.cities(:province)) %>
             
+
+            
+            
+        
             <%= f.submit 'Sign Up', class: 'btn btn-lg btn-primary btn-block' %>
           <% end %>
 		
     </div>
   </div>
 </div>
+
+
+
+ <script>
+
+ //gem 'country_state_select'
+ //city-state gem
+ //CS.states(:br) CS.cities(:to)
+  var country = document.getElementById("country");
+  var state = document.getElementById("state");
+
+
+  country.addEventListener("change", function(){
+        
+        var state = document.getElementById("state");
+
+        //loop through all returned cities for state
+        $.getJSON('/states/' + $(this).val(), function (data) {
+          
+          //clears any options in dropdown
+          while (state.firstChild) state.removeChild(state.firstChild);
+
+          //default value
+          state.options[0] = new Option("Select State");
+
+          //loop and add optoons
+          Object.keys(data).forEach(key=>{
+            state.options[state.options.length] = new Option(data[key], key);
+          });
+          
+        
+        });
+      });
+
+      state.addEventListener("change", function(){
+        
+        var city = document.getElementById("city");
+        var country = document.getElementById("country");
+
+        //loop through all returned cities for state
+        $.getJSON('/cities/' + $(this).val()+'/'+ country.options[country.options.selectedIndex].value, function (data) {
+          
+          //clears any options in dropdown
+          while (city.firstChild) city.removeChild(city.firstChild);
+
+          //default value
+          city.options[0] = new Option("Select City");
+
+          //loop and add optoons
+          for(var i = 0; i < data.length; i++)
+          {
+            
+            city.options[city.options.length] = new Option(data[i]);
+          }
+          
+        
+        });
+      });
+  </script> 
