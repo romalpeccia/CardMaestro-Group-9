@@ -55,7 +55,7 @@ class CollectionsController < ApplicationController
     quality = params[:card][:quality]
     foil = params[:card][:foil]
     set = params[:card][:set]
-    if @target_card.update(card_name: card_name, value: value, quality: quality, foil: foil)
+    if @target_card.update(value: value, quality: quality)
       flash[:notice] ='Changes are saved'
     else
       flash[:alert] ='Changes are not saved'
