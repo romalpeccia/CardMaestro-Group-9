@@ -70,26 +70,7 @@ class TradesController < ApplicationController
                   sender_value = sender_value + card.value
                 end
                 
-                #save card to list of sender_cards
-                card_offer = CardOffer.new
-                card_offer.card_name = card.card_name
-                card_offer.quality = card.quality
-                card_offer.value = card.value
-                card_offer.foil = card.foil
-                card_offer.card = card.card
-
-                card.card.card_offer << card_offer
-              
-                trade.sender_cards << card_offer
-
-              elsif key.include? "card_needed"
-                no_card_flag = 0
-                card = CardNeeded.find_by(id: value)
-                if card.value != nil
-                  reciever_value = reciever_value + card.value
-                end
-
-                #save card to list of reciever_cards
+                #save card to list of reciever_cards (cards the reciever will send)
                 card_offer = CardOffer.new
                 card_offer.card_name = card.card_name
                 card_offer.quality = card.quality
@@ -100,6 +81,25 @@ class TradesController < ApplicationController
                 card.card.card_offer << card_offer
               
                 trade.reciever_cards << card_offer
+
+              elsif key.include? "card_needed"
+                no_card_flag = 0
+                card = CardNeeded.find_by(id: value)
+                if card.value != nil
+                  reciever_value = reciever_value + card.value
+                end
+
+                #save card to list of sender_cards (cards the sender will send)
+                card_offer = CardOffer.new
+                card_offer.card_name = card.card_name
+                card_offer.quality = card.quality
+                card_offer.value = card.value
+                card_offer.foil = card.foil
+                card_offer.card = card.card
+
+                card.card.card_offer << card_offer
+              
+                trade.sender_cards << card_offer
 
               end
           end
