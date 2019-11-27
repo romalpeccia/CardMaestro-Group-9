@@ -2,9 +2,24 @@
   <div class="row-fluid pt-2">
 
 <script>
+
 $(function () {
-  $('[data-toggle="popover"]').popover()
+  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]').tooltip();
+
+
+$('[data-toggle="popover"]').click(function () {
+          $('[data-toggle="popover"]').popover("hide");
+
+       });
+
+$('[data-toggle="tooltip"]').click(function () {
+          $('[data-toggle="tooltip"]').tooltip("hide");
+
+       });
+
 });
+       
 
 </script>
 
@@ -60,7 +75,7 @@ $(function () {
 				<select class="filter form-control">
 					<option value="">Select Set</option>
 					<%=@sets.each do |set| %>
-            <option value=""> <%=set.code%></option>
+            <option value=""> <%=set.name%></option>
           <%end%>
 				</select>
 			</div>
@@ -154,9 +169,9 @@ $(function () {
              {:controller => :searchpage, :action => :search, 
              :search => @search_term,
              :mode => "Advanced",
-             :foil => "true",
-             :condition => "Heavy-Play",
-             :set => "10E"
+             :foil => "false",
+             :condition => "Light-Play",
+             :set => "Tenth Edition"
               },
              :class => "btn btn-primary align-center" %>
         </div>
@@ -196,7 +211,11 @@ $(function () {
       <% @results.each do |card| %>
         <tr>
         <td>
-            <%= link_to card.user.email, collection_path(card.user.id) %>
+           
+      <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+        <i class="fa fa-user"></i> <%=card.user.email %>
+      <% end %>
+
         </td>
 
           <td>
@@ -207,7 +226,12 @@ $(function () {
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
-          <td><%= card.foil %></td>
+          <td>
+          <% if card.foil == true %>
+              <%=fa_icon "check" %>
+          <% else %>
+              <%=fa_icon "times" %>  
+          <% end %> </td>
         </tr>
       <% end %>
     </tbody>
