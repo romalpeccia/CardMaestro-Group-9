@@ -38,5 +38,4 @@ cards.each do |card|
             
         end
     end
-
 end

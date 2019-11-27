@@ -105,7 +105,7 @@ $('[data-toggle="tooltip"]').tooltip();
       <% @collection_card_owned.each do |card| %>
         <tr>
           <td>
-          <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+          <a href = <%= "#{searchpage_search_path}/?search=#{card.card.name}".gsub(' ','+') %>  data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
           </td>
 
           <td><%= card.card.card_set.name %></td>
@@ -179,7 +179,7 @@ $('[data-toggle="tooltip"]').tooltip();
       <% @collection_card_needed.each do |card| %>
         <tr>
           <td>
-            <a href = "" data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+            <a href = <%= "#{searchpage_search_path}/?search=#{card.card.name}".gsub(' ','+') %> data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
           </td>
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>

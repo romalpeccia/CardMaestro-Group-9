@@ -27,12 +27,12 @@ class CardsController < ApplicationController
 
             #Find the user
             user = User.find_by(email: params[:card][:user])
-            
             card_name = params[:card][:card_name]
             value = params[:card][:value]
             quality = params[:card][:quality]
             foil = params[:card][:foil]
             set = params[:card][:set]
+        
             #attach a card owned object to the user
             new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
@@ -70,8 +70,6 @@ class CardsController < ApplicationController
                 flash[:alert] = "card not in master card db"
             end
         end
-
-        flash[:notice] = @Sets
 
         redirect_to new_card_path
     end

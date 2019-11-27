@@ -149,8 +149,8 @@ class TradesController < ApplicationController
 
 
 
-      @completed_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Completed", sender_status: "Completed")
-      @completed_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Completed", sender_status: "Completed")
+      @completed_trades = Trade.where(sender_id: current_user.id, reciever_status: "Completed", sender_status: "Completed").or(Trade.where(reciever_id: current_user.id, reciever_status: "Completed", sender_status: "Completed"))
+      #@completed_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Completed", sender_status: "Completed")
 
   end
 
@@ -177,6 +177,8 @@ class TradesController < ApplicationController
         update_helper(trade, "R", "Declined")
         update_helper(trade, "S", "Declined")
         flash[:alert] = "Trade with #{other_user.email} declined!"
+    elsif params[:commit] == "accepted_completed"
+        update_helper(trade, curr_user_type, "Completed")
     else
       flash[:alert] = "error updating trade"
     end
