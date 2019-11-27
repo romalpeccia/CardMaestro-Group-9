@@ -264,19 +264,19 @@ $(function () {
 											<div class = "col" id = "my_status">
 												<p> Your Status </p>
 												<% if my_status == "Accepted" %>
-													<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that you sent your half of the trade"> <%=fa_icon "times" %>Unconfirmed</button>
+													<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that received your cards and/or money"> <%=fa_icon "times" %>Unconfirmed</button>
 
 												<% elsif my_status == "Completed" %>
-													<button disabled class="btn btn-success my-2" title = "You have sent your half of the trade"> <%=fa_icon "check" %>Confirmed</button>
+													<button disabled class="btn btn-success my-2" title = "You have received cards and/or money"> <%=fa_icon "check" %>Confirmed</button>
 
 												<% end %>
 											</div>
 											<div class = "col" id = "other_status">
 												<p>Their Status </p>
 												<% if other_status == "Accepted" %>
-													<button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they sent their half of the trade" > <%=fa_icon "times" %>Unconfirmed </button>
+													<button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" > <%=fa_icon "times" %>Unconfirmed </button>
 												<% elsif my_status == "Completed" %>
-													<button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has sent their half of the trade"> <%=fa_icon "check" %>Confirmed </button>
+													<button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money"> <%=fa_icon "check" %>Confirmed </button>
 												<% end %>
 											</div>
 									</div>         
