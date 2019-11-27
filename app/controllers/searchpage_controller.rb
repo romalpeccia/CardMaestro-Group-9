@@ -47,7 +47,7 @@ class SearchpageController < ApplicationController
       #advanced search
       @results = CardOwned.joins(:card).all.where(
         "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id and foil = :foil and lower(quality) like lower(:quality)",
-       search: "%#{@search_term}%", foil: foil, quality: condition,  current_user_id: current_user_param )
+       search: "%#{@search_term}%", foil: foil, quality: "%#{condition}%",  current_user_id: current_user_param )
   
 
     end
