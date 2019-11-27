@@ -18,8 +18,6 @@ class SearchpageController < ApplicationController
     @cards = Card.all
     @sets = CardSet.all
 
-    flash[:notice] = params
-
     #obtain the search term
     @search_term = params[:search]
     current_user_param = current_user.id
@@ -44,10 +42,30 @@ class SearchpageController < ApplicationController
       state = params[:state]
       city = params[:city]
       
-      #advanced search
-      @results = CardOwned.joins(:card).all.where(
-        "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id and foil = :foil and lower(quality) like lower(:quality)",
-       search: "%#{@search_term}%", foil: foil, quality: condition,  current_user_id: current_user_param )
+      #advanced search query
+      @results = CardOwned.joins(:card).joins(:user).all.where(
+        "lower(card_name) LIKE lower(:search)"+
+        " and user_id <> :current_user_id"+
+         " and foil = :foil"+
+          " and lower(quality) like lower(:quality)"+
+           " and lower(set) like lower(:set)"+
+           " and lower(country) like lower(:country)"+
+           " and lower(province) like lower(:state)"+
+           " and lower(city) like lower(:city)"+
+           " and value >= :minprice"+
+           " and value <= :maxprice",
+       search: "%#{@search_term}%",
+       current_user_id: current_user_param, 
+       quality: "%#{condition}%",
+       foil: foil,
+       set: "%#{set}%",
+
+       minprice: minprice,
+       maxprice: maxprice,
+       country: "%#{country}%",
+       state: "%#{state}%",
+       city:"%#{city}%"
+       )
   
 
     end

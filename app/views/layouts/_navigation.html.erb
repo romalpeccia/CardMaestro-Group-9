@@ -47,10 +47,14 @@
     <%= form_tag(searchpage_search_path, :method => "get",   
             class: 'navbar-form navbar-left') do %>  
         <div class="input-group">  
-            <%= search_field_tag :search, params[:search], placeholder: "Search Cards", class: "form-control" %>  
-            <div class="input-group-btn">  
-            <%= button_tag "Search", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil%>  
-            </div>  
+            <%= search_field_tag :search, params[:search], placeholder: "Search Cards to Trade", class: "form-control" %> 
+
+            <div class="input-group-btn"> 
+            <%= button_tag "Search", :class => "btn btn-primary" do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+            </div>
+ 
         </div>  
         <% end %>
 

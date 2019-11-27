@@ -18,6 +18,10 @@ require("channels")
 
 $(document).ready(function() {
 
+   setTimeout(function(){
+      $('.alert').fadeOut();
+      }, 2000);
+
    // $('[data-toggle="popover"]').popover();
 
 //     $('.col_card_name').hover(function(el) {

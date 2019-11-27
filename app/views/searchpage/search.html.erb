@@ -2,9 +2,24 @@
   <div class="row-fluid pt-2">
 
 <script>
+
 $(function () {
-  $('[data-toggle="popover"]').popover()
+  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]').tooltip();
+
+
+$('[data-toggle="popover"]').click(function () {
+          $('[data-toggle="popover"]').popover("hide");
+
+       });
+
+$('[data-toggle="tooltip"]').click(function () {
+          $('[data-toggle="tooltip"]').tooltip("hide");
+
+       });
+
 });
+       
 
 </script>
 
@@ -45,7 +60,7 @@ $(function () {
 		
     <div class="col">
 			<div class="form-group pt-1">
-				<select class="filter form-control">
+				<select class="filter form-control" id="quality">
 					<option value="">Select Condition</option>
 					<option value="">Mint</option>
           <option value="">Near-Mint</option>
@@ -57,10 +72,10 @@ $(function () {
 
       <div class="col">
 			<div class="form-group pt-1">
-				<select class="filter form-control">
+				<select class="filter form-control" id="set">
 					<option value="">Select Set</option>
 					<%=@sets.each do |set| %>
-            <option value=""> <%=set.code%></option>
+            <option value=""> <%=set.name%></option>
           <%end%>
 				</select>
 			</div>
@@ -68,7 +83,7 @@ $(function () {
 
       <div class="col">
 			<div class="form-group pt-1">
-				<select class="filter form-control">
+				<select class="filter form-control" id="foil">
 					<option value="">Select Foil</option>
 					<option value="">true</option>
           <option value="">false</option>
@@ -78,13 +93,13 @@ $(function () {
 
       <div class="col">
 			<div class="form-group pt-1">
-				<input type="number" class="form-control" placeholder= "Minimum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
+				<input type="number" id ="minprice" class="form-control" placeholder= "Minimum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
 			</div>
       </div>
 
       <div class="col">
 			<div class="form-group pt-1">
-				<input type="number" class="form-control" placeholder= "Maximum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
+				<input type="number" id="maxprice" class="form-control" placeholder= "Maximum Price" min="0" max="1000000000000000000000" step="1" id="input-number"></input>
 			</div>
       </div>
 
@@ -150,15 +165,10 @@ $(function () {
              :class => "btn btn-danger align-center" %>
         </div>
 
-          <%= link_to "Advanced Search", 
-             {:controller => :searchpage, :action => :search, 
-             :search => @search_term,
-             :mode => "Advanced",
-             :foil => "true",
-             :condition => "Heavy-Play",
-             :set => "10E"
+          <%= link_to "Advanced Search", {:controller => :searchpage, :action => :search, 
+             :search => @search_term
               },
-             :class => "btn btn-primary align-center" %>
+             :class => "btn btn-primary align-center", :id=> "advancedsearchid" %>
         </div>
 
 
@@ -196,7 +206,11 @@ $(function () {
       <% @results.each do |card| %>
         <tr>
         <td>
-            <%= link_to card.user.email, collection_path(card.user.id) %>
+           
+      <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+        <i class="fa fa-user"></i> <%=card.user.email %>
+      <% end %>
+
         </td>
 
           <td>
@@ -207,7 +221,12 @@ $(function () {
           <td><%= card.card.card_set.name %></td>
           <td><%= card.value %></td>
           <td><%= card.quality %></td>
-          <td><%= card.foil %></td>
+          <td>
+          <% if card.foil == true %>
+              <%=fa_icon "check" %>
+          <% else %>
+              <%=fa_icon "times" %>  
+          <% end %> </td>
         </tr>
       <% end %>
     </tbody>
@@ -217,6 +236,90 @@ $(function () {
 </div>
 </div>
 
+
+<script>
+var advancedSearchField = document.getElementById("advancedsearchid");
+
+advancedSearchField.addEventListener("click", function(data){
+
+  //grabbing all the parameters for the query
+  var quality = document.getElementById("quality");
+  var set = document.getElementById("set");
+  var foil = document.getElementById("foil");
+  var minprice = document.getElementById("minprice");
+  var maxprice = document.getElementById("maxprice");
+  var country = document.getElementById("country");
+  var state = document.getElementById("state");
+  var city = document.getElementById("city");
+
+  var search = <%=@search_term.to_json.html_safe %>
+  var conditionValue = quality.options[quality.selectedIndex].text;
+
+  if(conditionValue === "Select Condition"){
+      conditionValue="";
+  }
+
+  var foilValue = foil.options[foil.selectedIndex].text;
+  
+  if(foilValue === "Select Foil"){
+      foilValue=false;
+  }
+
+  var setValue = set.options[set.selectedIndex].text;
+  
+  if(setValue === "Select Set"){
+      setValue="";
+  }
+
+  var countryValue = country.options[country.selectedIndex].text;
+  
+  if(countryValue === "Select Country"){
+      countryValue="";
+  }
+
+  var stateValue = state.options[state.selectedIndex].text;
+  
+  if(stateValue === "Select State"){
+      stateValue="";
+  }
+
+  var cityValue = city.options[city.selectedIndex].text;
+  
+  if(cityValue === "Select City"){
+      cityValue="";
+  }
+
+
+  var minpriceValue = minprice.value;
+  
+  if(minpriceValue === ""){
+      minpriceValue="0";
+  }
+
+  var maxpriceValue = maxprice.value;
+  
+  if(maxpriceValue === ""){
+      maxpriceValue="0";
+  }
+
+//setting up the parameters for the search url
+  advancedSearchField.href = advancedSearchField.href 
+  + "?&condition="+conditionValue 
+  + "&foil="+foilValue
+  +"&mode=Advanced"
+  +"&search="+search
+  +"&set="+setValue
+  +"&country="+countryValue
+  +"&state="+stateValue
+  +"&city="+cityValue
+  +"&minprice="+minpriceValue
+  +"&maxprice="+maxpriceValue;
+
+});
+
+
+
+</script>
 
  <!-- load states and cities based on the selected information -->
   <script>
