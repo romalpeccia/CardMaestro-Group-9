@@ -12,7 +12,7 @@ $('[data-toggle="popover"]').click(function () {
 $('[data-toggle="tooltip"]').click(function () {
           $('[data-toggle="tooltip"]').tooltip("hide");
 
-       });
+	   });
 
 });
 
@@ -461,7 +461,17 @@ font-size:150%;
 								data-target= <%="#acceptedtrade#{trade.id}"%> >
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Accepted - 
-								   <span class="text-muted"><%=other_user.email%></span>
+								   <% if trade.sender_status == "Accepted"%>
+										<button type="button" class="btn-outline btn-danger my-2"> Incomplete
+										</button>
+									<%elsif trade.reciever_status == "Accepted"%>
+										<button type="button" class="btn-outline btn-danger my-2"> Incomplete
+										</button>
+									<%else%>
+										<button type="button" class="btn-outline btn-success my-2"> Complete
+										</button>
+									<%end%>
+									<span class="text-muted"> - <%=other_user.email%></span>
 							</h4>
 						
 						</div>
@@ -600,10 +610,10 @@ font-size:150%;
 
 											<div class = "row d-flex justify-content-center">
 												<% if my_status == "Accepted" %>
-														<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that received your cards and/or money"> <%=fa_icon "times" %> Unconfirmed</button>
+														<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that received your cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom' > <%=fa_icon "times" %> Unconfirmed</button>
 
 													<% elsif my_status == "Completed" %>
-														<button disabled class="btn btn-success my-2" title = "You have received cards and/or money"> <%=fa_icon "check" %> Confirmed</button>
+														<button disabled class="btn btn-success my-2" title = "You have received cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom'> <%=fa_icon "check" %> Confirmed</button>
 
 													<% end %>
 											</div>
@@ -616,9 +626,9 @@ font-size:150%;
 
 											<div class = "row d-flex justify-content-center">
 											 	<% if other_status == "Accepted" %>
-                                                    <button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" > <%=fa_icon "times" %> Unconfirmed </button>
+                                                    <button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom'> <%=fa_icon "times" %> Unconfirmed </button>
                                                 <% elsif my_status == "Completed" %>
-                                                    <button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money"> <%=fa_icon "check" %> Confirmed </button>
+                                                    <button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom'> <%=fa_icon "check" %> Confirmed </button>
                                                 <% end %>
 											</div>
 										</div>
@@ -711,7 +721,9 @@ font-size:150%;
 								data-target= <%="#completedtrade#{trade.id}"%> >
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Completed - 
-								   <span class="text-muted"><%=other_user.email%></span>
+								   <button type="button" class="btn-outline btn-success my-2"> Confirmed
+										</button>
+								   <span class="text-muted"> - <%=other_user.email%></span>
 							</h4>
 						
 						</div>
