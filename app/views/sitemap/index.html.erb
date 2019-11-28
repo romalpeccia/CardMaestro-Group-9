@@ -25,8 +25,8 @@ body {
 <h1>Sitemap</h1>
 <ul class="list-unstyled text-small">
         <li><a class="nav-link" href=<%=new_card_path%>><%=fa_icon "th-large"%> Add Cards</a></li>
-        <li><a class="nav-link" href=<%=collection_path(current_user.id)%>><%=fa_icon "clone"%> My Collections</a></li>
-        <li><a class="nav-link" href= <%= trade_path(current_user.id) %>> <%=fa_icon "users"%> My Trades</a></li>
+        <li><a class="nav-link" href=<%=collection_path%>><%=fa_icon "clone"%> My Collections</a></li>
+        <li><a class="nav-link" href= <%= trade_path %>> <%=fa_icon "users"%> My Trades</a></li>
         <li class="nav-item">
         <a class="nav-link" href=<%=conversations_path%>><%=fa_icon "envelope-open"%> Inbox</a>
       </li>
