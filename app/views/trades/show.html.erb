@@ -1,513 +1,845 @@
 <script>
 $(function () {
-  $('[data-toggle="popover"]').popover()
-})
+  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]').tooltip();
+
+
+$('[data-toggle="popover"]').click(function () {
+          $('[data-toggle="popover"]').popover("hide");
+
+       });
+
+$('[data-toggle="tooltip"]').click(function () {
+          $('[data-toggle="tooltip"]').tooltip("hide");
+
+       });
+
+});
 
 </script>
 
 
-<h1><%=fa_icon "users"%> My Trades  </h1>
+
+<style>
+
+.nav-tabs {
+
+background: #1E88E5;
+
+}
+
+.nav-tabs .nav-link{
+
+text-decoration: none;
+line-height: 40px;
+color: white;
+font-size:150%;
+
+}
+
+</style>
+
+
+
 <div class = "container-fluid" id = "my_trades">
-  <div class = "row">
+
+
+	<div class="row-fluid pt-2">
+		<h1><%=fa_icon "users"%> My Trades  </h1>
+	</div>
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs nav-justified" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" data-toggle="tab" href="#pendingPanel" role="tab">
+		<%=fa_icon "spinner"%> Pending</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#acceptedPanel" role="tab">
+		<%=fa_icon "check-circle"%> Accepted</a>
+	</li>
+
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#completedPanel" role="tab">
+		<%=fa_icon "retweet"%> Completed</a>
+	</li>
+	</ul>
+	<!-- Nav tabs -->
+
+
+
+
+<!-- Tab panels -->
+<div class="tab-content">
+
+  <!-- Pending Trades Panel -->
+  <div class="tab-pane fade in show active" id="pendingPanel" role="tabpanel">
+
+	<!-- ROW --->
+	 <div class = "row">
       <div class = "col" id = "pending_col">
-        <button type="button" class="btn btn-primary my-2"
-        data-toggle="collapse" data-target= "#pending_container" > <h4>Pending Trades</h4>
-        </button>
-        <div class = "collapse" id = "pending_container">
 
-          <div class = "col" id = "pending_sent_trades">
-              <% if @pending_sent_trades && @pending_sent_trades.ids != [] %>
-                <button type="button" class="btn btn-primary my-2"
-                data-toggle="collapse" data-target= "#pending_sent_container" > <h4>Sent Trades</h4></button>
-                <div class = "collapse show" id = "pending_sent_container">
-                <% @pending_sent_trades.each do |trade| %>
-                  <p>
-                  <button type="button" class="btn btn-primary my-2"
-                  data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> 
-                  </button>
-                  Waiting for <%= link_to trade.reciever.email, collection_path(trade.reciever.id) %> to accept
-                  <div class = "collapse" id = <%="trade#{trade.id}"%> >
-											<p>Created on <%= trade.created_at %> </p>
-											<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>                    
-												<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "pending_declined" type ="submit" class="btn btn-danger my-2"> Cancel </button>
-											</form>
-                      <h5> <%=fa_icon "clone"%> Cards You Offered</h5>
-                      <table class=" table table-striped" id= <%= "trade_sent#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                          <tr>
-                            <th data-field="name" data-sortable="true">Card Name</th>
-                            <th data-field="set" data-sortable="true">Set Name</th>
-                            <th data-field="value" data-sortable="true">Card Value</th>
-                            <th data-field="quality" data-sortable="true">Card Quality</th>
-                            <th data-field="foil" data-sortable="true">Foil</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <% trade.sender_cards.each do |card| %>
-                          <tr>
-                            <td>
-                            <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-                            </td>
-                  
-                            <td><%= card.card.card_set.name %></td>
-                            <td><%= card.value %></td>
-                            <td><%= card.quality %></td>
-														<td>
-														test
-                            <% if card.foil == true %>
-                                <%=fa_icon "check" %>
-                            <% else %>
-                                <%=fa_icon "times" %>  
-                            <% end %> 
-                            </td>
-                          </tr>
-                        <% end %> 
-                        <% if trade.sender_value and trade.sender_value != 0 %>
-                          <p> You offered $<%= trade.sender_value %> with this trade </p>
-                        <% end %>
-                        </tbody>
-                      </table>
-                      <h5> <%=fa_icon "clone"%> Cards You Will Recieve</h5>
-                      <table class=" table table-striped" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
-                      <thead>
-                        <tr>
-                          <th data-field="name" data-sortable="true">Card Name</th>
-                          <th data-field="set" data-sortable="true">Set Name</th>
-                          <th data-field="value" data-sortable="true">Card Value</th>
-                          <th data-field="quality" data-sortable="true">Card Quality</th>
-                          <th data-field="foil" data-sortable="true">Foil</th>
-                        </tr>
-                        <tbody>
-                        <% trade.reciever_cards.each do |card| %>
-                          <tr>
-                            <td>
-                            <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-                            </td>
-                  
-                            <td><%= card.card.card_set.name %></td>
-                            <td><%= card.value %></td>
-                            <td><%= card.quality %></td>
-                            <td>
-                            <% if card.foil == true %>
-                                <%=fa_icon "check" %>
-                            <% else %>
-                                <%=fa_icon "times" %>  
-                            <% end %> 
-                            </td>
-                          </tr>
-                        <% end %>
-                        <% if trade.reciever_value and trade.reciever_value != 0 %>
-                          <p> You will be sent $<%= trade.reciever_value %> </p>
-                        <% end %>
-                        </tbody>
-                      </thead>
-                      </table>
-                  </div>
-                  </p>
-                <% end %>
-                </div>
+	  	<div class="row pt-4">
 
-              <% else %>
-                <p> You haven&#39;t sent any pending trades</p>
-              <% end %>
-          </div>
+		  <div class = "col d-flex justify-content-center">
+			<h3><%=fa_icon "level-down"%> Received Requests</h3>
+		  </div>
 
+		  <div class = "col d-flex justify-content-center">
+			<h3><%=fa_icon "share"%> Sent Requests</h3>
+		  </div>
 
-          <div class = "col" id = "pending_recieved_trades">
+		
+		</div>
+
+		<div class="row pl-1 pr-1">
+
+			<!-- PENDING RECEIVED TRADES --->
+	  		<div class = "col" id = "pending_recieved_trades">
               <% if @pending_recieved_trades && @pending_recieved_trades.ids != [] %>
-              <button type="button" class="btn btn-primary my-2" 
-              data-toggle="collapse" data-target= "#pending_recieved_container" > <h4>Received Trades</h4></button>
-              <div class = "collapse show" id = "pending_recieved_container">
+              
                 <% @pending_recieved_trades.each do |trade| %>
                   <p>
-                  <button type="button" class="btn btn-primary my-2"
-                  data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> </button>
-                  <%= link_to trade.sender.email, collection_path(trade.sender.id) %> is waiting for you to accept!
-                  <div class = "collapse" id = <%="trade#{trade.id}"%> >
 
-                    <%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>
-                    
-                    <button form = <%="trade_form#{trade.id}"%> name = "commit" value = "pending_accepted" type="submit"  class="btn btn-success my-2"> Accept </button>
-                    <button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "pending_declined" type ="submit" class="btn btn-danger my-2"> Decline </button>
-                    </form>
+                  
+                   	<div class="row pt-2">
+					   <div class = "col">
+							
+							<h4><button type="button" class="btn-outline btn-primary" data-toggle="collapse" 
+								data-target= <%="#trade#{trade.id}"%> >
+								 <%=fa_icon "chevron-down"%> </button>
+								   <%=fa_icon "retweet"%> Trade Request - 
+								   <span class="text-muted"><%=trade.sender.email %></span>
+							</h4>
+						
+						</div>
+
+						<span class="text-muted pt-1"><%= trade.created_at %></span>
+
+						
+						
+					</div>
+					
+					<div class = "collapse" id = <%="trade#{trade.id}"%>>
+						<div class = "col pl-4 pt-1">
+
+							<h5> <%=fa_icon "clone"%> Cards Offered To You</h5>
+							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
+							<thead>
+							<tr>
+								<th data-field="user" data-sortable="true">Sender</th>
+								<th data-field="datetime" data-sortable="true">Date/Time</th>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							</thead>
+							<tbody>
+							<% trade.sender_cards.each do |card| %>
+							<tr>
+
+								<td><%= link_to collection_path(trade.sender.id), :class => "btn btn-secondary-outline", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+								<i class="fa fa-user"></i> <%=trade.sender.email %>
+							<% end %></td>
+								<td><%= trade.created_at %></td>
+
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+														<td>
+														<% if card.foil == true %>
+																<%=fa_icon "check" %>
+														<% else %>
+																<%=fa_icon "times" %>  
+														<% end %> 
+														</td>
+							</tr>
+							<% end %>
+							</tbody>
+							</table>
+							<% if trade.sender_value and trade.sender_value != 0 %>
+
+									<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment Offered</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
+											
+									</div>
+
+							<% end %>
+
+							<h5> <%=fa_icon "clone"%> Cards You Will Trade</h5>
+
+							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
+							<thead>
+							<tr>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							<tbody>
+							<% trade.reciever_cards.each do |card| %>
+								<tr>
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+						
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+								<td>
+								<% if card.foil == true %>
+									<%=fa_icon "check" %>
+								<% else %>
+									<%=fa_icon "times" %>  
+								<% end %> 
+								</td>
+								</tr>
+							<% end %>
+							</tbody>
+							</thead>
+							</table> 
+
+							<% if trade.reciever_value and trade.reciever_value != 0 %>
+								
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment Requested</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
+											
+									</div>
+							<% end %>
 
 
-                    <p> View <%= link_to trade.sender.email, collection_path(trade.sender.id) %></p>
-                    <p>Created on <%= trade.created_at %> </p>
-                    <h5> <%=fa_icon "clone"%> Cards Offered to You</h5>
-                    <table class=" table table-striped" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
-                    <thead>
-                      <tr>
-                        <th data-field="name" data-sortable="true">Card Name</th>
-                        <th data-field="set" data-sortable="true">Set Name</th>
-                        <th data-field="value" data-sortable="true">Card Value</th>
-                        <th data-field="quality" data-sortable="true">Card Quality</th>
-                        <th data-field="foil" data-sortable="true">Foil</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <% trade.sender_cards.each do |card| %>
-                      <tr>
-                        <td>
-                        <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-                        </td>
-              
-                        <td><%= card.card.card_set.name %></td>
-                        <td><%= card.value %></td>
-                        <td><%= card.quality %></td>
-												<td>
-												<% if card.foil == true %>
-														<%=fa_icon "check" %>
-												<% else %>
-														<%=fa_icon "times" %>  
-												<% end %> 
-												</td>
-                      </tr>
-                    <% end %>
-                    <% if trade.sender_value and trade.sender_value != 0 %>
-                        <p> You were offered $<%= trade.sender_value %> with this trade </p>
-                    <% end %>
-                    </tbody>
-                    </table>
-                    <h5> <%=fa_icon "clone"%> Cards You Will Trade</h5>
-                    <table class=" table table-striped" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
-                    <thead>
-                      <tr>
-                        <th data-field="name" data-sortable="true">Card Name</th>
-                        <th data-field="set" data-sortable="true">Set Name</th>
-                        <th data-field="value" data-sortable="true">Card Value</th>
-                        <th data-field="quality" data-sortable="true">Card Quality</th>
-                        <th data-field="foil" data-sortable="true">Foil</th>
-                      </tr>
-                      <tbody>
-                      <% trade.reciever_cards.each do |card| %>
-                        <tr>
-                          <td>
-                          <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-                          </td>
-                
-                          <td><%= card.card.card_set.name %></td>
-                          <td><%= card.value %></td>
-                          <td><%= card.quality %></td>
-                          <td>
-                          <% if card.foil == true %>
-                              <%=fa_icon "check" %>
-                          <% else %>
-                              <%=fa_icon "times" %>  
-                          <% end %> 
-                          </td>
-                        </tr>
-                      <% end %>
-                      <% if trade.reciever_value and trade.reciever_value != 0 %>
-                        <p> You were asked for $<%= trade.reciever_value %> with this trade </p>
-                      <% end %>
-                      </tbody>
-                    </thead>
-                    </table>  
-                  </div>
+							<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>
+							
+							<button form = <%="trade_form#{trade.id}"%> name = "commit" value = "pending_accepted" type="submit"  class="btn btn-primary my-2 mx-2" title= 'Accept above trade request' data-toggle = 'tooltip' data-placement= 'bottom'><%=fa_icon "check"%> Accept Request </button>
+							<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "pending_declined" type ="submit" class="btn btn-danger my-2 mx-2" title= 'Decline above trade request' data-toggle = 'tooltip' data-placement= 'bottom'><%=fa_icon "times"%> Decline Request </button>
+							
+							
+							</form> 
+						</div>
+					</div>
                   </p>
                 <% end %>
-              </div>
+             
               <% else %>
-                <p> You haven&#39;t received any pending trades</p>
+
+				<div class = "col d-flex justify-content-center align-items-center my-5">
+					<h4><span class="text-muted"> You have not received requests for trades</span></h4>
+				</div>
+
               <% end %>
-          </div>
+          	</div>
 
-        </div>
-      </div>
-
-
-      <!-- ACCEPTED CONTAINER #########################################################################      -->
-
-      <div class = "col" id = "accepted_col">
-        <button type="button" class="btn btn-primary my-2"
-        data-toggle="collapse" data-target= "#accepted_container"  > <h4>Accepted Trades</h4>
-        </button>
-
-        <div class = "collapse" id = "accepted_container">
-          <div class = "col" id = "accepted_trades">
-            <% if @accepted_trades && @accepted_trades.ids != [] %>
-							<% @accepted_trades.each do |trade| %>
-								<p>
-									<!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
-									<% if trade.sender_id == current_user.id
-												my_type = "s" 
-												my_user = trade.sender
-												other_user = trade.reciever
-												my_cards = trade.sender_cards
-												other_cards = trade.reciever_cards
-												my_value = trade.sender_value
-												other_value = trade.reciever_value
-												my_status = trade.sender_status
-												other_status = trade.reciever_status
-											else
-												my_type = "r"
-												my_user = trade.reciever
-												other_user = trade.sender
-												my_cards = trade.reciever_cards
-												other_cards = trade.sender_cards
-												my_value = trade.reciever_value
-												other_value = trade.sender_value
-												my_status = trade.reciever_status
-												other_status = trade.sender_status
-											end
-									%>
-
-								<button type="button" class="btn btn-primary my-2"
-								data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> 
-								</button>
-								Trade with <%= link_to other_user.email, collection_path(other_user.id) %> 
-								<div class = "collapse" id = <%="trade#{trade.id}"%> >
-									<p>Created on <%= trade.created_at %> </p>
-									<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>   
-									<div class = "row" id = "statuses">
-											<div class = "col" id = "my_status">
-												<p> Your Status </p>
-												<% if my_status == "Accepted" %>
-													<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that received your cards and/or money"> <%=fa_icon "times" %>Unconfirmed</button>
-
-												<% elsif my_status == "Completed" %>
-													<button disabled class="btn btn-success my-2" title = "You have received cards and/or money"> <%=fa_icon "check" %>Confirmed</button>
-
-												<% end %>
-											</div>
-											<div class = "col" id = "other_status">
-												<p>Their Status </p>
-												<% if other_status == "Accepted" %>
-													<button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" > <%=fa_icon "times" %>Unconfirmed </button>
-												<% elsif my_status == "Completed" %>
-													<button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money"> <%=fa_icon "check" %>Confirmed </button>
-												<% end %>
-											</div>
-									</div>         
-									</form>
+		  <!-- PENDING RECEIVED TRADES --->
 
 
-									<% if my_value != 0 and my_value != nil %>
-										<%= "You will send $#{my_value}" %>
-									<% elsif other_value !=0 and other_value != nil %>
-										<%= "You will receive $#{other_value}" %>
-									<% end %>
 
-									<% if my_type == "s" %>
-										<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
-									<% else %>
-										<h5><%=fa_icon "clone"%> Cards You Offered</h5>	
-									<% end %>
-									<table class=" table table-striped" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
-										<thead>
-											<tr>
-												<th data-field="name" data-sortable="true">Card Name</th>
-												<th data-field="set" data-sortable="true">Set Name</th>
-												<th data-field="value" data-sortable="true">Card Value</th>
-												<th data-field="quality" data-sortable="true">Card Quality</th>
-												<th data-field="foil" data-sortable="true">Foil</th>
-											</tr>
-										</thead>
-										<tbody>
-										<% my_cards.each do |card| %>
-											<tr>
-												<td>
-												<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-												</td>
+		<!-- PENDING SEND TRADES --->
+          <div class = "col" id = "pending_sent_trades">
+
+		  	 <% if @pending_sent_trades && @pending_sent_trades.ids != [] %>
+              
+                <% @pending_sent_trades.each do |trade| %>
+                  <p>
+
+                  
+                   	<div class="row pt-2 pl-1 pr-1">
+					   <div class = "col">
 							
-												<td><%= card.card.card_set.name %></td>
-												<td><%= card.value %></td>
-												<td><%= card.quality %></td>
-												<td>
-												<% if card.foil == true %>
-														<%=fa_icon "check" %>
-												<% else %>
-														<%=fa_icon "times" %>  
-												<% end %> 
-												</td>
-											</tr>
-										<% end %> 
-										</tbody>
-									</table>
+							<h4><button type="button" class="btn-outline btn-primary" data-toggle="collapse" 
+								data-target= <%="#sendingtrade#{trade.id}"%> >
+								 <%=fa_icon "chevron-down"%> </button>
+								   <%=fa_icon "retweet"%> Trade Request - 
+								   <span class="text-muted"><%=trade.reciever.email%></span>
+							</h4>
+						
+						</div>
 
-									<% if my_type == "s" %>
-										<h5><%=fa_icon "clone"%> Cards You Offered</h5>
-									<% else %>
-										<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
-									<% end %>
-									<table class=" table table-striped" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
-									<thead>
-										<tr>
-											<th data-field="name" data-sortable="true">Card Name</th>
-											<th data-field="set" data-sortable="true">Set Name</th>
-											<th data-field="value" data-sortable="true">Card Value</th>
-											<th data-field="quality" data-sortable="true">Card Quality</th>
-											<th data-field="foil" data-sortable="true">Foil</th>
-										</tr>
-										<tbody>
-										<% other_cards.each do |card| %>
-											<tr>
-												<td>
-												<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-												</td>
-												<td><%= card.card.card_set.name %></td>
-												<td><%= card.value %></td>
-												<td><%= card.quality %></td>
-												<td>
-												<% if card.foil == true %>
-														<%=fa_icon "check" %>
-												<% else %>
-														<%=fa_icon "times" %>  
-												<% end %> 
-												</td>
-											</tr>
-										<% end %>
-										</tbody>
-									</thead>
-									</table>
-								</div>
-								</p>
+						<span class="text-muted pt-1"><%= trade.created_at %></span>
+
+						
+						
+					</div>
+					
+					<div class = "collapse" id = <%="sendingtrade#{trade.id}"%>>
+						<div class = "col pl-4 pt-1">
+
+							<h5> <%=fa_icon "clone"%> Cards You Offered</h5>
+							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
+							<thead>
+							<tr>
+								<th data-field="user" data-sortable="true">Receiver</th>
+								<th data-field="datetime" data-sortable="true">Date/Time</th>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							</thead>
+							<tbody>
+							<% trade.sender_cards.each do |card| %>
+							<tr>
+
+								<td><%= link_to collection_path(trade.reciever.id), :class => "btn btn-secondary-outline", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+								<i class="fa fa-user"></i> <%=trade.reciever.email %>
+							<% end %></td>
+								<td><%= trade.created_at %></td>
+
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+														<td>
+														<% if card.foil == true %>
+																<%=fa_icon "check" %>
+														<% else %>
+																<%=fa_icon "times" %>  
+														<% end %> 
+														</td>
+							</tr>
 							<% end %>
-						<% else %>
-								<p> You haven't agreed upon any trades </p>
-						<% end %>		
-            
-          </div>
-        </div>
+							</tbody>
+							</table>
+							<% if trade.sender_value and trade.sender_value != 0 %>
+
+									<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment Offered</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
+											
+									</div>
+
+							<% end %>
+
+							<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
+
+							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
+							<thead>
+							<tr>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							<tbody>
+							<% trade.reciever_cards.each do |card| %>
+								<tr>
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+						
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+								<td>
+								<% if card.foil == true %>
+									<%=fa_icon "check" %>
+								<% else %>
+									<%=fa_icon "times" %>  
+								<% end %> 
+								</td>
+								</tr>
+							<% end %>
+							</tbody>
+							</thead>
+							</table> 
+
+							<% if trade.reciever_value and trade.reciever_value != 0 %>
+								
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment Requested</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
+											
+									</div>
+							<% end %>
+
+
+							<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>
+							
+							<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "pending_declined" type ="submit" class="btn btn-danger my-2" title= 'Cancel above trade request' data-toggle = 'tooltip' data-placement= 'bottom'><%=fa_icon "times"%> Cancel Request </button>
+							
+							
+							
+							</form> 
+						</div>
+					</div>
+                  </p>
+                <% end %>
+             
+              <% else %>
+
+				<div class = "col d-flex justify-content-center align-items-center my-5">
+					<h4><span class="text-muted"> You have not sent requests for trades</span></h4>
+				</div>
+
+            <% end %>
+
+		</div>
+		<!-- PENDING SEND TRADES --->
+
         
       </div>
+  	</div>
+
+   </div>
+  </div>
+  <!-- END OF PENDING TRADES PANEL -->
 
 
-      <!-- COMPLETED CONTAINER 
-      #
-      #
-      #
-      #
-      -->
 
 
-      <div class = "col" id = "completed_col">
-        <button type="button" class="btn btn-primary my-2"
-        data-toggle="collapse" data-target= "#completed_container" > <h4>Completed Trades</h4>
-        </button>
-        <div class = "collapse" id = "completed_container">
-				<div class = "col" id = "completed_trades">
-				<% if @completed_trades && @completed_trades.ids != [] %>
-					<% @completed_trades.each do |trade| %>
-						<p>
-							<!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
-							<% if trade.sender_id == current_user.id
-										my_type = "s" 
-										my_user = trade.sender
-										other_user = trade.reciever
-										my_cards = trade.sender_cards
-										other_cards = trade.reciever_cards
-										my_value = trade.sender_value
-										other_value = trade.reciever_value
-										my_status = trade.sender_status
-										other_status = trade.reciever_status
-									else
-										my_type = "r"
-										my_user = trade.reciever
-										other_user = trade.sender
-										my_cards = trade.reciever_cards
-										other_cards = trade.sender_cards
-										my_value = trade.reciever_value
-										other_value = trade.sender_value
-										my_status = trade.reciever_status
-										other_status = trade.sender_status
-									end
-							%>
 
-						<button type="button" class="btn btn-primary my-2"
-						data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> 
-						</button>
-						Trade with <%= link_to other_user.email, collection_path(other_user.id) %> 
-						<div class = "collapse" id = <%="trade#{trade.id}"%> >
-							<p>Created on <%= trade.created_at %> </p>
 
-							<% if my_value != 0 and my_value != nil %>
-								<%= "You sent $#{my_value}" %>
-							<% elsif other_value !=0 and other_value != nil %>
-								<%= "You recieved $#{other_value}" %>
-							<% end %>
+
+
+
+
+
+
+
+
+  <!-- ACCEPTED TRADES PANEL -->
+  <div class="tab-pane fade" id="acceptedPanel" role="tabpanel">
+
+
+
+
+
+	 <!-- ACCEPTED CONTAINER #########################################################################      -->
+
+      <div class = "col" id = "accepted_col">
+        
+			<% if @accepted_trades && @accepted_trades.ids != [] %>
+                            <% @accepted_trades.each do |trade| %>
+                  <p>
+
+				  	<!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
+					<% if trade.sender_id == current_user.id
+								my_type = "s" 
+								my_user = trade.sender
+								other_user = trade.reciever
+								my_cards = trade.sender_cards
+								other_cards = trade.reciever_cards
+								my_value = trade.sender_value
+								other_value = trade.reciever_value
+								my_status = trade.sender_status
+								other_status = trade.reciever_status
+							else
+								my_type = "r"
+								my_user = trade.reciever
+								other_user = trade.sender
+								my_cards = trade.reciever_cards
+								other_cards = trade.sender_cards
+								my_value = trade.reciever_value
+								other_value = trade.sender_value
+								my_status = trade.reciever_status
+								other_status = trade.sender_status
+							end
+					%>
+
+                  
+                   	<div class="row pt-2 pl-1 pr-1">
+					   <div class = "col">
+							
+							<h4><button type="button" class="btn-outline btn-primary" data-toggle="collapse" 
+								data-target= <%="#acceptedtrade#{trade.id}"%> >
+								 <%=fa_icon "chevron-down"%> </button>
+								   <%=fa_icon "retweet"%> Trade Accepted - 
+								   <span class="text-muted"><%=other_user.email%></span>
+							</h4>
+						
+						</div>
+
+						<span class="text-muted pt-1"><%= trade.created_at %></span>
+
+						
+						
+					</div>
+					
+					<div class = "collapse" id = <%="acceptedtrade#{trade.id}"%>>
+						<div class = "col pl-4 pt-1">
+
 
 							<% if my_type == "s" %>
-								<h5> <%=fa_icon "clone"%> Cards You Received</h5>
+								<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
 							<% else %>
-								<h5><%=fa_icon "clone"%> Cards You Offered</h5>	
+								<h5><%=fa_icon "clone"%> Cards You Offered</h5> 
 							<% end %>
-							<table class=" table table-striped" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
-								<thead>
-									<tr>
-										<th data-field="name" data-sortable="true">Card Name</th>
-										<th data-field="set" data-sortable="true">Set Name</th>
-										<th data-field="value" data-sortable="true">Card Value</th>
-										<th data-field="quality" data-sortable="true">Card Quality</th>
-										<th data-field="foil" data-sortable="true">Foil</th>
-									</tr>
-								</thead>
-								<tbody>
-								<% my_cards.each do |card| %>
-									<tr>
-										<td>
-										<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-										</td>
-					
-										<td><%= card.card.card_set.name %></td>
-										<td><%= card.value %></td>
-										<td><%= card.quality %></td>
-										<td>
-										<% if card.foil == true %>
-												<%=fa_icon "check" %>
-										<% else %>
-												<%=fa_icon "times" %>  
-										<% end %> 
-										</td>
-									</tr>
-								<% end %> 
-								</tbody>
+
+							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
+							<thead>
+							<tr>
+								<th data-field="user" data-sortable="true">Receiver</th>
+								<th data-field="datetime" data-sortable="true">Date/Time</th>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							</thead>
+							<tbody>
+							<% my_cards.each do |card| %>
+							<tr>
+
+								<td><%= link_to collection_path(other_user.id), :class => "btn btn-secondary-outline", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+								<i class="fa fa-user"></i> <%=other_user.email %>
+							<% end %></td>
+								<td><%= trade.created_at %></td>
+
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+														<td>
+														<% if card.foil == true %>
+																<%=fa_icon "check" %>
+														<% else %>
+																<%=fa_icon "times" %>  
+														<% end %> 
+														</td>
+							</tr>
+							<% end %>
+							</tbody>
 							</table>
+
+							<% if my_value != 0 and my_value != nil %>
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
+											
+								</div>
+								
+							<% elsif other_value !=0 and other_value != nil %>
+
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Receive</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= other_value %></h6></span>
+											
+								</div>
+								
+							<% end %>
+
 
 							<% if my_type == "s" %>
 								<h5><%=fa_icon "clone"%> Cards You Offered</h5>
 							<% else %>
-								<h5> <%=fa_icon "clone"%> Cards You Received</h5>
+								<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
 							<% end %>
-							<table class=" table table-striped" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
+
+							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
+							<tr>
+								<th data-field="name" data-sortable="true">Card Name</th>
+								<th data-field="set" data-sortable="true">Set Name</th>
+								<th data-field="value" data-sortable="true">Card Value</th>
+								<th data-field="quality" data-sortable="true">Card Quality</th>
+								<th data-field="foil" data-sortable="true">Foil</th>
+							</tr>
+							<tbody>
+							<% other_cards.each do |card| %>
 								<tr>
-									<th data-field="name" data-sortable="true">Card Name</th>
-									<th data-field="set" data-sortable="true">Set Name</th>
-									<th data-field="value" data-sortable="true">Card Value</th>
-									<th data-field="quality" data-sortable="true">Card Quality</th>
-									<th data-field="foil" data-sortable="true">Foil</th>
+								<td>
+								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+								</td>
+						
+								<td><%= card.card.card_set.name %></td>
+								<td><%= card.value %></td>
+								<td><%= card.quality %></td>
+								<td>
+								<% if card.foil == true %>
+									<%=fa_icon "check" %>
+								<% else %>
+									<%=fa_icon "times" %>  
+								<% end %> 
+								</td>
 								</tr>
-								<tbody>
-								<% other_cards.each do |card| %>
-									<tr>
-										<td>
-										<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-										</td>
-										<td><%= card.card.card_set.name %></td>
-										<td><%= card.value %></td>
-										<td><%= card.quality %></td>
-										<td>
-										<% if card.foil == true %>
-												<%=fa_icon "check" %>
-										<% else %>
-												<%=fa_icon "times" %>  
-										<% end %> 
-										</td>
-									</tr>
-								<% end %>
-								</tbody>
+							<% end %>
+							</tbody>
 							</thead>
-							</table>
+							</table> 
+
+
+
+							<div class="row-fluid my-3 d-flex justify-content-center">
+													
+								<h4><%=fa_icon "retweet"%> Transaction Status</h4> 
+	
+							</div>
+							<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>   
+                                    
+									<div class = "row" id = "statuses">
+
+											
+
+										<div class = "col">
+											<div class = "row d-flex justify-content-center">
+												<h3><%=fa_icon "user-circle"%> Your Status</h3>
+											</div>
+
+											<div class = "row d-flex justify-content-center">
+												<% if my_status == "Accepted" %>
+														<button form = <%="trade_form#{trade.id}"%>  name = "commit" value = "accepted_completed" type ="submit" class="btn btn-danger my-2" title = "Confirm that received your cards and/or money"> <%=fa_icon "times" %> Unconfirmed</button>
+
+													<% elsif my_status == "Completed" %>
+														<button disabled class="btn btn-success my-2" title = "You have received cards and/or money"> <%=fa_icon "check" %> Confirmed</button>
+
+													<% end %>
+											</div>
+										</div>
+
+										<div class = "col">
+											<div class = "row d-flex justify-content-center">
+												<h3><%=fa_icon "user"%> Their Status</h3>
+											</div>
+
+											<div class = "row d-flex justify-content-center">
+											 	<% if other_status == "Accepted" %>
+                                                    <button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" > <%=fa_icon "times" %> Unconfirmed </button>
+                                                <% elsif my_status == "Completed" %>
+                                                    <button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money"> <%=fa_icon "check" %> Confirmed </button>
+                                                <% end %>
+											</div>
+										</div>
+
+											
+                                    </div>         
+                            </form>
+
+						
+
 						</div>
-						</p>
-					<% end %>
-				<% else %>
-						<p> You haven't completed any trades </p>
-				<% end %>		
+					</div>
+                  </p>
+                <% end %>
+             
+              <% else %>
+
+				<div class = "col d-flex justify-content-center align-items-center my-5">
+					<h4><span class="text-muted"> You have accepted any trade requests</span></h4>
+				</div>
+
+            <% end %>
+         
+        
+      </div>
+
+
+
+
+
+
+
+
+    
+
+  </div>
+  <!-- END OF ACCEPTED TRADES PANEL -->
+
+
+
+
+
+
+
+  <!-- Panel 3 -->
+  <div class="tab-pane fade" id="completedPanel" role="tabpanel">
+
+
+
+	
+
+		<div class = "col" id = "completed_col">
+        <button type="button" class="btn btn-primary my-2"
+        data-toggle="collapse" data-target= "#completed_container" > <h4>Completed Trades</h4>
+        </button>
+        <div class = "collapse" id = "completed_container">
+                <div class = "col" id = "completed_trades">
+                <% if @completed_trades && @completed_trades.ids != [] %>
+                    <% @completed_trades.each do |trade| %>
+                        <p>
+                            <!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
+                            <% if trade.sender_id == current_user.id
+                                        my_type = "s" 
+                                        my_user = trade.sender
+                                        other_user = trade.reciever
+                                        my_cards = trade.sender_cards
+                                        other_cards = trade.reciever_cards
+                                        my_value = trade.sender_value
+                                        other_value = trade.reciever_value
+                                        my_status = trade.sender_status
+                                        other_status = trade.reciever_status
+                                    else
+                                        my_type = "r"
+                                        my_user = trade.reciever
+                                        other_user = trade.sender
+                                        my_cards = trade.reciever_cards
+                                        other_cards = trade.sender_cards
+                                        my_value = trade.reciever_value
+                                        other_value = trade.sender_value
+                                        my_status = trade.reciever_status
+                                        other_status = trade.sender_status
+                                    end
+                            %>
+
+                        <button type="button" class="btn btn-primary my-2"
+                        data-toggle="collapse" data-target= <%="#trade#{trade.id}"%> > <%=fa_icon "chevron-down"%> 
+                        </button>
+                        Trade with <%= link_to other_user.email, collection_path(other_user.id) %> 
+                        <div class = "collapse" id = <%="trade#{trade.id}"%> >
+                            <p>Created on <%= trade.created_at %> </p>
+
+                            <% if my_value != 0 and my_value != nil %>
+                                <%= "You sent $#{my_value}" %>
+                            <% elsif other_value !=0 and other_value != nil %>
+                                <%= "You recieved $#{other_value}" %>
+                            <% end %>
+
+                            <% if my_type == "s" %>
+                                <h5> <%=fa_icon "clone"%> Cards You Received</h5>
+                            <% else %>
+                                <h5><%=fa_icon "clone"%> Cards You Offered</h5> 
+                            <% end %>
+                            <table class=" table table-striped" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th data-field="name" data-sortable="true">Card Name</th>
+                                        <th data-field="set" data-sortable="true">Set Name</th>
+                                        <th data-field="value" data-sortable="true">Card Value</th>
+                                        <th data-field="quality" data-sortable="true">Card Quality</th>
+                                        <th data-field="foil" data-sortable="true">Foil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% my_cards.each do |card| %>
+                                    <tr>
+                                        <td>
+                                        <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                                        </td>
+                    
+                                        <td><%= card.card.card_set.name %></td>
+                                        <td><%= card.value %></td>
+                                        <td><%= card.quality %></td>
+                                        <td>
+                                        <% if card.foil == true %>
+                                                <%=fa_icon "check" %>
+                                        <% else %>
+                                                <%=fa_icon "times" %>  
+                                        <% end %> 
+                                        </td>
+                                    </tr>
+                                <% end %> 
+                                </tbody>
+                            </table>
+
+                            <% if my_type == "s" %>
+                                <h5><%=fa_icon "clone"%> Cards You Offered</h5>
+                            <% else %>
+                                <h5> <%=fa_icon "clone"%> Cards You Received</h5>
+                            <% end %>
+                            <table class=" table table-striped" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                                <tr>
+                                    <th data-field="name" data-sortable="true">Card Name</th>
+                                    <th data-field="set" data-sortable="true">Set Name</th>
+                                    <th data-field="value" data-sortable="true">Card Value</th>
+                                    <th data-field="quality" data-sortable="true">Card Quality</th>
+                                    <th data-field="foil" data-sortable="true">Foil</th>
+                                </tr>
+                                <tbody>
+                                <% other_cards.each do |card| %>
+                                    <tr>
+                                        <td>
+                                        <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                                        </td>
+                                        <td><%= card.card.card_set.name %></td>
+                                        <td><%= card.value %></td>
+                                        <td><%= card.quality %></td>
+                                        <td>
+                                        <% if card.foil == true %>
+                                                <%=fa_icon "check" %>
+                                        <% else %>
+                                                <%=fa_icon "times" %>  
+                                        <% end %> 
+                                        </td>
+                                    </tr>
+                                <% end %>
+                                </tbody>
+                            </thead>
+                            </table>
+                        </div>
+                        </p>
+                    <% end %>
+                <% else %>
+                        <p> You haven't completed any trades </p>
+                <% end %>       
         </div>
       </div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
   </div>
-  
+  <!-- Panel 3 -->
+
+
+
+
+
 </div>
+<!-- end of Tab panels -->
+
+
+
+
+
+
+
+ 
+  
+</div> 
+<!-- END OF CONTAINER --!>
