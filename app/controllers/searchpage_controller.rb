@@ -35,27 +35,27 @@ class SearchpageController < ApplicationController
 
     elsif params[:mode] == "Advanced"
 
-      name = params[:name]
+      @name = params[:name]
 
-      if(name != "")
-        @search_term_advanced = name
+      if(@name != "")
+        @search_term_advanced = @name
       else
         @search_term_advanced = @search_term
       end
 
 
-      condition = params[:condition]
-      set = params[:set]
-      foil = params[:foil]
+      @condition = params[:condition]
+      @set = params[:set]
+      @foil = params[:foil]
 
-      minprice = params[:minprice]
-      maxprice = params[:maxprice]
+      @minprice = params[:minprice]
+      @maxprice = params[:maxprice]
 
-      country = params[:country]
-      state = params[:state]
-      city = params[:city]
+      @country = params[:country]
+      @state = params[:state]
+      @city = params[:city]
 
-      if(foil == "")
+      if(@foil == "")
         foilQuery = ""
       else
         foilQuery = " and foil = :foil"
@@ -75,15 +75,15 @@ class SearchpageController < ApplicationController
            " and value <= :maxprice",
        search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
-       quality: "%#{condition}%",
-       foil: foil,
-       set: "%#{set}%",
+       quality: "%#{@condition}%",
+       foil: @foil,
+       set: "%#{@set}%",
 
-       minprice: minprice,
-       maxprice: maxprice,
-       country: "%#{country}%",
-       state: "%#{state}%",
-       city:"%#{city}%"
+       minprice: @minprice,
+       maxprice: @maxprice,
+       country: "%#{@country}%",
+       state: "%#{@state}%",
+       city:"%#{@city}%"
        )
 
        @results_wishlist = CardNeeded.joins(:card).joins(:user).all.where(
@@ -99,15 +99,15 @@ class SearchpageController < ApplicationController
            " and value <= :maxprice",
        search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
-       quality: "%#{condition}%",
-       foil: foil,
-       set: "%#{set}%",
+       quality: "%#{@condition}%",
+       foil: @foil,
+       set: "%#{@set}%",
 
-       minprice: minprice,
-       maxprice: maxprice,
-       country: "%#{country}%",
-       state: "%#{state}%",
-       city:"%#{city}%"
+       minprice: @minprice,
+       maxprice: @maxprice,
+       country: "%#{@country}%",
+       state: "%#{@state}%",
+       city:"%#{@city}%"
        )
 
   

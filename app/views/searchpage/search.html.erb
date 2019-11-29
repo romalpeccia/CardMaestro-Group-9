@@ -62,7 +62,52 @@ font-size:150%;
 <div class="container-fluid">
 
 
-<h4><%=fa_icon "filter"%><span class="text-muted"> Advanced Search</h4>
+<h4><%=fa_icon "filter"%><span class="text-muted"> Advanced Search</span></h4> 
+<%if(@name != "")%>
+  <span class="text-muted"><%='Card Name:'%></span>
+  <span class="text-muted">"<%=@name%>"</span> 
+<%end%>
+
+<%if(@condition != "")%>
+  <span class="text-muted"><%='Condition:'%></span>
+  <span class="text-muted">"<%=@condition%>"</span> 
+<%end%>
+
+<%if(@set != "")%>
+  <span class="text-muted"><%='Set:'%></span>
+  <span class="text-muted">"<%=@set%>"</span> 
+<%end%>
+
+<%if(@foil != "")%>
+  <span class="text-muted"><%='Foil:'%></span>
+  <span class="text-muted">"<%=@foil%>"</span> 
+<%end%>
+
+<%if(@minprice != "0")%>
+  <span class="text-muted"><%='Min Price:'%></span>
+  <span class="text-muted">"<%=@minprice%>"</span> 
+<%end%>
+
+<%if(@maxprice != "999999999999")%>
+  <span class="text-muted"><%='Max Price:'%></span>
+  <span class="text-muted">"<%=@maxprice%>"</span> 
+<%end%>
+
+<%if(@country != "")%>
+  <span class="text-muted"><%='Country:'%></span>
+  <span class="text-muted">"<%=@country%>"</span> 
+<%end%>
+
+<%if(@state != "")%>
+  <span class="text-muted"><%='State:'%></span>
+  <span class="text-muted">"<%=@state%>"</span> 
+<%end%>
+
+<%if(@city != "")%>
+  <span class="text-muted"><%='City:'%></span>
+  <span class="text-muted">"<%=@city%>"</span> 
+<%end%>
+
 
 
 	<div class="row">
