@@ -33,24 +33,39 @@ class SearchpageController < ApplicationController
           "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id",
            search: "%#{@search_term}%", current_user_id: current_user_param )
 
-    elsif params[:mode] == "Advanced" 
+    elsif params[:mode] == "Advanced"
 
-      condition = params[:condition]
-      set = params[:set]
-      foil = params[:foil]
+      @name = params[:name]
 
-      minprice = params[:minprice]
-      maxprice = params[:maxprice]
+      if(@name != "")
+        @search_term_advanced = @name
+      else
+        @search_term_advanced = @search_term
+      end
 
-      country = params[:country]
-      state = params[:state]
-      city = params[:city]
+
+      @condition = params[:condition]
+      @set = params[:set]
+      @foil = params[:foil]
+
+      @minprice = params[:minprice]
+      @maxprice = params[:maxprice]
+
+      @country = params[:country]
+      @state = params[:state]
+      @city = params[:city]
+
+      if(@foil == "")
+        foilQuery = ""
+      else
+        foilQuery = " and foil = :foil"
+      end
       
       #advanced search query
       @results = CardOwned.joins(:card).joins(:user).all.where(
         "lower(card_name) LIKE lower(:search)"+
         " and user_id <> :current_user_id"+
-         " and foil = :foil"+
+         foilQuery+
           " and lower(quality) like lower(:quality)"+
            " and lower(set) like lower(:set)"+
            " and lower(country) like lower(:country)"+
@@ -58,23 +73,23 @@ class SearchpageController < ApplicationController
            " and lower(city) like lower(:city)"+
            " and value >= :minprice"+
            " and value <= :maxprice",
-       search: "%#{@search_term}%",
+       search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
-       quality: "%#{condition}%",
-       foil: foil,
-       set: "%#{set}%",
+       quality: "%#{@condition}%",
+       foil: @foil,
+       set: "%#{@set}%",
 
-       minprice: minprice,
-       maxprice: maxprice,
-       country: "%#{country}%",
-       state: "%#{state}%",
-       city:"%#{city}%"
+       minprice: @minprice,
+       maxprice: @maxprice,
+       country: "%#{@country}%",
+       state: "%#{@state}%",
+       city:"%#{@city}%"
        )
 
        @results_wishlist = CardNeeded.joins(:card).joins(:user).all.where(
         "lower(card_name) LIKE lower(:search)"+
         " and user_id <> :current_user_id"+
-         " and foil = :foil"+
+          foilQuery +
           " and lower(quality) like lower(:quality)"+
            " and lower(set) like lower(:set)"+
            " and lower(country) like lower(:country)"+
@@ -82,17 +97,17 @@ class SearchpageController < ApplicationController
            " and lower(city) like lower(:city)"+
            " and value >= :minprice"+
            " and value <= :maxprice",
-       search: "%#{@search_term}%",
+       search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
-       quality: "%#{condition}%",
-       foil: foil,
-       set: "%#{set}%",
+       quality: "%#{@condition}%",
+       foil: @foil,
+       set: "%#{@set}%",
 
-       minprice: minprice,
-       maxprice: maxprice,
-       country: "%#{country}%",
-       state: "%#{state}%",
-       city:"%#{city}%"
+       minprice: @minprice,
+       maxprice: @maxprice,
+       country: "%#{@country}%",
+       state: "%#{@state}%",
+       city:"%#{@city}%"
        )
 
   
