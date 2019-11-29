@@ -264,6 +264,7 @@ font-size:150%;
           <thead id="tableHead">
             <tr>
               <th data-field="user" data-sortable="true">User</th>
+              <th data-field="location" data-sortable="true">Location</th>
               <th data-field="name" data-sortable="true">Card Name</th>
               <th data-field="set" data-sortable="true">Set Name</th>
               <th data-field="value" data-sortable="true">Card Value</th>
@@ -280,6 +281,12 @@ font-size:150%;
             <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
               <i class="fa fa-user"></i> <%=card.user.email %>
             <% end %>
+
+              </td>
+
+              <td>
+
+              <%=card.user.country + ", " + card.user.province + ", " + card.user.city%>
 
               </td>
 
@@ -316,6 +323,7 @@ font-size:150%;
           <thead id="tableHead">
             <tr>
               <th data-field="user" data-sortable="true">User</th>
+              <th data-field="location" data-sortable="true">Location</th>
               <th data-field="name" data-sortable="true">Card Name</th>
               <th data-field="set" data-sortable="true">Set Name</th>
               <th data-field="value" data-sortable="true">Card Value</th>
@@ -332,6 +340,12 @@ font-size:150%;
             <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
               <i class="fa fa-user"></i> <%=card.user.email %>
             <% end %>
+
+              </td>
+
+              <td>
+
+              <%=card.user.country + ", " + card.user.province + ", " + card.user.city%>
 
               </td>
 
