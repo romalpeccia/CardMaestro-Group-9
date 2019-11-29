@@ -33,7 +33,16 @@ class SearchpageController < ApplicationController
           "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id",
            search: "%#{@search_term}%", current_user_id: current_user_param )
 
-    elsif params[:mode] == "Advanced" 
+    elsif params[:mode] == "Advanced"
+
+      name = params[:name]
+
+      if(name != "")
+        @search_term_advanced = name
+      else
+        @search_term_advanced = @search_term
+      end
+
 
       condition = params[:condition]
       set = params[:set]
@@ -64,7 +73,7 @@ class SearchpageController < ApplicationController
            " and lower(city) like lower(:city)"+
            " and value >= :minprice"+
            " and value <= :maxprice",
-       search: "%#{@search_term}%",
+       search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
        quality: "%#{condition}%",
        foil: foil,
@@ -88,7 +97,7 @@ class SearchpageController < ApplicationController
            " and lower(city) like lower(:city)"+
            " and value >= :minprice"+
            " and value <= :maxprice",
-       search: "%#{@search_term}%",
+       search: "%#{@search_term_advanced}%",
        current_user_id: current_user_param, 
        quality: "%#{condition}%",
        foil: foil,

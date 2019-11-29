@@ -51,7 +51,11 @@ font-size:150%;
 <div class="container-fluid">
   <div class="row-fluid pt-2">
 
-<h3><%=fa_icon "search"%> Search Results - <span class="text-muted">"<%=@search_term%>"</span></h3>  
+<h3><%=fa_icon "search"%> Search Results - <span class="text-muted">"<%if (@search_term =='')%>
+  <%='All'%>
+  <%else%>
+  <%=@search_term%>
+<%end%>"</span></h3>  
 
 
 
@@ -62,6 +66,12 @@ font-size:150%;
 
 
 	<div class="row">
+
+  <div class="col">
+			<div class="form-group pt-1">
+				<input type="text" id ="nameparam" class="form-control" placeholder= "Card Name"></input>
+			</div>
+  </div>
 		
     <div class="col">
 			<div class="form-group pt-1">
@@ -86,15 +96,7 @@ font-size:150%;
 			</div>
       </div>
 
-      <div class="col">
-			<div class="form-group pt-1">
-				<select class="filter form-control" id="foil">
-					<option value="">Select Foil</option>
-					<option value="">true</option>
-          <option value="">false</option>
-				</select>
-			</div>
-      </div>
+    
 
       <div class="col">
 			<div class="form-group pt-1">
@@ -113,8 +115,22 @@ font-size:150%;
 
 
 <div class="row">
+
+      <div class="col">
+			<div class="form-group pt-1">
+				<select class="filter form-control" id="foil">
+					<option value="">Select Foil</option>
+					<option value="">true</option>
+          <option value="">false</option>
+				</select>
+			</div>
+      </div>
+
+
       <div class="col">
       <div class="form-group pt-1">
+
+      
       
       <select class="filter form-control" id="country">
         <option value="">Select Country</option>
@@ -151,30 +167,23 @@ font-size:150%;
       
 
 
-
-
-
 <div class="col">
 
-</div>
+  
+  <%= link_to "Reset", 
+      {:controller => :searchpage, :action => :search, 
+      :search => @search_term
+      },
+      :class => "btn btn-danger align-center" %>
+
+      <%= link_to "Advanced Search", {:controller => :searchpage, :action => :search, 
+      :search => @search_term
+      },
+      :class => "btn btn-primary align-center", :id=> "advancedsearchid" %>
 
 
-<div class="col">
-
-  <div class="btn-group">
-
-          <%= link_to "Reset", 
-             {:controller => :searchpage, :action => :search, 
-             :search => @search_term
-              },
-             :class => "btn btn-danger align-center" %>
-        </div>
-
-          <%= link_to "Advanced Search", {:controller => :searchpage, :action => :search, 
-             :search => @search_term
-              },
-             :class => "btn btn-primary align-center", :id=> "advancedsearchid" %>
-        </div>
+          
+  </div>
 
 </div>
 
@@ -325,6 +334,7 @@ var advancedSearchField = document.getElementById("advancedsearchid");
 advancedSearchField.addEventListener("click", function(data){
 
   //grabbing all the parameters for the query
+  var name = document.getElementById("nameparam");
   var quality = document.getElementById("quality");
   var set = document.getElementById("set");
   var foil = document.getElementById("foil");
@@ -335,6 +345,9 @@ advancedSearchField.addEventListener("click", function(data){
   var city = document.getElementById("city");
 
   var search = <%=@search_term.to_json.html_safe %>
+
+  var nameValue = name.value;;
+
   var conditionValue = quality.options[quality.selectedIndex].text;
 
   if(conditionValue === "Select Condition"){
@@ -395,7 +408,8 @@ advancedSearchField.addEventListener("click", function(data){
   +"&state="+stateValue
   +"&city="+cityValue
   +"&minprice="+minpriceValue
-  +"&maxprice="+maxpriceValue;
+  +"&maxprice="+maxpriceValue
+  +"&name="+nameValue;
 
 });
 
