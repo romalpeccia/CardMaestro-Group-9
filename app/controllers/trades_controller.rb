@@ -19,10 +19,10 @@ class TradesController < ApplicationController
           @is_self = true;
         else
           user = User.find_by(id: user_id)
-          card_owned_ids = user.card_owned.map { |row| row.card_id }
-          card_needed_ids = user.card_needed.map { |row| row.card_id }
-          @collection_card_owned = card_needed_ids.collect { |id| @collection_card_owned.find_by(card_id: id)}.compact
-          @collection_card_needed = card_owned_ids.collect { |id| @collection_card_needed.find_by(card_id: id)}.compact
+        card_owned_ids = user.card_owned
+        card_needed_ids = user.card_needed
+        @collection_card_owned = card_needed_ids.map { |card| @collection_card_owned.find_by(card_id: card.card_id, quality: card.quality, foil: card.foil)}.compact
+        @collection_card_needed = card_owned_ids.map { |card| @collection_card_needed.find_by(card_id: card.card_id, quality: card.quality, foil: card.foil)}.compact
         end
       else
         flash.now[:alert] = "user not found"
