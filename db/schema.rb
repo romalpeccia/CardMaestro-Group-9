@@ -81,14 +81,6 @@ ActiveRecord::Schema.define(version: 2019_11_29_225142) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "locations", force: :cascade do |t|
-    t.string "city"
-    t.string "province"
-    t.string "country"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.bigint "conversation_id"
