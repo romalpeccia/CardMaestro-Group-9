@@ -85,14 +85,10 @@ font-size:150%;
 			<h3><%=fa_icon "level-down"%> Received Requests</h3>
 		  </div>
 
-		  <div class = "col d-flex justify-content-center">
-			<h3><%=fa_icon "share"%> Sent Requests</h3>
-		  </div>
-
 		
 		</div>
 
-		<div class="row pl-1 pr-1">
+		
 
 			<!-- PENDING RECEIVED TRADES --->
 	  		<div class = "col" id = "pending_recieved_trades">
@@ -243,6 +239,14 @@ font-size:150%;
 		  <!-- PENDING RECEIVED TRADES --->
 
 
+		<div class="row pt-4">
+
+		  <div class = "col d-flex justify-content-center">
+			<h3><%=fa_icon "share"%> Sent Requests</h3>
+		  </div>
+
+		
+		</div>
 
 		<!-- PENDING SEND TRADES --->
           <div class = "col" id = "pending_sent_trades">
@@ -394,7 +398,7 @@ font-size:150%;
 		<!-- PENDING SEND TRADES --->
 
         
-      </div>
+      
   	</div>
 
    </div>
@@ -462,13 +466,13 @@ font-size:150%;
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Accepted - 
 								   <% if trade.sender_status == "Accepted"%>
-										<button type="button" class="btn-outline btn-danger my-2"> Incomplete
+										<button disabled type="button" class="btn-outline btn-danger my-2"> Incomplete
 										</button>
 									<%elsif trade.reciever_status == "Accepted"%>
-										<button type="button" class="btn-outline btn-danger my-2"> Incomplete
+										<button disabled type="button" class="btn-outline btn-danger my-2"> Incomplete
 										</button>
 									<%else%>
-										<button type="button" class="btn-outline btn-success my-2"> Complete
+										<button disabled type="button" class="btn-outline btn-success my-2"> Complete
 										</button>
 									<%end%>
 									<span class="text-muted"> - <%=other_user.email%></span>
@@ -721,7 +725,7 @@ font-size:150%;
 								data-target= <%="#completedtrade#{trade.id}"%> >
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Completed - 
-								   <button type="button" class="btn-outline btn-success my-2"> Confirmed
+								   <button disabled type="button" class="btn-outline btn-success my-2"> Confirmed
 										</button>
 								   <span class="text-muted"> - <%=other_user.email%></span>
 							</h4>
