@@ -28,7 +28,11 @@ class SearchpageController < ApplicationController
       @results = CardOwned.all.where(
         "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id",
          search: "%#{@search_term}%", current_user_id: current_user_param )
-   
+
+      @results_wishlist = CardNeeded.all.where(
+          "lower(card_name) LIKE lower(:search) and user_id <> :current_user_id",
+           search: "%#{@search_term}%", current_user_id: current_user_param )
+
     elsif params[:mode] == "Advanced" 
 
       condition = params[:condition]
@@ -66,6 +70,31 @@ class SearchpageController < ApplicationController
        state: "%#{state}%",
        city:"%#{city}%"
        )
+
+       @results_wishlist = CardNeeded.joins(:card).joins(:user).all.where(
+        "lower(card_name) LIKE lower(:search)"+
+        " and user_id <> :current_user_id"+
+         " and foil = :foil"+
+          " and lower(quality) like lower(:quality)"+
+           " and lower(set) like lower(:set)"+
+           " and lower(country) like lower(:country)"+
+           " and lower(province) like lower(:state)"+
+           " and lower(city) like lower(:city)"+
+           " and value >= :minprice"+
+           " and value <= :maxprice",
+       search: "%#{@search_term}%",
+       current_user_id: current_user_param, 
+       quality: "%#{condition}%",
+       foil: foil,
+       set: "%#{set}%",
+
+       minprice: minprice,
+       maxprice: maxprice,
+       country: "%#{country}%",
+       state: "%#{state}%",
+       city:"%#{city}%"
+       )
+
   
 
     end

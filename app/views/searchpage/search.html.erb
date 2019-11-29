@@ -1,8 +1,4 @@
-<div class="container-fluid">
-  <div class="row-fluid pt-2">
-
 <script>
-
 $(function () {
   $('[data-toggle="popover"]').popover();
   $('[data-toggle="tooltip"]').tooltip();
@@ -19,32 +15,41 @@ $('[data-toggle="tooltip"]').click(function () {
        });
 
 });
-       
-
 </script>
-
-
-
 
 
 <style>
 
-
-#CardTable tr {
-  background-color: #ffff;
-}
-
-#CardTable th{
+#collectionTable th{
   background-color: #f1f1f1;
 }
 
-#CardTable tr:hover {
+#wishlistTable th{
   background-color: #f1f1f1;
 }
 
+.nav-tabs {
+
+background: #1E88E5;
+
+}
+
+.nav-tabs .nav-link{
+
+text-decoration: none;
+line-height: 20px;
+color: white;
+font-size:150%;
+
+}
 
 </style>
 
+
+
+
+<div class="container-fluid">
+  <div class="row-fluid pt-2">
 
 <h3><%=fa_icon "search"%> Search Results - <span class="text-muted">"<%=@search_term%>"</span></h3>  
 
@@ -171,12 +176,6 @@ $('[data-toggle="tooltip"]').click(function () {
              :class => "btn btn-primary align-center", :id=> "advancedsearchid" %>
         </div>
 
-
-
-  <%# <div class="group-btn float-right mb-2">
-    <button class="btn btn-outline-danger mr-2 " id="delete">Reset</button>
-    <button class="btn btn-info glyphicon glyphicon-search ml-2">Advanced Search</button>
-  </div> %>
 </div>
 
 </div>
@@ -185,52 +184,135 @@ $('[data-toggle="tooltip"]').click(function () {
 
 
 
+<!-- Nav tabs -->
+	<ul class="nav nav-tabs nav-justified my-2" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" data-toggle="tab" href="#collectionPanel" role="tab">
+		<%=fa_icon "clone"%> User Collections</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#wishlistPanel" role="tab">
+		<%=fa_icon "clone"%> User Wishlist</a>
+	</li>
+
+	</ul>
+	<!-- Nav tabs -->
+
+  <!-- Tab panels -->
+<div class="tab-content">
+
+  
+
+  <!-- COLLECTIONS PANEL -->
+  <div class="tab-pane fade in show active" id="collectionPanel" role="tabpanel">
+
+        <table class=" table table-hover pt-2" id="collectionTable" data-sort-name="name" data-sort-order="desc">
+          <thead id="tableHead">
+            <tr>
+              <th data-field="user" data-sortable="true">User</th>
+              <th data-field="name" data-sortable="true">Card Name</th>
+              <th data-field="set" data-sortable="true">Set Name</th>
+              <th data-field="value" data-sortable="true">Card Value</th>
+              <th data-field="quality" data-sortable="true">Card Quality</th>
+              <th data-field="foil" data-sortable="true">Foil</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @results.each do |card| %>
+              <tr>
+              <td>
+                
+            <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+              <i class="fa fa-user"></i> <%=card.user.email %>
+            <% end %>
+
+              </td>
+
+                <td>
+                <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+              
+                </td>
+
+                <td><%= card.card.card_set.name %></td>
+                <td><%= card.value %></td>
+                <td><%= card.quality %></td>
+                <td>
+                <% if card.foil == true %>
+                    <%=fa_icon "check" %>
+                <% else %>
+                    <%=fa_icon "times" %>  
+                <% end %> </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+  </div>
+  <!-- END OF COLLECTIONS PANEL -->
 
 
 
 
 
-  <table class=" table table-striped pt-2" id="CardTable" data-sort-name="name" data-sort-order="desc">
-    <thead id="tableHead">
-      <tr>
-        <th data-field="user" data-sortable="true">User</th>
-        <th data-field="name" data-sortable="true">Card Name</th>
-        <th data-field="set" data-sortable="true">Set Name</th>
-        <th data-field="value" data-sortable="true">Card Value</th>
-        <th data-field="quality" data-sortable="true">Card Quality</th>
-        <th data-field="foil" data-sortable="true">Foil</th>
-      </tr>
-    </thead>
+  <!-- WISHLIST PANEL -->
+  <div class="tab-pane fade" id="wishlistPanel" role="tabpanel">
 
-    <tbody>
-      <% @results.each do |card| %>
-        <tr>
-        <td>
-           
-      <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
-        <i class="fa fa-user"></i> <%=card.user.email %>
-      <% end %>
+        <table class=" table table-hover pt-2" id="wishlistTable" data-sort-name="name" data-sort-order="desc">
+          <thead id="tableHead">
+            <tr>
+              <th data-field="user" data-sortable="true">User</th>
+              <th data-field="name" data-sortable="true">Card Name</th>
+              <th data-field="set" data-sortable="true">Set Name</th>
+              <th data-field="value" data-sortable="true">Card Value</th>
+              <th data-field="quality" data-sortable="true">Card Quality</th>
+              <th data-field="foil" data-sortable="true">Foil</th>
+            </tr>
+          </thead>
 
-        </td>
+          <tbody>
+            <% @results_wishlist.each do |card| %>
+              <tr>
+              <td>
+                
+            <%= link_to collection_path(card.user.id), :class => "btn btn-primary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+              <i class="fa fa-user"></i> <%=card.user.email %>
+            <% end %>
 
-          <td>
-          <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
-         
-          </td>
+              </td>
 
-          <td><%= card.card.card_set.name %></td>
-          <td><%= card.value %></td>
-          <td><%= card.quality %></td>
-          <td>
-          <% if card.foil == true %>
-              <%=fa_icon "check" %>
-          <% else %>
-              <%=fa_icon "times" %>  
-          <% end %> </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+                <td>
+                <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+              
+                </td>
+
+                <td><%= card.card.card_set.name %></td>
+                <td><%= card.value %></td>
+                <td><%= card.quality %></td>
+                <td>
+                <% if card.foil == true %>
+                    <%=fa_icon "check" %>
+                <% else %>
+                    <%=fa_icon "times" %>  
+                <% end %> </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+
+
+
+	</div>
+  <!-- END OF WISHLIST PANEL -->
+
+
+
+
+
+</div>
+<!-- end of Tab panels -->
+
   
 
 </div>
