@@ -20,7 +20,7 @@ $(document).ready(function() {
 
    setTimeout(function(){
       $('.alert').fadeOut();
-      }, 2000);
+      }, 10000);
 
    // $('[data-toggle="popover"]').popover();
 
