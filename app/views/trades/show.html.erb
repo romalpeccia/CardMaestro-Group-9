@@ -432,16 +432,6 @@ font-size:150%;
 								data-target= <%="#acceptedtrade#{trade.id}"%> >
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Accepted   
-								   <% if trade.sender_status == "Accepted"%>
-										<button disabled type="button" class="btn-outline btn-danger my-2">  Incomplete
-										</button>
-									<%elsif trade.reciever_status == "Accepted"%>
-										<button disabled type="button" class="btn-outline btn-danger my-2">  Incomplete
-										</button>
-									<%else%>
-										<button disabled type="button" class="btn-outline btn-success my-2">  Complete
-										</button>
-									<%end%>
 									-
 									<%= link_to collection_path(other_user.id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
 								<i class="fa fa-user"></i><%=other_user.email %>
@@ -677,8 +667,8 @@ font-size:150%;
 								data-target= <%="#completedtrade#{trade.id}"%> >
 								 <%=fa_icon "chevron-down"%> </button>
 								   <%=fa_icon "retweet"%> Trade Completed  
-								   <button disabled type="button" class="btn-outline btn-success my-2"> Confirmed
-										</button>
+								   <!--<button disabled type="button" class="btn-outline btn-success my-2"> Confirmed
+										</button>-->
 								   - <%= link_to collection_path(other_user.id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
 								<i class="fa fa-user"></i><%=other_user.email %>
 							<% end %>
