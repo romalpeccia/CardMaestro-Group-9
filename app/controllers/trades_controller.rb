@@ -47,8 +47,8 @@ class TradesController < ApplicationController
         if r_v == "" or r_v == nil
           r_v = 0
         end
-        if s_v < 0 or r_v < 0 #ideally user shouldn't ever get to this point unless they are trying to cheat the post request
-          flash[:alert] = "error: cannot trade negative money"
+        if s_v < 0 or r_v < 0 #UI should stop user from doing this unless they are trying to cheat the post request
+          flash[:alert] = "Error: Cannot trade negative money"
           redirect_to new_trade_path(id: @target_user.id)
         else
           flash[:notice] = params
@@ -102,7 +102,7 @@ class TradesController < ApplicationController
               end
           end
           if no_card_flag == 1
-            flash[:alert] = "Select at least one card"
+            flash[:alert] = "Error: Select at least one card"
             redirect_to new_trade_path(id: @target_user.id)
           else
             trade.sender_value = s_v
@@ -172,14 +172,48 @@ class TradesController < ApplicationController
     if params[:commit] == "pending_accepted"
         update_helper(trade, curr_user_type, "Accepted")
         flash[:notice] = "Trade with #{other_user.email} accepted!"
-    elsif params[:commit] == "pending_declined"
+=begin
+        if trade.sender_status == "Accepted" and trade.reciever_status == "Accepted"
+          #both users have committed to sending, remove cards from their respective collection/wishlist
+          if curr_user_type == "R"
+            trade.sender_cards.each do |card|
+              delete1 = current_user.card_needed.find_by(card_id: card.card_id,  card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete1.destroy
+              delete2 = other_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete2.destroy
+            end
+            trade.reciever_cards.each do |card|
+              delete3 = current_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete3.destroy
+              delete4 = other_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete4.destroy
+            end
+          elsif (curr_user_type == "S")
+            trade.sender_cards.each do |card|
+              
+              delete1 = current_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete1.destroy
+              delete2 = other_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete2.destroy
+            end
+            trade.reciever_cards.each do |card|
+              delete3 = current_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete3.destroy
+              delete4 = other_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
+              delete4.destroy
+            end
+          end
+        end
+=end
+    elsif params[:commit] == "pending_declined" #dont delete the trade for now, we may want to display declined trades
+        #TODO fix edge case where user can cancel an accepted trade
         update_helper(trade, "R", "Declined")
         update_helper(trade, "S", "Declined")
         flash[:alert] = "Trade with #{other_user.email} declined!"
     elsif params[:commit] == "accepted_completed"
         update_helper(trade, curr_user_type, "Completed")
-    else
-      flash[:alert] = "error updating trade"
+    else 
+      flash[:alert] = "Error updating trade"
     end
     
     redirect_to trade_path(current_user.id)

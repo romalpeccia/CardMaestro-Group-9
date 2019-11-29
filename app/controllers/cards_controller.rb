@@ -23,40 +23,34 @@ class CardsController < ApplicationController
         @sets = CardSet.all
     end
     def create
+        user = User.find_by(email: params[:card][:user]) #Find the user
+        card_name = params[:card][:card_name]
+        value = params[:card][:value]
+        if value == nil
+            value = 0
+        end
+        quality = params[:card][:quality]
+        foil = params[:card][:foil]
+        set = params[:card][:set]
+
         if params[:commit] == 'Add to Collection'
 
-            #Find the user
-            user = User.find_by(email: params[:card][:user])
-            card_name = params[:card][:card_name]
-            value = params[:card][:value]
-            quality = params[:card][:quality]
-            foil = params[:card][:foil]
-            set = params[:card][:set]
-        
             #attach a card owned object to the user
             new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
                 new_card_owned = new_card.card_owned.new(card_name: card_name,value: value, quality: quality, foil: foil )
-                #user.card_owned << new_card_owned
+
                 if user.card_owned << new_card_owned 
                     flash[:notice] = params[:card][:card_name] + ' added to collection'
                 else
-                    flash[:alert] = "error adding card to collection"
+                    flash[:alert] = new_card_owned.errors
                 end
             else
-                flash[:alert] = "card not in master card db"
+                flash[:alert] = "Card: #{card_name} in Set: #{set} does not exist!"
             end
         elsif params[:commit] == 'Add to Wishlist'
-            #Find the user
-            user = User.find_by(email: params[:card][:user])
-            
-            card_name = params[:card][:card_name]
-            value = params[:card][:value]
-            quality = params[:card][:quality]
-            foil = params[:card][:foil]
-            set = params[:card][:set]
-            #attach a card owned object to the user
 
+            #attach a card owned object to the user
             new_card = Card.find_by(name: card_name, set: set)
             if (new_card)
                 new_card_wishlist = new_card.card_needed.new(card_name: card_name,value: value, quality: quality, foil: foil )
@@ -64,10 +58,10 @@ class CardsController < ApplicationController
                 if user.card_needed << new_card_wishlist
                     flash[:notice] = params[:card][:card_name] + ' added to wishlist'
                 else
-                    flash[:alert] = "error adding card to wishlist"
+                    flash[:alert] = "error adding card to wishlist" 
                 end
             else
-                flash[:alert] = "card not in master card db"
+                flash[:alert] = "Card: #{card_name} in Set: #{set} does not exist!"
             end
         end
 
