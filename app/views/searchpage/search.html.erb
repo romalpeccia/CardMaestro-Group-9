@@ -344,7 +344,7 @@ advancedSearchField.addEventListener("click", function(data){
   var foilValue = foil.options[foil.selectedIndex].text;
   
   if(foilValue === "Select Foil"){
-      foilValue=false;
+      foilValue="";
   }
 
   var setValue = set.options[set.selectedIndex].text;
@@ -381,7 +381,7 @@ advancedSearchField.addEventListener("click", function(data){
   var maxpriceValue = maxprice.value;
   
   if(maxpriceValue === ""){
-      maxpriceValue="0";
+      maxpriceValue="999999999999";
   }
 
 //setting up the parameters for the search url

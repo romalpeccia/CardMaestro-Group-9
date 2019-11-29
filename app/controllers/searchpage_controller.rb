@@ -45,12 +45,18 @@ class SearchpageController < ApplicationController
       country = params[:country]
       state = params[:state]
       city = params[:city]
+
+      if(foil == "")
+        foilQuery = ""
+      else
+        foilQuery = " and foil = :foil"
+      end
       
       #advanced search query
       @results = CardOwned.joins(:card).joins(:user).all.where(
         "lower(card_name) LIKE lower(:search)"+
         " and user_id <> :current_user_id"+
-         " and foil = :foil"+
+         foilQuery+
           " and lower(quality) like lower(:quality)"+
            " and lower(set) like lower(:set)"+
            " and lower(country) like lower(:country)"+
@@ -74,7 +80,7 @@ class SearchpageController < ApplicationController
        @results_wishlist = CardNeeded.joins(:card).joins(:user).all.where(
         "lower(card_name) LIKE lower(:search)"+
         " and user_id <> :current_user_id"+
-         " and foil = :foil"+
+          foilQuery +
           " and lower(quality) like lower(:quality)"+
            " and lower(set) like lower(:set)"+
            " and lower(country) like lower(:country)"+
