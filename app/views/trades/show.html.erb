@@ -120,8 +120,27 @@ font-size:150%;
 					
 					<div class = "collapse" id = <%="trade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
+							<% if trade.sender_value and trade.sender_value != 0 %>
 
-							<h5> <%=fa_icon "clone"%> Cards You Requested</h5>
+									<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Receive</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
+											
+									</div>
+
+							<% end %>
+							<% if trade.reciever_value and trade.reciever_value != 0 %>
+								
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
+											
+									</div>
+							<% end %>
+
+							<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
 							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -143,29 +162,20 @@ font-size:150%;
 								<td><%= card.card.card_set.name %></td>
 								<td><%= card.value %></td>
 								<td><%= card.quality %></td>
-														<td>
-														<% if card.foil == true %>
-																<%=fa_icon "check" %>
-														<% else %>
-																<%=fa_icon "times" %>  
-														<% end %> 
-														</td>
+								<td>
+									<% if card.foil == true %>
+											<%=fa_icon "check" %>
+									<% else %>
+											<%=fa_icon "times" %>  
+									<% end %> 
+								</td>
 							</tr>
 							<% end %>
 							</tbody>
 							</table>
-							<% if trade.sender_value and trade.sender_value != 0 %>
 
-									<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment Offered</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
-											
-									</div>
 
-							<% end %>
-
-							<h5> <%=fa_icon "clone"%> Cards You Will Trade</h5>
+							<h5> <%=fa_icon "clone"%> Cards You Will Send</h5>
 
 							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
@@ -199,15 +209,7 @@ font-size:150%;
 							</thead>
 							</table> 
 
-							<% if trade.reciever_value and trade.reciever_value != 0 %>
-								
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment Requested</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
-											
-									</div>
-							<% end %>
+
 
 
 							<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>
@@ -231,18 +233,14 @@ font-size:150%;
               <% end %>
           	</div>
 
-		  <!-- PENDING RECEIVED TRADES --->
+		  <!-- END PENDING RECEIVED TRADES --->
 
 
 		<div class="row pt-4">
-
 		  <div class = "col d-flex justify-content-center">
 			<h3><%=fa_icon "share"%> Sent Requests</h3>
 		  </div>
-
-		
 		</div>
-
 		<!-- PENDING SEND TRADES --->
           <div class = "col" id = "pending_sent_trades">
 
@@ -250,8 +248,6 @@ font-size:150%;
               
                 <% @pending_sent_trades.each do |trade| %>
                   <p>
-
-                  
                    	<div class="row pt-2 pl-1 pr-1">
 					   <div class = "col">
 							
@@ -274,8 +270,26 @@ font-size:150%;
 					
 					<div class = "collapse" id = <%="sendingtrade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
+							<% if trade.sender_value and trade.sender_value != 0 %>
 
-							<h5> <%=fa_icon "clone"%> Cards You Offered</h5>
+									<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
+											
+									</div>
+
+							<% end %>
+							<% if trade.reciever_value and trade.reciever_value != 0 %>
+								
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Receive</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
+											
+									</div>
+							<% end %>
+							<h5> <%=fa_icon "clone"%> Cards You Will Send</h5>
 							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -289,9 +303,7 @@ font-size:150%;
 							<tbody>
 							<% trade.sender_cards.each do |card| %>
 							<tr>
-
 								
-
 								<td>
 								<a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
 								</td>
@@ -310,16 +322,6 @@ font-size:150%;
 							<% end %>
 							</tbody>
 							</table>
-							<% if trade.sender_value and trade.sender_value != 0 %>
-
-									<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment Offered</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.sender_value %></h6></span>
-											
-									</div>
-
-							<% end %>
 
 							<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
 
@@ -355,15 +357,7 @@ font-size:150%;
 							</thead>
 							</table> 
 
-							<% if trade.reciever_value and trade.reciever_value != 0 %>
-								
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment Requested</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= trade.reciever_value %></h6></span>
-											
-									</div>
-							<% end %>
+
 
 
 							<%= form_with id: "trade_form#{trade.id}",  method: "put", scope: trade, url: "#{trades_path}/#{trade.id}" %>
@@ -387,7 +381,7 @@ font-size:150%;
             <% end %>
 
 		</div>
-		<!-- PENDING SEND TRADES --->
+		<!-- END OF PENDING SEND TRADES --->
 
         
       
@@ -397,24 +391,8 @@ font-size:150%;
   </div>
   <!-- END OF PENDING TRADES PANEL -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   <!-- ACCEPTED TRADES PANEL -->
   <div class="tab-pane fade" id="acceptedPanel" role="tabpanel">
-
-
-
 
 
 	 <!-- ACCEPTED CONTAINER #########################################################################      -->
@@ -425,9 +403,8 @@ font-size:150%;
                             <% @accepted_trades.each do |trade| %>
                   <p>
 
-				  	<!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
+				  	<!-- this block looks dumb but saves repititions of 100+ lines of code later on -->
 					<% if trade.sender_id == current_user.id
-								my_type = "s" 
 								my_user = trade.sender
 								other_user = trade.reciever
 								my_cards = trade.sender_cards
@@ -437,7 +414,6 @@ font-size:150%;
 								my_status = trade.sender_status
 								other_status = trade.reciever_status
 							else
-								my_type = "r"
 								my_user = trade.reciever
 								other_user = trade.sender
 								my_cards = trade.reciever_cards
@@ -448,7 +424,6 @@ font-size:150%;
 								other_status = trade.sender_status
 							end
 					%>
-
                   
                    	<div class="row pt-2 pl-1 pr-1">
 					   <div class = "col">
@@ -483,13 +458,26 @@ font-size:150%;
 					
 					<div class = "collapse" id = <%="acceptedtrade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
+							<% if my_value != 0 and my_value != nil %>
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
+											
+								</div>
+								
+							<% elsif other_value !=0 and other_value != nil %>
 
-
-							<% if my_type == "s" %>
-								<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
-							<% else %>
-								<h5><%=fa_icon "clone"%> Cards You Offered</h5> 
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Will Receive</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= other_value %></h6></span>
+											
+								</div>
+								
 							<% end %>
+
+							<h5> <%=fa_icon "clone"%> Cards You Will Send</h5>
 
 							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
 							<thead>
@@ -525,32 +513,9 @@ font-size:150%;
 							</tbody>
 							</table>
 
-							<% if my_value != 0 and my_value != nil %>
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
-											
-								</div>
-								
-							<% elsif other_value !=0 and other_value != nil %>
-
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment You Will Receive</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= other_value %></h6></span>
-											
-								</div>
-								
-							<% end %>
 
 
-							<% if my_type == "s" %>
-								<h5><%=fa_icon "clone"%> Cards You Offered</h5>
-							<% else %>
-								<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
-							<% end %>
-
+							<h5> <%=fa_icon "clone"%> Cards You Will Recieve</h5>
 							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -620,7 +585,7 @@ font-size:150%;
 											<div class = "row d-flex justify-content-center">
 											 	<% if other_status == "Accepted" %>
                                                     <button disabled  class="btn-static btn-danger my-2" title = "Waiting for <%=  other_user.email  %> to confirm they received cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom'> <%=fa_icon "times" %> Unconfirmed </button>
-                                                <% elsif my_status == "Completed" %>
+                                                <% elsif other_status == "Completed" %>
                                                     <button disabled class="btn-static btn-success my-2" title = "<%= other_user.email %> has received cards and/or money" data-toggle = 'tooltip' data-placement= 'bottom'> <%=fa_icon "check" %> Confirmed </button>
                                                 <% end %>
 											</div>
@@ -684,7 +649,6 @@ font-size:150%;
 
 				  	 <!-- this block looks dumb but saves repititions of 100+ lines of code down the line -->
 					<% if trade.sender_id == current_user.id
-								my_type = "s" 
 								my_user = trade.sender
 								other_user = trade.reciever
 								my_cards = trade.sender_cards
@@ -694,7 +658,6 @@ font-size:150%;
 								my_status = trade.sender_status
 								other_status = trade.reciever_status
 							else
-								my_type = "r"
 								my_user = trade.reciever
 								other_user = trade.sender
 								my_cards = trade.reciever_cards
@@ -732,13 +695,26 @@ font-size:150%;
 					<div class = "collapse" id = <%="completedtrade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
 
+							<% if my_value != 0 and my_value != nil %>
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Sent</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
+											
+								</div>
+								
+							<% elsif other_value !=0 and other_value != nil %>
 
-							<% if my_type == "s" %>
-								<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
-							<% else %>
-								<h5><%=fa_icon "clone"%> Cards You Offered</h5> 
+								<div class="row-fluid my-2">
+													
+										<h5><%=fa_icon "money"%> Payment You Received</h5> 
+										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= other_value %></h6></span>
+											
+								</div>
+								
 							<% end %>
 
+							<h5> <%=fa_icon "clone"%> Cards You Sent</h5>
 							<table class=" table table-hover" id= <%= "trade_sent#{trade.id}" %>  data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -772,32 +748,9 @@ font-size:150%;
 							</tbody>
 							</table>
 
-							<% if my_value != 0 and my_value != nil %>
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment You Sent</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
-											
-								</div>
-								
-							<% elsif other_value !=0 and other_value != nil %>
-
-								<div class="row-fluid my-2">
-													
-										<h5><%=fa_icon "money"%> Payment You Received</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= other_value %></h6></span>
-											
-								</div>
-								
-							<% end %>
 
 
-							<% if my_type == "s" %>
-								<h5><%=fa_icon "clone"%> Cards You Offered</h5>
-							<% else %>
-								<h5> <%=fa_icon "clone"%> Cards You Received</h5>
-							<% end %>
-
+							<h5> <%=fa_icon "clone"%> Cards You Recieved</h5>
 							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -882,14 +835,5 @@ font-size:150%;
 
 </div>
 <!-- end of Tab panels -->
-
-
-
-
-
-
-
- 
-  
 </div> 
 <!-- END OF CONTAINER --!>

@@ -7,7 +7,10 @@ $(function () {
 })
 </script>
 
-<p>Trading with user <%= link_to @target_user.email, collection_path(@target_user.id) %></p>
+
+<div class = "d-flex justify-content-center">
+    <h1>Trading with <%= link_to @target_user.email, collection_path(@target_user.id) %></h1>
+</div>
 <div class="container-fluid">
     <div class="row-fluid pt-2">
     <form id = "trade_form" action = <%= trades_path %> method = "post" >  
@@ -15,24 +18,28 @@ $(function () {
     <input type="hidden" id="sender_id" name="sender_id" value= <%= current_user.id %>>
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
-    <h3><%= @target_user.email %>'s Cards That You Need</h3>
+    <h3>Cards <%= @target_user.email %> Has</h3>
     <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
         <tr>
+        <th data-field="select">Select</th>
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
-        <th data-field="select">Select</th>
+
         </tr>
     </thead>
 
     <tbody>
         <% @collection_card_owned.each do |card| %>
         <tr>
+            <td class = "d-flex justify-content-center">
+                <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_owned_check#{card.id}" %>>
+            </td>
             <td>
-            <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                <a href = "" data-toggle="popover" data-placement="right" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>    
             </td>
             <td><%= card.card.card_set.name %></td>
             <td><%= card.value %></td>
@@ -44,32 +51,35 @@ $(function () {
                     <%=fa_icon "times" %>  
                 <% end %> 
             </td>
-            <td>  <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_owned_check#{card.id}" %>>
-            </td>
+
         </tr>
         <% end %>
     </tbody>
     </table>
     </p>
     <p>
-    <h3><%= @target_user.email %>'s Wishlist That You have</h3>
+    <h3> Cards <%= @target_user.email %> Wants</h3>
     <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
         <tr>
+        <th data-field="select">Select</th>
         <th data-field="name" data-sortable="true">Card Name</th>
         <th data-field="set" data-sortable="true">Set Name</th>
         <th data-field="value" data-sortable="true">Card Value</th>
         <th data-field="quality" data-sortable="true">Card Quality</th>
         <th data-field="foil" data-sortable="true">Foil</th>
-        <th data-field="select">Select</th>
         </tr>
     </thead>
 
     <tbody>
         <% @collection_card_needed.each do |card| %>
         <tr>
+        
+            <td class = "d-flex justify-content-center">  
+                <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_needed_check#{card.id}"%>>
+            </td>
             <td>
-            <a href = "" data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                <a href = "" data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
             </td>
             <td><%= card.card.card_set.name %></td>
             <td><%= card.value %></td>
@@ -80,8 +90,6 @@ $(function () {
             <% else %>
                 <%=fa_icon "times" %>  
             <% end %> 
-            </td>
-            <td>  <input class="form-check-input" type="checkbox" value= <%= card.id %> name= <%= "card_needed_check#{card.id}"%>>
             </td>
         </tr>
         <% end %>

@@ -33,11 +33,9 @@ class TradesController < ApplicationController
       render 'new'
   end
   def create
-      #temporary flash for debugging
       @target_user = User.find_by(id: params[:reciever_id])
       if (params[:sender_value] != 0 and params[:reciever_value]  != 0) and (params[:sender_value] != "" and params[:reciever_value]  != "")
         flash[:alert] = "You cannot send and recieve money in the same trade"
-        flash[:notice] = params
         redirect_to new_trade_path(id: @target_user.id)
       
       else
@@ -118,8 +116,9 @@ class TradesController < ApplicationController
     
               #saving the associations and trade object
             trade.save
-            flash[:notice] = trade
-            flash[:alert] = trade.errors
+            #for debugging
+            #flash[:notice] = trade
+            #flash[:alert] = trade.errors
             redirect_to trade_path(current_user.id)
           end #end if no cards were selected
         end #end if sender and reciever values were nonnegative
