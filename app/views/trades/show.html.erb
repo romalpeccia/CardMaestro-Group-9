@@ -708,8 +708,8 @@ font-size:150%;
 					
 					<div class = "collapse" id = <%="completedtrade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
-							<% my_rating = nil %>
-							<% other_rating = nil %>
+							<% my_rating = trade.ratings.find_by(rater: other_user.id) %>
+							<% other_rating = trade.ratings.find_by(rater: my_user.id) %>
 							<!-- your rating of them --> 
 							<% if other_rating == nil %>
 								<form id = "new_rating" action=<%= ratings_path %> method="post">
@@ -733,7 +733,10 @@ font-size:150%;
 								<% (5- other_rating.value).times do %>
 									<span class="fa fa-star"></span>
 								<% end %>
+								<p>
+								your rating of them
 								<%= other_rating.comment %>
+								</p>
 							<%end%>
 
 							<!-- their rating of you --> 
@@ -746,8 +749,10 @@ font-size:150%;
 								<% (5- my_rating.value).times do %>
 									<span class="fa fa-star"></span>
 								<% end %>
+								<p>
+								their rating of you
 								<%= my_rating.comment %>
-
+								</p>
 							<% end %>
 
 

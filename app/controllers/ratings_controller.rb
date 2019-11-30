@@ -5,9 +5,11 @@ class RatingsController < ApplicationController
       flash[:notice] = params
       rated_trade = Trade.find_by(id: params[:trade_id])
       flash[:notice] = rated_trade
-      new_rating = Rating.new
+      new_rating = rated_trade.ratings.new
       new_rating.value = params[:star_value] 
-
+      new_rating.user_id = params[:ratee_id]
+      new_rating.rater = params[:rater_id]
+      new_rating.comment =  params[:rating_comment]
      
       rated_trade.ratings << new_rating
 
@@ -15,9 +17,3 @@ class RatingsController < ApplicationController
   end
 end
 
-                 
-#new_card = Card.find_by(name: card_name, set: set)
-#f (new_card)
-#    new_card_wishlist = new_card.card_needed.new(card_name: card_name,value: value, quality: quality, foil: foil )
-    
- #   user.card_needed << new_card_wishlist
