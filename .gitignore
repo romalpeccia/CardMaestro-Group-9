@@ -34,3 +34,6 @@
 yarn-debug.log*
 .yarn-integrity
 .DS_Store
+
+#send email forget password
+/.env
