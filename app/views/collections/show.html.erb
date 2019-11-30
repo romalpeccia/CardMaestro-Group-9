@@ -1,5 +1,8 @@
 <div class="container-fluid">
-<script src="https://www.paypal.com/sdk/js?client-id=<%= ENV['PAYPAL_CLIENT_ID']%>"></script>
+<% content_for :for_head do %>
+  <script src="https://www.paypal.com/sdk/js?client-id=<%= ENV['PAYPAL_CLIENT_ID']%>"></script>
+<% end %>
+
 <script>
 $(function () {
   $('[data-toggle="popover"]').popover()
