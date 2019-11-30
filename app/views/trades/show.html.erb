@@ -16,6 +16,26 @@ $('[data-toggle="tooltip"]').click(function () {
 
 });
 
+
+function add(ths,sno){
+
+	var star_helper = document.getElementById("star_helper")
+	star_helper.value = sno
+	for (var i=1;i<=5;i++){
+		var cur=document.getElementById("star"+i)
+		cur.className="fa fa-star"
+		}
+
+	for (var i=1;i<=sno;i++){
+		var cur=document.getElementById("star"+i)
+		if(cur.className=="fa fa-star")
+		{
+			cur.className="fa fa-star checked"
+		}
+	}
+
+}
+
 </script>
 
 
@@ -35,6 +55,10 @@ line-height: 40px;
 color: white;
 font-size:150%;
 
+}
+
+.checked {
+    color: orange;
 }
 
 </style>
@@ -505,7 +529,7 @@ font-size:150%;
 
 
 
-							<h5> <%=fa_icon "clone"%> Cards You Will Recieve</h5>
+							<h5> <%=fa_icon "clone"%> Cards You Will Receive</h5>
 							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -684,6 +708,53 @@ font-size:150%;
 					
 					<div class = "collapse" id = <%="completedtrade#{trade.id}"%>>
 						<div class = "col pl-4 pt-1">
+							<% my_rating = trade.ratings.find_by(rater: other_user.id) %>
+							<% other_rating = trade.ratings.find_by(rater: my_user.id) %>
+							<!-- your rating of them --> 
+							<% if other_rating == nil %>
+								<form id = "new_rating" action=<%= ratings_path %> method="post">
+									<span class="fa fa-star" id="star1" onclick="add(this,1)"></span>
+									<span class="fa fa-star" id="star2" onclick="add(this,2)"></span>
+									<span class="fa fa-star" id="star3" onclick="add(this,3)"></span>
+									<span class="fa fa-star" id="star4" onclick="add(this,4)"></span>
+									<span class="fa fa-star" id="star5" onclick="add(this,5)"></span>
+									<input name = "star_value" id = "star_helper" type = "hidden" value = "0"> 
+									<input type = "hidden" name = "rater_id" value = <%=my_user.id%>>
+									<input type = "hidden" name = "ratee_id" value = <%=other_user.id%>>
+									<input type = "hidden" name = "trade_id" value = <%= trade.id %>>
+									<textarea class="form-control" id="" rows="3" name = "rating_comment"></textarea>
+									<button form = "new_rating"  type="submit" class="btn btn-primary">Rate User</button>
+									<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+								</form>
+							<% else %>
+								<% other_rating.value.times do  %>
+ 									<span class="fa fa-star checked"></span>
+								<%end%>
+								<% (5- other_rating.value).times do %>
+									<span class="fa fa-star"></span>
+								<% end %>
+								<p>
+								your rating of them
+								<%= other_rating.comment %>
+								</p>
+							<%end%>
+
+							<!-- their rating of you --> 
+							<% if my_rating == nil %>
+								Waiting for other user to rate you
+							<% else %>
+								<% my_rating.value.times do  %>
+ 									<span class="fa fa-star checked"></span>
+								<%end%>
+								<% (5- my_rating.value).times do %>
+									<span class="fa fa-star"></span>
+								<% end %>
+								<p>
+								their rating of you
+								<%= my_rating.comment %>
+								</p>
+							<% end %>
+
 
 							<% if my_value != 0 and my_value != nil %>
 								<div class="row-fluid my-2">
@@ -740,7 +811,7 @@ font-size:150%;
 
 
 
-							<h5> <%=fa_icon "clone"%> Cards You Recieved</h5>
+							<h5> <%=fa_icon "clone"%> Cards You Received</h5>
 							<table class=" table table-hover" id= <%= "trade_recieved#{trade.id}" %> data-sort-name="name" data-sort-order="desc">
 							<thead>
 							<tr>
@@ -773,8 +844,6 @@ font-size:150%;
 							</thead>
 							</table> 
 
-						
-
 						</div>
 					</div>
                   </p>
@@ -791,36 +860,8 @@ font-size:150%;
         
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
   </div>
   <!-- Panel 3 -->
-
-
-
 
 
 </div>

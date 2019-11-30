@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   
-  get 'ratings/index'
+ 
   #get 'trades/new'
   post '/paypal-transaction-complete', to: 'trades#payment'
   get '/search' =>'searchpage#search', as: 'searchpage_search'
@@ -42,5 +42,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   
-  resources :cards, :collections, :trades
+  resources :cards, :collections, :trades, :ratings
 end
