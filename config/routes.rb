@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   
-  get 'ratings/index'
+ 
   #get 'trades/new'
   get '/search' =>'searchpage#search', as: 'searchpage_search'
   get '/home' =>'home#index', as: 'home'
@@ -41,5 +41,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   
-  resources :cards, :collections, :trades
+  resources :cards, :collections, :trades, :ratings
 end
