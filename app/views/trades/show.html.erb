@@ -458,8 +458,7 @@ font-size:150%;
 								   <%=fa_icon "retweet"%> Trade Accepted   
 									-
 									<%= link_to collection_path(other_user.id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
-								<i class="fa fa-user"></i><%=other_user.email %>
-							<% end %>
+								<i class="fa fa-user"></i><%=other_user.email %><% end %>
 							</h4>
 						
 						</div>
@@ -727,31 +726,37 @@ font-size:150%;
 									<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 								</form>
 							<% else %>
-								<% other_rating.value.times do  %>
- 									<span class="fa fa-star checked"></span>
-								<%end%>
-								<% (5- other_rating.value).times do %>
-									<span class="fa fa-star"></span>
-								<% end %>
+
+								Your rating of <%= other_user.email %>
 								<p>
-								your rating of them
-								<%= other_rating.comment %>
+									<% other_rating.value.times do  %>
+										<span class="fa fa-star checked"></span>
+									<%end%>
+									<% (5- other_rating.value).times do %>
+										<span class="fa fa-star"></span>
+									<% end %>
+								</p>
+								<p>
+									<%= other_rating.comment %>
 								</p>
 							<%end%>
 
 							<!-- their rating of you --> 
 							<% if my_rating == nil %>
-								Waiting for other user to rate you
+								Waiting for <%= other_user.email %> to rate you
 							<% else %>
-								<% my_rating.value.times do  %>
- 									<span class="fa fa-star checked"></span>
-								<%end%>
-								<% (5- my_rating.value).times do %>
-									<span class="fa fa-star"></span>
-								<% end %>
+								<%= other_user.email %> rated you 
 								<p>
-								their rating of you
-								<%= my_rating.comment %>
+									<% my_rating.value.times do  %>
+										<span class="fa fa-star checked"></span>
+									<%end%>
+									<% (5- my_rating.value).times do %>
+										<span class="fa fa-star"></span>
+									<% end %>
+								</p>
+								<p>
+								
+									<%= my_rating.comment %>
 								</p>
 							<% end %>
 

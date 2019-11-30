@@ -56,7 +56,9 @@ paypal.Buttons({
 
 <style>
 
-
+.checked {
+    color: orange;
+}
 
 
 #CollectionTable th{
@@ -322,11 +324,27 @@ font-size:150%;
   <!-- RATINGS PANEL -->
   <div class="tab-pane fade" id="ratingsPanel" role="tabpanel">
 
+      <% if (@ratings.count == 0) %>
       <div class = "col d-flex justify-content-center align-items-center my-5">
 					<h4><span class="text-muted"> You have not received any ratings</span></h4>
 				</div>
- 
+      <%else%>
+        <%@ratings.each do |rating|%>
 
+          <%other_user = User.find_by(id: rating.rater)%> <!-- seems bad, should have rater column link to user yeah? -->
+          <p><%= other_user.email %></p>
+          <p>
+          <% rating.value.times do  %>
+            <span class="fa fa-star checked"></span>
+          <%end%>
+          <% (5- rating.value).times do %>
+            <span class="fa fa-star"></span>
+          <% end %>
+          </p>
+          <p><%= rating.comment %></p>
+
+        <%end%>
+      <%end%>
 
 
 	</div>

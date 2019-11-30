@@ -3,64 +3,72 @@
 <head>
 
 <body>
+<script>
+  $(function () {
+    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="tooltip"]').tooltip();
 
+
+  $('[data-toggle="popover"]').click(function () {
+            $('[data-toggle="popover"]').popover("hide");
+
+        });
+
+  $('[data-toggle="tooltip"]').click(function () {
+            $('[data-toggle="tooltip"]').tooltip("hide");
+
+      });
+
+  });
+</script>
 <style>
+  /* Carousel base class */
+  .carousel {
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  /* Since positioning the image, we need to help out the caption */
+  .carousel-caption {
+    bottom: 3rem;
+    z-index: 10;
+  }
 
-/* Carousel base class */
-.carousel {
-  margin-bottom: 2rem;
-  width: 100%;
-}
-/* Since positioning the image, we need to help out the caption */
-.carousel-caption {
-  bottom: 3rem;
-  z-index: 10;
-}
+  .carousel-inner{
+    width:100%;
+    height: 33rem;
 
-.carousel-inner{
-  width:100%;
-  height: 33rem;
+  }
 
-}
+  .carousel-control-prev {
+      filter: invert(100%);
+      width: 3%
+  }
 
-.carousel-control-prev {
-    filter: invert(100%);
-    width: 3%
-}
+  .carousel-control-next {
+      filter: invert(100%);
+      width: 3%
+  }
 
-.carousel-control-next {
-    filter: invert(100%);
-    width: 3%
-}
-
-.card-img-top {
-    margin-left: auto;
-    margin-right: auto;
-     width:60%;
-    height: auto;
-    overflow:hidden;
-}
-
-
+  .card-img-top {
+      margin-left: auto;
+      margin-right: auto;
+      width:60%;
+      height: auto;
+      overflow:hidden;
+  }
 </style>
    
 <div class="container-fluid">
   <div class="row-fluid pt-2">
 
  
- <div class="row-fluid pt-2">
-    
-  <h1><%=fa_icon "home"%> Dashboard</h1>
-      
-</div>
-<h3 class="pt-2 pb-1 pl-4">Most Popular Cards</h3>
-
+    <div class="row-fluid pt-2">
+      <h1><%=fa_icon "home"%> Dashboard</h1>
+    </div>
+    <h3 class="pt-2 pb-1 pl-4">Most Desired Cards</h3>
 
  <!--Carousel Wrapper-->
     <div id="multi-item-example" class="carousel slide carousel-multi-item pl-5 pr-5" data-ride="carousel">
-
-     
-
       <!--Indicators-->
       <ol class="carousel-indicators">
         <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
@@ -75,12 +83,13 @@
         <%count=0%>
         <%active=1%>
         <%arr=Array.new%>
-        <% @collection_card_owned.each_with_index do |card,index| %>
-        
+        <% @highest_wishlist_cards.each_with_index do |card_and_cardcount, index| %>
+            <% card, cardcount= card_and_cardcount %>
+
             <%arr<<card%>
             <%count=count+1%>
         
-            <%if count < 3 && index != @collection_card_owned.count - 1%>    
+            <%if count < 3 && index != @highest_wishlist_cards.count - 1%>    
             
             <%elsif active==1%>
             
@@ -92,36 +101,25 @@
 
                         <div class="col-md-4">
                         <div class="card mb-2 pt-1">
-                            <img class="card-img-top" src=<%= card_entry.card.image_url%>  alt="Card image">
+                            <img class="card-img-top" src=<%= card_entry.image_url%>  alt="Card image">
                             <div class="card-body">
-                                <h4 class="card-title"><%=card_entry.card.name%></h4>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                    card's content.</p>
-                                <a class="btn btn-primary"><%=fa_icon "plus"%> Add to collection</a>
+                                <h4 class="card-title"><%=card_entry.name%></h4>
+                                <h5 class = "card-set"> <%=card_entry.set%>
+                                <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                    card's content.</p> -->
+                                <p><a class="btn btn-primary"><%=fa_icon "plus"%> Add to collection</a></p>
                             </div>
                         </div>
                         </div>
                     <%end%>
-
-
-
-
                  </div>
                 </div>
                     
-
-
                 <%count=0%>
-                <%arr=arr.clear%>
-                
-                
+                <%arr=arr.clear%>        
                 <%active=0%>
 
-
              <%else%>
-
-            
-
                 <div class="carousel-item">
                  <div class="row">
                     <% arr.each do |card_entry1| %>
@@ -129,38 +127,24 @@
 
                         <div class="col-md-4">
                         <div class="card mb-2">
-                            <img class="card-img-top" src=<%= card_entry1.card.image_url%>  alt="Card image">
+                            <img class="card-img-top" src=<%= card_entry1.image_url%>  alt="Card image">
                             <div class="card-body">
-                            <h4 class="card-title"><%=card_entry1.card.name%></h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                card's content.</p>
-                            <a class="btn btn-primary">Add to wishlist</a>
+                              <h4 class="card-title"><%=card_entry1.name%></h4>
+                              <h5 class = "card-set"> <%=card_entry1.set%>
+                              <!--<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                  card's content.</p>-->
+                              <p><a class="btn btn-primary">Add to wishlist (SHOULD THIS BE COLLECTION?)</a></p> 
                             </div>
                         </div>
                         </div>
                     <%end%>
-
-
-
-
                  </div>
                 </div>
-                    
-
-
                 <%count=0%>
                 <%arr = arr.clear%> 
-                
-
-             <%end%>
-             
-
-
-        
+             <%end%>  
+   
         <%end%>
-
-       
-
 
       </div>
       <!--/.Slides-->
@@ -173,11 +157,122 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
             </a>
-        
-
-    </div>
+  </div>
     <!--/.Carousel Wrapper-->
 
+  <!-- reccomended users code -->
+  <div class="row-fluid pt-2" id = "recommended_users">
+  <h1> Reccomended Users</h1>
+    <%@target_array.each do |target|%>
+        <% if target[0] != nil and target[1]!= nil and target[2]!= nil%>
+          <div class = "col">
+            <%= link_to collection_path(target[0].id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+								<i class="fa fa-user"></i><%=target[0].email %><% end %>
+            <h5> Cards they have that you want </h5>
+            <table class="table table-hover mt-2" id="CollectionTable"data-sort-name="name" data-sort-order="desc">
+              <thead>
+                <tr>
+                  <th data-field="name" data-sortable="true">Card Name</th>
+                  <th data-field="set" data-sortable="true">Set Name</th>
+                  <th data-field="value" data-sortable="true">Card Value</th>
+                  <th data-field="quality" data-sortable="true">Card Quality</th>
+                  <th data-field="foil" data-sortable="true">Foil</th>
+                  <% if @is_self %>
+                  <th data-field="operation" data-sortable="true"></th>
+                  <% end %>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% target[1].each do |card| %>
+                  <tr>
+                    <td>
+                    <a href = <%= "#{searchpage_search_path}/?search=#{card.card.name}".gsub(' ','+') %> data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                    </td>
+
+                    <td><%= card.card.card_set.name %></td>
+                    <td><%= card.value %></td>
+                    <td><%= card.quality %></td>
+                    <td>
+                    <% if card.foil == true %>
+                        <%=fa_icon "check" %>
+                    <% else %>
+                        <%=fa_icon "times" %>  
+                    <% end %> 
+                    </td>
+                    <% if @is_self %>
+                    <td>
+                      <div class="row">
+                          <%= link_to edit_collection_path(card_id: card.id, edit_type: "collection"), :class => "btn btn-primary mx-3", title: 'Edit Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                              <i class="fa fa-pencil"></i> 
+                            <% end %>
+                            <%= link_to collection_path(card_id: card.id, edit_type: "collection"), :method => :delete, :class => "btn btn-danger" , title: 'Delete Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                              <i class="fa fa-trash"></i>
+                            <% end %>    
+                      </div>
+                    </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+
+
+
+            <h5>Cards they have that you want </h5>
+            <table class="table table-hover mt-2" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
+              <thead>
+                <tr>
+                  <tr>
+                  <th data-field="name" data-sortable="true">Card Name</th>
+                  <th data-field="set" data-sortable="true">Set Name</th>
+                  <th data-field="value" data-sortable="true">Card Value</th>
+                  <th data-field="quality" data-sortable="true">Card Quality</th>
+                  <th data-field="foil" data-sortable="true">Foil</th>
+                  <% if @is_self %>
+                  <th data-field="operation" data-sortable="true"></th>
+                  <% end %>
+                </tr>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% target[2].each do |card| %>
+                  <tr>
+                    <td>
+                      <a href = <%= "#{searchpage_search_path}/?search=#{card.card.name}".gsub(' ','+') %> data-toggle="popover" data-html = "true" data-trigger = "hover" data-content = "<img src = <%= card.card.image_url %>>"><%= card.card.name %></a>
+                      </td>
+                    <td><%= card.card.card_set.name %></td>
+                    <td><%= card.value %></td>
+                    <td><%= card.quality %></td>
+                    <td>
+                    <% if card.foil == true %>
+                        <%=fa_icon "check" %>
+                    <% else %>
+                        <%=fa_icon "times" %>  
+                    <% end %> 
+                    </td>
+                    <% if @is_self %>
+                    <td>
+                      <div class="row">
+                          <%= link_to edit_collection_path(card_id: card.id, edit_type: "wishlist"), :class => "btn btn-primary mx-3", title: 'Edit Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                              <i class="fa fa-pencil"></i> 
+                            <% end %>
+                            <%= link_to collection_path(card_id: card.id, edit_type: "wishlist"), :method => :delete, :class => "btn btn-danger" , title: 'Delete Card', 'data-toggle' => 'tooltip', 'data-placement' => 'top' do %>
+                              <i class="fa fa-trash"></i>
+                            <% end %>    
+                      </div>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+        <%end%>
+      <%end%>
+      </div>
+  </div>
+<!-- 
 <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
   <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
     <div class="my-3 py-3">
@@ -201,8 +296,9 @@
     <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
   </div>
 </div>
+-->
 
+  </div>
+</div>
 
-</div>
-</div>
 </body>
