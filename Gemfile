@@ -28,7 +28,9 @@ gem 'bootstrap', '~> 4.1.3'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'bootstrap_form'
 
-gem 'jquery-rails'   
+gem 'jquery-rails'
+
+gem 'paypal-sdk-rest'
 
 #Visualize db
 group :development do

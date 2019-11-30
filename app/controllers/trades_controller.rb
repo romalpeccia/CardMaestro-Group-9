@@ -1,4 +1,5 @@
 class TradesController < ApplicationController
+  protect_from_forgery :except => [:payment]
   def index
     render 'show'
   end
@@ -219,6 +220,11 @@ class TradesController < ApplicationController
     redirect_to trade_path(current_user.id)
   end
 
+
+  def payment
+    puts params[:orderID]+" has completed by user: "+params[:userEmail]
+    render status: :ok, json: @controller.to_json
+  end
   
 end
 
