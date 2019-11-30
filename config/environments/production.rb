@@ -104,7 +104,7 @@ Rails.application.configure do
     password:ENV["GMAIL_PASSWORD"]
   }
 
-  config.action_mailer.default_url_options = { :host => 'https://cardmaestro-group-9.herokuapp.com/' }
+  config.action_mailer.default_url_options = { :host => 'cardmaestro-group-9.herokuapp.com', :protocol => 'https' }
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
