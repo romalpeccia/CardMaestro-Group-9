@@ -26,7 +26,7 @@ class TradesController < ApplicationController
         @collection_card_needed = card_owned_ids.map { |card| @collection_card_needed.find_by(card_id: card.card_id, quality: card.quality, foil: card.foil)}.compact
         end
       else
-        flash.now[:alert] = "user not found"
+        flash[:alert] = "user not found"
         @collection_error = true
       end
 
@@ -52,7 +52,7 @@ class TradesController < ApplicationController
           flash[:alert] = "Error: Cannot trade negative money"
           redirect_to new_trade_path(id: @target_user.id)
         else
-          flash[:notice] = params
+          #flash[:notice] = params
 
           sender = User.find_by(id: params[:sender_id]) 
           reciever = User.find_by(id: params[:reciever_id])
@@ -213,6 +213,7 @@ class TradesController < ApplicationController
         flash[:alert] = "Trade with #{other_user.email} declined!"
     elsif params[:commit] == "accepted_completed"
         update_helper(trade, curr_user_type, "Completed")
+        flash[:notice] = "Trade with #{other_user.email} confirmed!"
     else 
       flash[:alert] = "Error updating trade"
     end

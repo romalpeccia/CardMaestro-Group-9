@@ -17,7 +17,7 @@ class CollectionsController < ApplicationController
     @ratings = Rating.where(user_id: target_id)
     
 
-    flash[:notice]= @ratings
+
 =begin
       if target_id == current_user.id
         @is_self = true;

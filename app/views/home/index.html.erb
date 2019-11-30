@@ -160,10 +160,13 @@
   </div>
     <!--/.Carousel Wrapper-->
 
-  <!-- reccomended users code -->
+  <!-- reccomended users -->
   <div class="row-fluid pt-2" id = "recommended_users">
   <h1> Reccomended Users</h1>
-    <%@target_array.each do |target|%>
+    <%if @target_array[0].count == 0%>
+      <h5> No reccomended users to trade with. Add cards to your collection or wishlist that other people want to trade! </h5>
+    <%else%>
+      <%@target_array.each do |target|%>
         <% if target[0] != nil and target[1]!= nil and target[2]!= nil%>
           <div class = "col">
             <%= link_to collection_path(target[0].id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
@@ -268,9 +271,11 @@
                 <% end %>
               </tbody>
             </table>
+            </div>
         <%end%>
       <%end%>
-      </div>
+
+    <%end%>
   </div>
 <!-- 
 <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
