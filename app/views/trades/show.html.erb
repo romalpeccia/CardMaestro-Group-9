@@ -426,7 +426,6 @@ font-size:150%;
 			<% if @accepted_trades && @accepted_trades.ids != [] %>
                             <% @accepted_trades.each do |trade| %>
                   <p>
-
 				  	<!-- this block looks dumb but saves repititions of 100+ lines of code later on -->
 					<% if trade.sender_id == current_user.id
 								my_user = trade.sender

@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'states/:country', to: 'devise/registrations#states'
   get 'cities/:state/:country', to: 'devise/registrations#cities'
 
+  post '/conversations/:id', to: 'conversations#create_message'
+
   devise_for :users
 
   devise_scope :user do

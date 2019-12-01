@@ -106,6 +106,13 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'cardmaestro-group-9.herokuapp.com', :protocol => 'https' }
 
+
+  #heroku config:get GMAIL_USERNAME
+  #heroku config:get GMAIL_PASSWORD
+
+
+
+
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
   # middleware. The `delay` is used to determine how long to wait after a write

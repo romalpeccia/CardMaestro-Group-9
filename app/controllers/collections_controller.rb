@@ -73,7 +73,7 @@ class CollectionsController < ApplicationController
     else
       @target_card = CardNeeded.find_by(id: params[:card_id])
     end
-    @target_card.destroy
+    @target_card.delete
     flash[:notice] ='Card deleted from ' + params[:edit_type]
     redirect_to collection_path
   end
