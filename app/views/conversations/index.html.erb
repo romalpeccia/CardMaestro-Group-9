@@ -84,7 +84,7 @@
       <% @messages.each do |message| %>
         <% if message.body %>
         <% user = User.find(message.user_id) %>
-        <div class="item">
+        <div class="item" id=<%=message.id%>>
       <div class="panel-heading">
             <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
             <div class="list">
@@ -108,7 +108,14 @@
         <%= f.submit "Send Reply", class: "form-control btn btn-primary" %>
       </div>
       <% end %>
+      
       </div>
+
+
+
+
+
+
 
 
     <%else%>
@@ -123,7 +130,32 @@
 </div>
 </div>
 
+<script>
 
+
+  function sendMessage(){
+
+    var id = <%=@conversation_id.to_json.html_safe %>;
+
+
+    
+    $.ajax({
+              type: "POST",
+              url: "/conversations/"+ id,
+              data: { authenticity_token: $('[name="csrf-token"]')[0].content, conversations: {body: 'blah', user_id: 5}},
+              success: function(data) {
+                       
+                   alert("hello");
+
+                       },
+              async:   true
+            });    
+
+
+
+  }
+
+</script>
 
 
 
