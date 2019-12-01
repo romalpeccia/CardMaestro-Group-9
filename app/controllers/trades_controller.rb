@@ -1,3 +1,8 @@
+require 'paypal-sdk-rest'
+require 'securerandom'
+include PayPal::SDK::REST
+include PayPal::SDK::Core::Logging
+
 class TradesController < ApplicationController
   protect_from_forgery :except => [:payment]
   def index
@@ -222,9 +227,41 @@ class TradesController < ApplicationController
   end
 
 
-  def payment
-    puts params[:orderID]+" has completed by user: "+params[:userEmail]
+  def payment_from_user
+    puts params[:orderID]+" has completed to user: "+params[:userEmail]
+    payment_to_user(params[:userEmail], 30)
     render status: :ok, json: @controller.to_json
+  end
+
+  def payment_to_user(email, amount_to_send)
+    # will send to sb-takox644531@personal.example.com for testing purpose, regardless of input email address
+    @payout = Payout.new(
+    {
+      :sender_batch_header => {
+        :sender_batch_id => SecureRandom.hex(8),
+        :email_subject => 'You have a Payout!',
+      },
+      :items => [
+        {
+          :recipient_type => 'EMAIL',
+          :amount => {
+            :value => amount_to_send.to_s,
+            :currency => 'USD'
+          },
+          :note => 'Thanks for your patronage!',
+          :receiver => 'sb-takox644531@personal.example.com',
+          # :sender_item_id => "2014031400023",
+        }
+      ]
+    }
+  )
+
+  begin
+    @payout_batch = @payout.create
+    logger.info "Created Payout with [#{@payout_batch.batch_header.payout_batch_id}]"
+  rescue ResourceNotFound => err
+    logger.error @payout.error.inspect
+  end
   end
   
 end
