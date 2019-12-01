@@ -31,6 +31,7 @@ gem 'bootstrap_form'
 gem 'jquery-rails'
 
 gem 'paypal-sdk-rest'
+gem 'travis'
 
 #Visualize db
 group :development do
