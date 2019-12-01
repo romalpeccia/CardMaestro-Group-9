@@ -8,6 +8,10 @@
   .glyphicon.glyphicon-log-out {
     font-size: 20px;
 }
+
+#panelHead {
+  background-color: #1E88E5
+}
 </style>
 
 
@@ -64,7 +68,7 @@
 
    <div class="row">
 		  <div class = "col d-flex justify-content-center">
-			<h3><%=fa_icon "chat"%> Messages</h3>
+			<h3><%=fa_icon "comments"%> Messages</h3>
 		  </div>
 		</div>
 
@@ -73,19 +77,13 @@
   <div class="row-fluid pt-2">
 
     <div class="panel panel-default">
-    <% if @over_5 %>
-    <%= link_to 'Show All', '?m=all', class: 'btn btn-link pull-right' %>
-    <% end %>
-    <%= link_to '<i class="glyphicon glyphicon-log-out icon-flipped"></i>'.html_safe,
-    '/conversations', { :class => 'tooltips, btn btn-link', 'data-toggle' => 'tooltip',
-      'data-placement' => 'right', :title => 'Back To Inbox' } %>
     
     <%if @messages %>
       <% @messages.each do |message| %>
         <% if message.body %>
         <% user = User.find(message.user_id) %>
         <div class="item" id=<%=message.id%>>
-      <div class="panel-heading">
+          <div class="panel-heading my-3" id="panelHead">
             <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
             <div class="list">
             <div class="item">
@@ -129,48 +127,6 @@
 
 </div>
 </div>
-
-<script>
-
-
-  function sendMessage(){
-
-    var id = <%=@conversation_id.to_json.html_safe %>;
-
-
-    
-    $.ajax({
-              type: "POST",
-              url: "/conversations/"+ id,
-              data: { authenticity_token: $('[name="csrf-token"]')[0].content, conversations: {body: 'blah', user_id: 5}},
-              success: function(data) {
-                       
-                   alert("hello");
-
-                       },
-              async:   true
-            });    
-
-
-
-  }
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
