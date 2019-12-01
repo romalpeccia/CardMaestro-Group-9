@@ -1,0 +1,94 @@
+<div class="container" id="sign-up-form">
+  <div class="row justify-content-center align-items-center pt-4">
+  
+   <h1>Trade, view, and build you card collection</h1>
+    <h3>Get in touch with people to start your collection!</h3>
+
+    <div class="col-sm-6 col-sm-offset-3 pt-3">
+      <h2 class="text-center">Sign Up </h2> 
+
+        <%= bootstrap_form_for(resource, 
+                       :as => resource_name, 
+                       :url => registration_path(resource_name)) do |f| %>
+
+            <%= f.text_field :email, 
+                      placeholder: 'Email', 
+                      class: 'form-control' %>
+            <%= f.password_field :password, 
+                                placeholder: 'Password', 
+                                class: 'form-control' %>
+            <%= f.password_field :password_confirmation, 
+                                placeholder: 'Password confirmation', 
+                                class: 'form-control' %>
+            
+            <%= f.select :country, options_for_select(CS.countries.map { |c| [c[1], c[0]] } ) , :id => "country"%>
+            
+            
+            <%= f.select :province, {}, :include_blank => "select a province", :id => "province" %>
+            <%= f.select :city, {}, :include_blank => "select a city", :id => "city" %>
+            
+
+            
+            
+        
+            <%= f.submit 'Sign Up', class: 'btn btn-lg btn-primary btn-block' %>
+          <% end %>
+		
+    </div>
+  </div>
+</div>
+
+
+
+  <script>
+  var country = document.getElementById("user_country");
+  var state = document.getElementById("user_province");
+
+
+  country.addEventListener("change", function(){
+        
+        var state = document.getElementById("user_province");
+
+        //loop through all returned cities for state
+        $.getJSON('/states/' + $(this).val(), function (data) {
+          
+          //clears any options in dropdown
+          while (state.firstChild) state.removeChild(state.firstChild);
+
+          //default value
+          state.options[0] = new Option("Select State");
+
+          //loop and add optoons
+          Object.keys(data).forEach(key=>{
+            state.options[state.options.length] = new Option(data[key], key);
+          });
+          
+        
+        });
+      });
+
+      state.addEventListener("change", function(){
+        
+        var city = document.getElementById("user_city");
+        var country = document.getElementById("user_country");
+
+        //loop through all returned cities for state
+        $.getJSON('/cities/' + $(this).val()+'/'+ country.options[country.options.selectedIndex].value, function (data) {
+          
+          //clears any options in dropdown
+          while (city.firstChild) city.removeChild(city.firstChild);
+
+          //default value
+          city.options[0] = new Option("Select City");
+
+          //loop and add optoons
+          for(var i = 0; i < data.length; i++)
+          {
+            
+            city.options[city.options.length] = new Option(data[i]);
+          }
+          
+        
+        });
+      });
+  </script>

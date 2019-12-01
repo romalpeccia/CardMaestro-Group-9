@@ -10,20 +10,24 @@ Rails.application.routes.draw do
   get 'states/:country', to: 'searchpage#states'
   get 'cities/:state/:country', to: 'searchpage#cities'
 
-  get 'states/:country', to: 'devise/registrations#states'
-  get 'cities/:state/:country', to: 'devise/registrations#cities'
+  get 'states/:country', to: 'users/registrations#states'
+  get 'cities/:state/:country', to: 'users/registrations#cities'
 
   post '/conversations/:id', to: 'conversations#create_message'
 
-  devise_for :users
+  #devise_for :users
 
   devise_scope :user do
     get 'login', to: 'devise/sessions#new'
   end
 
   devise_scope :user do
-    get 'signup', to: 'devise/registrations#new'
+    #get 'signup', to: 'devise/registrations#new'
+    get 'signup', to: 'users/registrations#new'
   end
+
+  # devise controller
+  devise_for :users, controllers: { registrations: "users/registrations" }
   
   resources :conversations
 
