@@ -1,26 +1,35 @@
-<div class="container-fluid">
-<div class="container-fluid">
-  <div class="row-fluid pt-2 pl-2">
 <style>
-
+  .icon-flipped {
+  transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  }
+  .glyphicon.glyphicon-log-out {
+    font-size: 20px;
+}
 </style>
 
 
 
-<h1><%=fa_icon "envelope-open"%> My Inbox</h1>
+<div class="container-fluid">
+<div class="container-fluid">
+  <div class="row-fluid pt-2 pl-2">
 
-<div class="row">
-<div class="card col-sm-4" style="overflow:scroll;">
+    <h1><%=fa_icon "envelope-open"%> My Inbox</h1>
 
-<div class="row dflex justify-content-between py-2">
-<h4 class="mb-1 pl-3"><%=fa_icon "comments"%> Conversations</h4>
+    <div class="row">
+    <div class="card col-sm-4" style="overflow:scroll;">
 
-<button type="button" class="btn btn-outline-primary mx-3"
-    data-toggle="collapse" data-target="#new">
-  New Message    
-</button>
+    <div class="row dflex justify-content-between py-2">
+    <h4 class="mb-1 pl-3"><%=fa_icon "comments"%> Conversations</h4>
 
-</div>
+    <button type="button" class="btn btn-outline-primary mx-3"
+        data-toggle="collapse" data-target="#new">
+      New Message    
+    </button>
+
+  </div>
 
       <ul class="list-group list-group-flush">
 
@@ -50,70 +59,66 @@
     </div>
 
 
-      <div class="col-sm-8">
-        <div class="chatbody">
+<div class="col-sm-8">
+  <div class="chatbody">
+
+   <div class="row">
+		  <div class = "col d-flex justify-content-center">
+			<h3><%=fa_icon "chat"%> Messages</h3>
+		  </div>
+		</div>
 
 
-
-
-
-
-        <div class="container-fluid">
+<div class="container-fluid">
   <div class="row-fluid pt-2">
 
-<style>
-  .icon-flipped {
-  transform: scaleX(-1);
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -ms-transform: scaleX(-1);
-  }
-  .glyphicon.glyphicon-log-out {
-    font-size: 20px;
-}
-</style>
- <h1>Conversations</h1>  
-<div class="panel panel-default">
-<% if @over_5 %>
- <%= link_to 'Show All', '?m=all', class: 'btn btn-link pull-right' %>
-<% end %>
-<%= link_to '<i class="glyphicon glyphicon-log-out icon-flipped"></i>'.html_safe,
-'/conversations', { :class => 'tooltips, btn btn-link', 'data-toggle' => 'tooltip',
-   'data-placement' => 'right', :title => 'Back To Inbox' } %>
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
- <% @messages.each do |message| %>
-  <% if message.body %>
-   <% user = User.find(message.user_id) %>
-   <div class="item">
-<div class="panel-heading">
-       <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
-      <div class="list">
-       <div class="item">
-        <i class="right triangle icon"></i>
-        <%= message.body %>
+    <div class="panel panel-default">
+    <% if @over_5 %>
+    <%= link_to 'Show All', '?m=all', class: 'btn btn-link pull-right' %>
+    <% end %>
+    <%= link_to '<i class="glyphicon glyphicon-log-out icon-flipped"></i>'.html_safe,
+    '/conversations', { :class => 'tooltips, btn btn-link', 'data-toggle' => 'tooltip',
+      'data-placement' => 'right', :title => 'Back To Inbox' } %>
+    
+    <%if @messages %>
+      <% @messages.each do |message| %>
+        <% if message.body %>
+        <% user = User.find(message.user_id) %>
+        <div class="item">
+      <div class="panel-heading">
+            <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
+            <div class="list">
+            <div class="item">
+              <i class="right triangle icon"></i>
+              <%= message.body %>
+            </div>
+          </div>
+        </div>
       </div>
+      <% end %>
+      <% end %>
+
+       <div class="col-md-10 col-md-offset-1">
+      <%= form_for conversations_path do |f| %>
+      <div class="form-group">
+        <%= f.text_area :body, class: "form-control" %>
+      </div>
+        <%= f.text_field :user_id, value: current_user.id, type: "hidden" %>
+      <div class="form-group">
+        <%= f.submit "Send Reply", class: "form-control btn btn-primary" %>
+      </div>
+      <% end %>
+      </div>
+
+
+    <%else%>
+      <div class = "col d-flex justify-content-center align-items-center my-5">
+					<h4><span class="text-muted"> Please select a conversation</span></h4>
+				</div>
+    <%end%>
     </div>
-   </div>
- </div>
- <% end %>
-<% end %>
-</div>
-</div>
-<div class="col-md-10 col-md-offset-1">
-<%= form_for conversations_path do |f| %>
-<div class="form-group">
-  <%= f.text_area :body, class: "form-control" %>
-</div>
-  <%= f.text_field :user_id, value: current_user.id, type: "hidden" %>
-<div class="form-group">
-  <%= f.submit "Send Reply", class: "form-control btn btn-primary" %>
-</div>
-<% end %>
-</div>
+    </div>
+   
 
 </div>
 </div>

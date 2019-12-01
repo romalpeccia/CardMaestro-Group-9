@@ -10,9 +10,9 @@ class ConversationsController < ApplicationController
 
     
        #needs to be removed TODO
-       @conversation = Conversation.find(5)
-       @messages = @conversation.messages
-       @message = @conversation.messages.new
+       #@conversation = Conversation.find(params[:id])
+       #@messages = @conversation.messages
+       #@message = @conversation.messages.new
       
     end
 
@@ -22,7 +22,7 @@ class ConversationsController < ApplicationController
 
     
        #needs to be removed TODO
-       @conversation = Conversation.find(4)
+       @conversation = Conversation.find(params[:id])
        @messages = @conversation.messages
        @message = @conversation.messages.new
 
