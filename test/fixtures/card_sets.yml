@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  code: MyString
-  release_date: 2019-11-05 22:01:47
+# one:
+#   name: MyString
+#   code: MyString
+#   release_date: 2019-11-05 22:01:47
 
-two:
-  name: MyString
-  code: MyString
-  release_date: 2019-11-05 22:01:47
+# two:
+#   name: MyString
+#   code: MyString
+#   release_date: 2019-11-05 22:01:47
