@@ -216,7 +216,7 @@ class TradesController < ApplicationController
 
   def payment_from_user
     puts params[:orderID]+" has completed to user: "+params[:userEmail]
-    payment_to_user(params[:userEmail], 30)
+    payment_to_user(params[:userEmail], params[:value])
     render status: :ok, json: @controller.to_json
   end
 
@@ -236,7 +236,7 @@ class TradesController < ApplicationController
             :currency => 'USD'
           },
           :note => 'Thanks for your patronage!',
-          :receiver => 'sb-takox644531@personal.example.com',
+          :receiver => email
           # :sender_item_id => "2014031400023",
         }
       ]
