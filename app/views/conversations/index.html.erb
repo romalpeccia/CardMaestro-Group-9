@@ -10,7 +10,12 @@
 }
 
 #panelHead {
-  background-color: #1E88E5
+  background-color: #1E88E5;
+  color: white;
+}
+#panelHeadOther {
+  background-color: red;
+  color: white;
 }
 </style>
 
@@ -63,7 +68,31 @@
     </div>
 
 
+
+
+
+
 <div class="col-sm-8">
+<div class="panel panel-default">
+<div class="col-lg-6">
+
+
+  <div id="new" class="collapse">
+    <div class="panel-body">
+     <h4 class="panel-heading">Send A Message: </h4>
+       <% @users.each do |user| %>
+        <% if user.id != current_user.id %>
+         <div class="item"><h5>
+      <%= link_to user.email,
+       conversations_path(sender_id: current_user.id, recipient_id: user.id), method: "post"%>
+     </h5></div>
+      <% end %>
+     <% end %>
+    </div>
+  </div>
+
+</div>
+</div>
   <div class="chatbody">
 
    <div class="row">
@@ -76,23 +105,40 @@
 <div class="container-fluid">
   <div class="row-fluid pt-2">
 
+
+
     <div class="panel panel-default">
     
     <%if @messages %>
       <% @messages.each do |message| %>
         <% if message.body %>
         <% user = User.find(message.user_id) %>
-        <div class="item" id=<%=message.id%>>
-          <div class="panel-heading my-3" id="panelHead">
-            <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
-            <div class="list">
-            <div class="item">
-              <i class="right triangle icon"></i>
-              <%= message.body %>
+
+          <%if user.id == current_user.id%>
+          <div class="item" id=<%=message.id%>>
+            <div class="panel-heading my-3" id="panelHead">
+              <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
+              <div class="list">
+              <div class="item">
+                <i class="right triangle icon"></i>
+                <%= message.body %>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <%else%>
+          <div class="item" id=<%=message.id%>>
+            <div class="panel-heading my-3" id="panelHeadOther">
+              <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
+              <div class="list">
+              <div class="item">
+                <i class="right triangle icon"></i>
+                <%= message.body %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%end%>
       <% end %>
       <% end %>
 
@@ -129,70 +175,13 @@
 </div>
 
 
-
-
-          <%# <table class="table">
-            <tr>
-              <td>
-              
-              
-              
-              </td>
-            </tr>
-          </table> %>
-          
-          <%# <div id="messages" class="messages">
-            No Messages 
-          </div>
-        </div>
-        
-
-            <div class="row col-sm-8">
-              <form action="/users/21" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
-                <div class="col-xs-12">
-                  <textarea class="form-control" name="message[text]" id="message_text">
-                </textarea><br/>
-                </div>
-
-                <div class="col-xs-3 capitalize">
-                  <button name="button" type="button" onclick="javascript:sendMessage()" class="btn btn-info btn-block">Send Message</button>
-                </div>
-              </form>      
-            </div> %>
-            </div>
+</div>
 
 </div>
    
 
 
 
-
-
-
-
-
-
-
-<div class="panel panel-default">
-<div class="col-lg-6">
-
-
-  <div id="new" class="collapse">
-    <div class="panel-body">
-     <h1 class="panel-heading">All Users can chat with:</h1>
-       <% @users.each do |user| %>
-        <% if user.id != current_user.id %>
-         <div class="item"><h3>
-      <%= link_to user.email,
-       conversations_path(sender_id: current_user.id, recipient_id: user.id), method: "post"%>
-     </h3></div>
-      <% end %>
-     <% end %>
-    </div>
-  </div>
-
-</div>
-</div>
 
 
 
