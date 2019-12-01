@@ -83,9 +83,9 @@ class HomeController < ApplicationController
 
 
     @target_array = []
-    @target_array[0] = []
-    @target_array[1] = []
-    @target_array[2] = []
+    @target_array[0] = [] 
+    @target_array[1] = [] 
+    @target_array[2] = [] 
     if(target1 and cards_needed1 and cards_owned1)
       @target_array[0] << target1
       #@target_array[0] << count1

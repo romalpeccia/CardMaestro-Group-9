@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_30_011124) do
+ActiveRecord::Schema.define(version: 2019_12_01_192325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,11 @@ ActiveRecord::Schema.define(version: 2019_11_30_011124) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
     t.bigint "card_id", null: false
+    t.bigint "sender_wishlist_cards_id"
+    t.bigint "reciever_wishlist_cards_id"
     t.index ["card_id"], name: "index_card_neededs_on_card_id"
+    t.index ["reciever_wishlist_cards_id"], name: "index_card_neededs_on_reciever_wishlist_cards_id"
+    t.index ["sender_wishlist_cards_id"], name: "index_card_neededs_on_sender_wishlist_cards_id"
     t.index ["user_id"], name: "index_card_neededs_on_user_id"
   end
 
@@ -52,7 +56,11 @@ ActiveRecord::Schema.define(version: 2019_11_30_011124) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
     t.bigint "card_id", null: false
+    t.bigint "sender_cards_id"
+    t.bigint "reciever_cards_id"
     t.index ["card_id"], name: "index_card_owneds_on_card_id"
+    t.index ["reciever_cards_id"], name: "index_card_owneds_on_reciever_cards_id"
+    t.index ["sender_cards_id"], name: "index_card_owneds_on_sender_cards_id"
     t.index ["user_id"], name: "index_card_owneds_on_user_id"
   end
 
@@ -89,6 +97,21 @@ ActiveRecord::Schema.define(version: 2019_11_30_011124) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "pending_trades", force: :cascade do |t|
+    t.string "sender_cards"
+    t.string "reciever_cards"
+    t.string "reciever_status"
+    t.float "sender_value"
+    t.float "reciever_value"
+    t.string "sender_status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "sender_id"
+    t.bigint "reciever_id"
+    t.index ["reciever_id"], name: "index_pending_trades_on_reciever_id"
+    t.index ["sender_id"], name: "index_pending_trades_on_sender_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -133,13 +156,19 @@ ActiveRecord::Schema.define(version: 2019_11_30_011124) do
   end
 
   add_foreign_key "card_neededs", "cards"
+  add_foreign_key "card_neededs", "pending_trades", column: "reciever_wishlist_cards_id"
+  add_foreign_key "card_neededs", "pending_trades", column: "sender_wishlist_cards_id"
   add_foreign_key "card_neededs", "users"
   add_foreign_key "card_offers", "cards"
   add_foreign_key "card_offers", "trades", column: "reciever_cards_id"
   add_foreign_key "card_offers", "trades", column: "sender_cards_id"
   add_foreign_key "card_owneds", "cards"
+  add_foreign_key "card_owneds", "pending_trades", column: "reciever_cards_id"
+  add_foreign_key "card_owneds", "pending_trades", column: "sender_cards_id"
   add_foreign_key "card_owneds", "users"
   add_foreign_key "cards", "card_sets"
+  add_foreign_key "pending_trades", "users", column: "reciever_id"
+  add_foreign_key "pending_trades", "users", column: "sender_id"
   add_foreign_key "ratings", "trades"
   add_foreign_key "trades", "users", column: "reciever_id"
   add_foreign_key "trades", "users", column: "sender_id"

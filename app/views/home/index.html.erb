@@ -162,16 +162,16 @@
 
   <!-- reccomended users -->
   <div class="row-fluid pt-2" id = "recommended_users">
-  <h1> Reccomended Users</h1>
+  <h1> Recommended Users</h1>
     <%if @target_array[0].count == 0%>
-      <h5> No reccomended users to trade with. Add cards to your collection or wishlist that other people want to trade! </h5>
+      <h5> No recommended users to trade with. Add cards to your collection or wishlist that other people want to trade! </h5>
     <%else%>
       <%@target_array.each do |target|%>
         <% if target[0] != nil and target[1]!= nil and target[2]!= nil%>
           <div class = "col">
             <%= link_to collection_path(target[0].id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
 								<i class="fa fa-user"></i><%=target[0].email %><% end %>
-            <h5> Cards they have that you want </h5>
+            <h5> Cards they want from your Collection </h5>
             <table class="table table-hover mt-2" id="CollectionTable"data-sort-name="name" data-sort-order="desc">
               <thead>
                 <tr>
@@ -222,7 +222,7 @@
 
 
 
-            <h5>Cards they have that you want </h5>
+            <h5>Cards they have on your Wishlist </h5>
             <table class="table table-hover mt-2" id="WishlistTable" data-sort-name="name" data-sort-order="desc">
               <thead>
                 <tr>

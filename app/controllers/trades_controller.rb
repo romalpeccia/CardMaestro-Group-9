@@ -56,49 +56,29 @@ class TradesController < ApplicationController
 
           sender = User.find_by(id: params[:sender_id]) 
           reciever = User.find_by(id: params[:reciever_id])
-          sender_value = 0 #note we arent using these atm
-          reciever_value = 0
 
-          trade = Trade.new(sender_status: "Accepted", reciever_status: "Pending")
+
+          trade = PendingTrade.new(sender_status: "Accepted", reciever_status: "Pending")
           no_card_flag = 1
           params.each do |key, value|
               if key.include? "card_owned" 
                 no_card_flag = 0
-                card = CardOwned.find_by(id: value)
-                if card.value != nil
-                  sender_value = sender_value + card.value
-                end
-                
-                #save card to list of reciever_cards (cards the reciever will send)
-                card_offer = CardOffer.new
-                card_offer.card_name = card.card_name
-                card_offer.quality = card.quality
-                card_offer.value = card.value
-                card_offer.foil = card.foil
-                card_offer.card = card.card
+                card_collection = CardOwned.find_by(id: value)
+                card_wishlist = CardNeeded.find_by(user_id: sender.id, card_name: card_collection.card_name, quality: card_collection.quality, foil: card_collection.foil, card: card_collection.card)
 
-                card.card.card_offer << card_offer
-              
-                trade.reciever_cards << card_offer
 
+                trade.reciever_cards << card_collection
+                trade.sender_wishlist_cards << card_wishlist
               elsif key.include? "card_needed"
                 no_card_flag = 0
-                card = CardNeeded.find_by(id: value)
-                if card.value != nil
-                  reciever_value = reciever_value + card.value
-                end
-
+                card_wishlist = CardNeeded.find_by(id: value)
+                card_collection = CardOwned.find_by(user_id: sender.id, card_name: card_wishlist.card_name, quality: card_wishlist.quality, foil: card_wishlist.foil, card: card_wishlist.card)
                 #save card to list of sender_cards (cards the sender will send)
-                card_offer = CardOffer.new
-                card_offer.card_name = card.card_name
-                card_offer.quality = card.quality
-                card_offer.value = card.value
-                card_offer.foil = card.foil
-                card_offer.card = card.card
+                trade.sender_cards << card_collection
+                trade.reciever_wishlist_cards << card_wishlist
 
-                card.card.card_offer << card_offer
-              
-                trade.sender_cards << card_offer
+                #save card to list of sender_card_neededs (cards the reciever had on their wishlist)
+                
 
               end
           end
@@ -111,8 +91,8 @@ class TradesController < ApplicationController
             trade.sender = sender
             trade.reciever = reciever
     
-            sender.sent_trades << trade 
-            reciever.recieved_trades << trade
+            sender.sent_pending_trades << trade 
+            reciever.recieved_pending_trades << trade
     
     
               #saving the associations and trade object
@@ -131,9 +111,9 @@ class TradesController < ApplicationController
       
       #sender_status is by default "Accepted" 
         #trades the current user sent, waiting for reciever to change status to accepted
-      @pending_sent_trades = Trade.where(sender_id: current_user.id, reciever_status: "Pending" )
+      @pending_sent_trades = PendingTrade.where(sender_id: current_user.id, reciever_status: "Pending" )
         #trades the current user recieved, waiting for current user to change status to accepted
-      @pending_recieved_trades = Trade.where(reciever_id: current_user.id, reciever_status: "Pending")
+      @pending_recieved_trades = PendingTrade.where(reciever_id: current_user.id, reciever_status: "Pending")
 
         
 
@@ -155,8 +135,11 @@ class TradesController < ApplicationController
   end
 
   def update
-
-    trade = Trade.find_by(id: params[:id])
+    if params[:commit] == "pending_accepted" or params[:commit] == "pending_declined"
+      trade = PendingTrade.find_by(id: params[:id])
+    elsif params[:commit] == "accepted_completed"
+      trade = Trade.find_by(id: params[:id])
+    end
     #figure out whether the current user is the sender or the reciever of the trade
     if (current_user.id == trade.reciever.id)
       curr_user_type = "R"
@@ -173,41 +156,44 @@ class TradesController < ApplicationController
     if params[:commit] == "pending_accepted"
         update_helper(trade, curr_user_type, "Accepted")
         flash[:notice] = "Trade with #{other_user.email} accepted!"
-=begin
-        if trade.sender_status == "Accepted" and trade.reciever_status == "Accepted"
-          #both users have committed to sending, remove cards from their respective collection/wishlist
-          if curr_user_type == "R"
-            trade.sender_cards.each do |card|
-              delete1 = current_user.card_needed.find_by(card_id: card.card_id,  card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete1.destroy
-              delete2 = other_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete2.destroy
-            end
-            trade.reciever_cards.each do |card|
-              delete3 = current_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete3.destroy
-              delete4 = other_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete4.destroy
-            end
-          elsif (curr_user_type == "S")
-            trade.sender_cards.each do |card|
-              
-              delete1 = current_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete1.destroy
-              delete2 = other_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete2.destroy
-            end
-            trade.reciever_cards.each do |card|
-              delete3 = current_user.card_needed.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete3.destroy
-              delete4 = other_user.card_owned.find_by(card_id: card.card_id, card_name: card.card_name, value: card.value, quality: card.quality, foil: card.foil)
-              delete4.destroy
-            end
-          end
+        
+        updated_trade = Trade.new(reciever_status: trade.reciever_status, sender_status: trade.sender_status, sender_value: trade.sender_value, reciever_value: trade.reciever_value, sender: trade.sender, reciever: trade.reciever)
+        trade.sender_cards.each do |card|
+            card_offer = CardOffer.new
+            card_offer.card_name = card.card_name
+            card_offer.quality = card.quality
+            card_offer.value = card.value
+            card_offer.foil = card.foil
+            card_offer.card = card.card
+            
+            #card.card.card_offer << card_offer
+            updated_trade.sender_cards << card_offer
+            card.delete
         end
-=end
+        trade.reciever_cards.each do |card|
+          card_offer = CardOffer.new
+          card_offer.card_name = card.card_name
+          card_offer.quality = card.quality
+          card_offer.value = card.value
+          card_offer.foil = card.foil
+          card_offer.card = card.card
+          
+          #card.card.card_offer << card_offer
+          
+          updated_trade.reciever_cards << card_offer
+          card.delete
+        end
+        trade.sender_wishlist_cards.each do |card|
+          card.delete
+        end
+        trade.reciever_wishlist_cards.each do |card|
+          card.delete
+        end
+        updated_trade.sender.sent_trades << updated_trade 
+        updated_trade.reciever.recieved_trades << updated_trade
+ 
     elsif params[:commit] == "pending_declined" #dont delete the trade for now, we may want to display declined trades
-        #TODO fix edge case where user can cancel an accepted trade
+        #TODO fix edge case where user can cancel an accepted trade if the other person accepts and you havent refreshed
         update_helper(trade, "R", "Declined")
         update_helper(trade, "S", "Declined")
         flash[:alert] = "Trade with #{other_user.email} declined!"
