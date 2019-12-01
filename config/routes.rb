@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
  
   #get 'trades/new'
-  post '/paypal-transaction-complete', to: 'trades#payment'
+  post '/paypal-transaction-complete', to: 'trades#payment_from_user'
   get '/search' =>'searchpage#search', as: 'searchpage_search'
   get '/home' =>'home#index', as: 'home'
 
