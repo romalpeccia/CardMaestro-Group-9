@@ -38,40 +38,6 @@ $(function () {
 	}
 
 
-	paypal.Buttons({
-	createOrder: function(data, actions) {
-		return actions.order.create({
-		purchase_units: [{
-			amount: {
-			value: 1
-			}
-		}]
-		});
-	},
-	onApprove: function(data, actions) {
-		return actions.order.capture().then(function(details) {
-			alert('Transaction completed by ' + details.payer.name.given_name);
-			// Call your server to save the transaction
-			return fetch('/paypal-transaction-complete', {
-			method: 'post',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify({
-				orderID: data.orderID,
-				userEmail: "a"
-			})
-			});
-		});
-	},
-	style: {
-	layout:  'horizontal',
-	color:   'black',
-	shape:   'pill',
-	tagline: 'false',
-	label:   'paypal'
-	}
-	}).render('#paypal-button-container');
 
 </script>
 
@@ -512,7 +478,9 @@ font-size:150%;
 													
 										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
 										<span class="text d-flex mx-3 pt-s1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
-										
+										<div id = <%="payment_hidden_confirmation#{trade.id}"%> style = "display:none"> 
+										        <button disabled class="btn-static btn-success my-2" > <%=fa_icon "check" %> Payment Complete </button>
+										</div>
 										
 										<script>		
 											paypal.Buttons({
@@ -527,7 +495,12 @@ font-size:150%;
 												},
 												onApprove: function(data, actions) {
 													return actions.order.capture().then(function(details) {
-														setTimeout("alert('Transaction completed by ' + details.payer.name.given_name);", 5);
+														//alert('Transaction completed by ' + details.payer.name.given_name);
+
+														  var x = document.getElementById("<%= "payment_hidden_confirmation#{trade.id}"%>");
+															x.style.display = "block";
+															var y = document.getElementById("<%= "paypal-button-container#{trade.id}"%>");
+															y.style.display = "none"
 														// Call your server to save the transaction
 														return fetch('/paypal-transaction-complete', {
 														method: 'post',
@@ -552,6 +525,9 @@ font-size:150%;
 												}).render('#<%= "paypal-button-container#{trade.id}"%>');
 										</script>
 										<div id = <%= "paypal-button-container#{trade.id}"%> style="width: 0px;" ></div>
+								</div>
+
+										
 							<% elsif other_value !=0 and other_value != nil %>
 
 								<div class="row-fluid my-2">
