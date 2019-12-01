@@ -12,10 +12,12 @@
 #panelHead {
   background-color: #1E88E5;
   color: white;
+  text-align: center;
 }
 #panelHeadOther {
-  background-color: red;
-  color: white;
+  background-color: #cccc;
+  color: black;
+  text-align: center;
 }
 </style>
 
@@ -117,13 +119,21 @@
           <%if user.id == current_user.id%>
           <div class="item" id=<%=message.id%>>
             <div class="panel-heading my-3" id="panelHead">
-              <div class="header"><strong><%= user.email %> </strong><%= message.message_time %></div>
-              <div class="list">
-              <div class="item">
-                <i class="right triangle icon"></i>
-                <%= message.body %>
+            <div class="col">
+              <div class="header"><strong><%= user.email %> </strong><%= message.message_time %>
               </div>
+                <div class="list">
+                  <div class="item">
+                    <i class="right triangle icon"></i>
+                    <%= message.body %>
+                  </div>
+                </div>
             </div>
+
+            <div class="col">
+
+            </div>
+
           </div>
         </div>
         <%else%>
