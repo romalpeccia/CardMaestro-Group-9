@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
  
   #get 'trades/new'
-  post '/paypal-transaction-complete', to: 'trades#payment'
+  post '/paypal-transaction-complete', to: 'trades#payment_from_user'
   get '/search' =>'searchpage#search', as: 'searchpage_search'
   get '/home' =>'home#index', as: 'home'
 
@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   get 'states/:country', to: 'devise/registrations#states'
   get 'cities/:state/:country', to: 'devise/registrations#cities'
+
+  post '/conversations/:id', to: 'conversations#create_message'
 
   devise_for :users
 
