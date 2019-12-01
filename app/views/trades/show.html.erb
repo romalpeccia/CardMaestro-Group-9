@@ -1,40 +1,43 @@
+
 <script>
 $(function () {
-  $('[data-toggle="popover"]').popover();
-  $('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="popover"]').popover();
+	$('[data-toggle="tooltip"]').tooltip();
 
 
-$('[data-toggle="popover"]').click(function () {
-          $('[data-toggle="popover"]').popover("hide");
+	$('[data-toggle="popover"]').click(function () {
+			$('[data-toggle="popover"]').popover("hide");
 
-       });
+		});
 
-$('[data-toggle="tooltip"]').click(function () {
-          $('[data-toggle="tooltip"]').tooltip("hide");
+	$('[data-toggle="tooltip"]').click(function () {
+			$('[data-toggle="tooltip"]').tooltip("hide");
 
-	   });
+		});
 
-});
+	});
 
 
-function add(ths,sno){
+	function add(ths,sno){
 
-	var star_helper = document.getElementById("star_helper")
-	star_helper.value = sno
-	for (var i=1;i<=5;i++){
-		var cur=document.getElementById("star"+i)
-		cur.className="fa fa-star"
+		var star_helper = document.getElementById("star_helper")
+		star_helper.value = sno
+		for (var i=1;i<=5;i++){
+			var cur=document.getElementById("star"+i)
+			cur.className="fa fa-star"
+			}
+
+		for (var i=1;i<=sno;i++){
+			var cur=document.getElementById("star"+i)
+			if(cur.className=="fa fa-star")
+			{
+				cur.className="fa fa-star checked"
+			}
 		}
 
-	for (var i=1;i<=sno;i++){
-		var cur=document.getElementById("star"+i)
-		if(cur.className=="fa fa-star")
-		{
-			cur.className="fa fa-star checked"
-		}
 	}
 
-}
+
 
 </script>
 
@@ -474,10 +477,57 @@ font-size:150%;
 								<div class="row-fluid my-2">
 													
 										<h5><%=fa_icon "money"%> Payment You Will Send</h5> 
-										<span class="text d-flex mx-3 pt-1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
-											
+										<span class="text d-flex mx-3 pt-s1"> <h6><%=fa_icon "dollar"%> <%= my_value %></h6></span>
+										<div id = <%="payment_hidden_confirmation#{trade.id}"%> style = "display:none"> 
+										        <button disabled class="btn-static btn-success my-2" > <%=fa_icon "check" %> Payment Complete </button>
+										</div>
+										
+										<script>		
+											paypal.Buttons({
+												createOrder: function(data, actions) {
+													return actions.order.create({
+													purchase_units: [{
+														amount: {
+														value: <%= my_value %>
+														}
+													}]
+													});
+												},
+												onApprove: function(data, actions) {
+													return actions.order.capture().then(function(details) {
+														//alert('Transaction completed by ' + details.payer.name.given_name);
+
+														  var x = document.getElementById("<%= "payment_hidden_confirmation#{trade.id}"%>");
+															x.style.display = "block";
+															var y = document.getElementById("<%= "paypal-button-container#{trade.id}"%>");
+															y.style.display = "none"
+														// Call your server to save the transaction
+														return fetch('/paypal-transaction-complete', {
+														method: 'post',
+														headers: {
+															'content-type': 'application/json'
+														},
+														body: JSON.stringify({
+															orderID: data.orderID,
+															userEmail: <%= other_user.email.to_json.html_safe %>,
+															value: <%= my_value %>
+														})
+														});
+													});
+												},
+												style: {
+												layout:  'horizontal',
+												color:   'black',
+												shape:   'pill',
+												tagline: 'false',
+												label:   'paypal'
+												}
+												}).render('#<%= "paypal-button-container#{trade.id}"%>');
+										</script>
+										<div id = <%= "paypal-button-container#{trade.id}"%> style="width: 0px;" ></div>
 								</div>
-								
+
+										
 							<% elsif other_value !=0 and other_value != nil %>
 
 								<div class="row-fluid my-2">

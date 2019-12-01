@@ -1,7 +1,5 @@
 <div class="container-fluid">
-<% content_for :for_head do %>
-  <script src="https://www.paypal.com/sdk/js?client-id=<%= ENV['PAYPAL_CLIENT_ID']%>"></script>
-<% end %>
+
 
 <script>
 $(function () {
@@ -19,40 +17,6 @@ $('[data-toggle="tooltip"]').click(function () {
           $('[data-toggle="tooltip"]').tooltip("hide");
 
        });
-paypal.Buttons({
-  createOrder: function(data, actions) {
-    return actions.order.create({
-      purchase_units: [{
-        amount: {
-          value: '25'
-        }
-      }]
-    });
-  },
-  onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert('Transaction completed by ' + details.payer.name.given_name);
-        // Call your server to save the transaction
-        return fetch('/paypal-transaction-complete', {
-          method: 'post',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            orderID: data.orderID,
-            userEmail: <%= @target_user.email.to_json.html_safe%>
-          })
-        });
-      });
-  },
-  style: {
-  layout:  'horizontal',
-  color:   'black',
-  shape:   'pill',
-  tagline: 'false',
-  label:   'paypal'
-}
-}).render('#paypal-button-container');
 </script>
 
 
@@ -138,7 +102,6 @@ font-size:150%;
   <!-- COLLECTIONS PANEL -->
   <div class="tab-pane fade in show active" id="collectionsPanel" role="tabpanel">
 
-<div id="paypal-button-container" style="width: 0px;"></div>
 
 
 
