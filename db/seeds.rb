@@ -12,30 +12,37 @@ require 'mtg_sdk'
 
 sets = MTG::Set.all
 sets.each do |set|
-    if (set.online_only != true)
+    if (set.online_only != true) #we only care about physical cards
         card_set = CardSet.find_by(name: set.name)
-        if (card_set == nil)
+        if (card_set == nil) #duplicate protection
             CardSet.create(name: set.name, code: set.code, release_date: set.release_date)
         end
     end
 end
+puts "finished collecting sets"
 
 
-
-#cards = MTG::Card.where(page: 5).where(pageSize: 10).all
-cards = MTG::Card.all
-cards.each do |card|
-    if card != nil
-        #puts card.name
-        if (card.image_url != nil)
-            card_set = CardSet.find_by(code: card.set)
-
-            if(card_set.card.find_by(name: card.name) == nil)
-                card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
-                Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
-
+#this part takes like an hour
+#cards = MTG::Card.all 
+sets.each do |set|
+    puts set.name
+    cards = MTG::Card.where(set: set.code).all
+    if cards != nil #shouldnt ever happen but just in case
+        cards.each do |card| 
+            if card != nil #thought the card_set bug was here but it wasn't
+                #puts card.name
+                if (card.image_url != nil) 
+                    card_set = CardSet.find_by(code: card.set)
+                    if (card_set != nil) #online card sets arent defined in our db, query above will fail
+                        if(card_set.card.find_by(name: card.name) == nil) #duplicate protection
+                            if card.name != nil and card.set_name != nil 
+                                card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                                Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                            end
+                        end
+                    end
+                end
             end
-            
         end
     end
 end
