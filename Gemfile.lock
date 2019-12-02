@@ -101,6 +101,7 @@ GEM
       sixarm_ruby_unaccent (~> 1.1)
       unicode_utils (~> 1.4)
     crass (1.0.5)
+    database_cleaner (1.7.0)
     declarative (0.0.10)
     declarative-option (0.1.0)
     descendants_tracker (0.0.4)
@@ -111,6 +112,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.3)
     dotenv (2.7.5)
     dotenv-rails (2.7.5)
       dotenv (= 2.7.5)
@@ -120,6 +122,13 @@ GEM
     ethon (0.12.0)
       ffi (>= 1.3.0)
     execjs (2.7.0)
+    factory_bot (5.1.1)
+      activesupport (>= 4.2.0)
+    factory_bot_rails (5.1.1)
+      factory_bot (~> 5.1.0)
+      railties (>= 4.2.0)
+    faker (2.8.0)
+      i18n (>= 1.6, < 1.8)
     faraday (0.17.0)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
@@ -269,6 +278,23 @@ GEM
       railties (>= 5.0)
     roar (1.1.0)
       representable (~> 3.0.0)
+    rspec-core (3.9.0)
+      rspec-support (~> 3.9.0)
+    rspec-expectations (3.9.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-rails (4.0.0.beta3)
+      actionpack (>= 4.2)
+      activesupport (>= 4.2)
+      railties (>= 4.2)
+      rspec-core (~> 3.8)
+      rspec-expectations (~> 3.8)
+      rspec-mocks (~> 3.8)
+      rspec-support (~> 3.8)
+    rspec-support (3.9.0)
     rubyzip (1.3.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
@@ -363,8 +389,11 @@ DEPENDENCIES
   capybara (>= 2.15)
   city-state
   countries
+  database_cleaner
   devise
   dotenv-rails
+  factory_bot_rails
+  faker
   font-awesome-rails
   jbuilder (~> 2.7)
   jquery-rails
@@ -375,6 +404,7 @@ DEPENDENCIES
   rails (~> 6.0.0)
   rails-jquery-autocomplete
   rails_db (= 2.1.1)
+  rspec-rails (= 4.0.0.beta3)
   sass-rails (~> 5)
   selenium-webdriver
   travis
