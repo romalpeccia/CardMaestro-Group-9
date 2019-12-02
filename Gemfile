@@ -70,7 +70,7 @@ end
 
 group :test, :development do
   # Adds support for Capybara system testing and selenium driver
-  gem 'rspec-rails', '~> 3.9'
+  gem 'rspec-rails', '4.0.0.beta3'
   gem 'faker'
   gem 'factory_bot_rails'
   gem 'capybara', '>= 2.15'

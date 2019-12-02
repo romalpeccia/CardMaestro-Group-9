@@ -43,12 +43,12 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
-  FactoryBot.reload
+  # FactoryBot.reload
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.before(:suite) do
-    FactoryBot.find_definitions
-  end
+  # config.before(:suite) do
+  #   FactoryBot.find_definitions
+  # end
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
