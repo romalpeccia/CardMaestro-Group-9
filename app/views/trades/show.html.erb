@@ -790,6 +790,8 @@ font-size:150%;
 								</p>
 							<%end%>
 
+							<div class="border-top my-3"></div>
+
 							<!-- their rating of you --> 
 							<% if my_rating == nil %>
 								Waiting for <%= other_user.email %> to rate you
@@ -808,6 +810,8 @@ font-size:150%;
 									<%= my_rating.comment %>
 								</p>
 							<% end %>
+
+							<div class="border-top my-3"></div>
 
 
 							<% if my_value != 0 and my_value != nil %>
