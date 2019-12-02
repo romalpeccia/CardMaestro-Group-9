@@ -1,24 +1,12 @@
-# README
+# CardMaestro-Group-9 [![Build Status](https://travis-ci.org/romalpeccia/CardMaestro-Group-9.svg?branch=master)](https://travis-ci.org/romalpeccia/CardMaestro-Group-9)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ECE444 Software Engineering Project 
 
-Things you may want to cover:
+Project 3: CardMaestro  
+Members:  
+Romal Peccia  
+Donald Lleshi  
+Yizhi Xu (Mike)  
+Yuanfan Wang (Ivan)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Some maintain collections of various cards, such as baseball (or more generally, sports) cards, magic cards, or Yu Gi Oh cards. Such cards can become valuable and are often traded or sold. The basic idea behind this service is to allow clients to keep track of the cards they own and support the trading/selling of such cards.
