@@ -162,9 +162,13 @@
 
   <!-- reccomended users -->
   <div class="row-fluid pt-2" id = "recommended_users">
-  <h1> Recommended Users</h1>
+  <h3 class="pt-2 pb-1 pl-4"> Recommended Users</h3>
     <%if @target_array[0].count == 0%>
-      <h5> No recommended users to trade with. Add cards to your collection or wishlist that other people want to trade! </h5>
+
+      <div class = "col d-flex justify-content-center align-items-center my-5">
+					<h4><span class="text-muted"> No recommended users to trade with. Add cards to your collection or wishlist that other people want to trade!</span></h4>
+				</div>
+
     <%else%>
       <%@target_array.each do |target|%>
         <% if target[0] != nil and target[1]!= nil and target[2]!= nil%>
