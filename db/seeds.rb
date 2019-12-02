@@ -25,19 +25,21 @@ puts "finished collecting sets"
 #this part takes like an hour
 #cards = MTG::Card.all 
 sets.each do |set|
-    puts set.name
-    cards = MTG::Card.where(set: set.code).all
-    if cards != nil #shouldnt ever happen but just in case
-        cards.each do |card| 
-            if card != nil #thought the card_set bug was here but it wasn't
-                #puts card.name
-                if (card.image_url != nil) 
-                    card_set = CardSet.find_by(code: card.set)
-                    if (card_set != nil) #online card sets arent defined in our db, query above will fail
-                        if(card_set.card.find_by(name: card.name) == nil) #duplicate protection
-                            if card.name != nil and card.set_name != nil 
-                                card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
-                                Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+    if (set.online_only != true)  #we only care about physical cards
+        puts set.name
+        cards = MTG::Card.where(set: set.code).all
+        if cards != nil #shouldnt ever happen but just in case
+            cards.each do |card| 
+                if card != nil #thought the card_set bug was here but it wasn't
+                    #puts card.name
+                    if (card.image_url != nil) #prevents certain cards that the API has that are incorrect 
+                        card_set = CardSet.find_by(code: card.set)
+                        if (card_set != nil) #also shouldn't happen but also just in case
+                            if(card_set.card.find_by(name: card.name) == nil) #duplicate protection
+                                if card.name != nil and card.set_name != nil 
+                                    card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                                    Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                                end
                             end
                         end
                     end
