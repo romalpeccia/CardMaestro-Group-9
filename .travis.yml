@@ -1,7 +1,8 @@
 language: ruby
 rvm:
 - 2.6.4
-script:
-bundle exec rake db:create;
-bundle exec rake db:migrate;
-bundle exec rspec;
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database cardMaestro_test;' -U postgres
+script: bundle exec rake db:migrate RAILS_ENV=test
