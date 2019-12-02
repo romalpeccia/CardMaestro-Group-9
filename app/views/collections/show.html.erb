@@ -301,16 +301,33 @@ font-size:150%;
         <%@ratings.each do |rating|%>
 
           <%other_user = User.find_by(id: rating.rater)%> <!-- seems bad, should have rater column link to user yeah? -->
-          <p><%= other_user.email %></p>
-          <p>
+    
+          <div class = "row mx-2 pt-4">
+
+              <%= link_to collection_path(other_user.id), :class => "btn btn-secondary", title: 'View Collections of user', 'data-toggle' => 'tooltip', 'data-placement' => 'right' do %>
+              <i class="fa fa-user"></i> <%=other_user.email %>
+            <% end %>
+            <span class="text-muted mx-4 my-2"><%=rating.created_at%></span>
+				  </div>
+
+          <div class = "row mx-2">
           <% rating.value.times do  %>
-            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked my-2"></span>
           <%end%>
           <% (5- rating.value).times do %>
-            <span class="fa fa-star"></span>
+            <span class="fa fa-star my-2"></span>
           <% end %>
-          </p>
-          <p><%= rating.comment %></p>
+
+          </div>
+
+
+          <div class = "row mx-2 ">
+					    <%= rating.comment %>
+				  </div>
+
+
+          <div class="border-top my-3"></div>
+          
 
         <%end%>
       <%end%>
