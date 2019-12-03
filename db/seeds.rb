@@ -9,10 +9,14 @@ require 'mtg_sdk'
 
 #relevant info: name code release_date
 
-
-sets = MTG::Set.all
+set_count = 0
+sets = MTG::Set.all 
 sets.each do |set|
+    if set_count > 50 #heroku wont let us have more than 10'000 cards in DB so we wont be using all of the data (for now)
+        break
+    end
     if (set.online_only != true) #we only care about physical cards
+        sent_count = set_count +=1
         card_set = CardSet.find_by(name: set.name)
         if (card_set == nil) #duplicate protection
             CardSet.create(name: set.name, code: set.code, release_date: set.release_date)
@@ -22,10 +26,15 @@ end
 puts "finished collecting sets"
 
 
-puts "this part takes like 2 hours"
- 
+puts "this part takes like 2 hours if using the full data"
+
+set_count = 0
 sets.each do |set|
+    if set_count > 50 #heroku wont let us have more than 10'000 cards in DB so we wont be using all of the data (for now)
+        break
+    end
     if (set.online_only != true)  #we only care about physical cards
+        sent_count = set_count +=1
         puts set.name
         cards = MTG::Card.where(set: set.code).all
         if cards != nil #shouldnt ever happen but just in case
