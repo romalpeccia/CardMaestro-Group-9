@@ -22,8 +22,8 @@ end
 puts "finished collecting sets"
 
 
-puts "this part takes like 2 hours"
- 
+puts "this part takes like an hour"
+#cards = MTG::Card.all 
 sets.each do |set|
     if (set.online_only != true)  #we only care about physical cards
         puts set.name
@@ -48,4 +48,3 @@ sets.each do |set|
         end
     end
 end
-

@@ -23,6 +23,8 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 
+
+
 #Boostrap gems
 gem 'bootstrap', '~> 4.1.3'
 gem 'bootstrap-sass', '~> 3.3.6'
@@ -37,6 +39,15 @@ gem 'travis'
 group :development do
   gem 'rails_db', '2.1.1'
 end
+
+#save current db to db/seeds.rb
+gem 'seed_dump'
+
+#generate YAML diagram of models
+#usage 
+#bundle exec rails g erd:install
+#bundle exec rails db:migrate
+gem 'rails-erd', group: :development
 
 #for getting magic the gathering card info
 gem 'mtg_sdk'
