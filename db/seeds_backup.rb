@@ -35,25 +35,28 @@ sets.each do |set|
         break
     end
     if (set.online_only != true)  #we only care about physical cards
-        sent_count = set_count +=1
+
         puts set.name
         cards = MTG::Card.where(set: set.code).all
         if cards != nil #shouldnt ever happen but just in case
-            cards.each do |card| 
-                if card != nil #thought the card_set bug was here but it wasn't
-                    #puts card.name
-                    if (card.image_url != nil) #prevents certain cards that the API has that are incorrect 
-                        card_set = CardSet.find_by(code: card.set)
-                        if (card_set != nil) #also shouldn't happen but also just in case
-                            if(card_set.card.find_by(name: card.name) == nil) #duplicate protection
-                                if card.name != nil and card.set_name != nil 
-                                    card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
-                                    Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+            if cards.count != 0
+                    set_count = set_count + 1
+                    cards.each do |card| 
+                        if card != nil #thought the card_set bug was here but it wasn't
+                            #puts card.name
+                            if (card.image_url != nil) #prevents certain cards that the API has that are incorrect 
+                                card_set = CardSet.find_by(code: card.set)
+                                if (card_set != nil) #also shouldn't happen but also just in case
+                                    if(card_set.card.find_by(name: card.name) == nil) #duplicate protection
+                                        if card.name != nil and card.set_name != nil 
+                                            card_set.card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                                            Card.create(name: card.name, set: card.set_name, image_url: card.image_url)
+                                        end
+                                    end
                                 end
                             end
                         end
                     end
-                end
             end
         end
     end
