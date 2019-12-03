@@ -9,10 +9,11 @@ require 'mtg_sdk'
 
 #relevant info: name code release_date
 
+set_limit = 25 #heroku wont let us have more than 10'000 cards in DB so we wont be using all of the data (for now, set this to 9999999 in future)
 set_count = 0
 sets = MTG::Set.all 
 sets.each do |set|
-    if set_count > 50 #heroku wont let us have more than 10'000 cards in DB so we wont be using all of the data (for now)
+    if set_count > set_limit 
         break
     end
     if (set.online_only != true) #we only care about physical cards
@@ -25,12 +26,12 @@ sets.each do |set|
 end
 puts "finished collecting sets"
 
-
-puts "this part takes like 2 hours if using the full data"
+puts "note we are using a subset of all sets because full data didn't fit on free heroku plan"
+puts "this part takes like 2 hours if using the full data (we are only using 26/~440 sets for beta"
 
 set_count = 0
 sets.each do |set|
-    if set_count > 50 #heroku wont let us have more than 10'000 cards in DB so we wont be using all of the data (for now)
+    if set_count > set_limit 
         break
     end
     if (set.online_only != true)  #we only care about physical cards
