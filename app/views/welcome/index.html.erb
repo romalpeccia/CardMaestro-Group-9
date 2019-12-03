@@ -1,6 +1,17 @@
 </head>
 
 </head>
+
+<style>
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+</style>
+
   
 <body>
 
@@ -11,40 +22,16 @@
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
   <div class="col-md-5 p-lg-5 mx-auto my-3">
     <h1 class="display-4 font-weight-normal">Welcome To</h1>
-    <h1 class="display-4 font-weight-normal">CardMaestro</h1>
-    <p class="lead font-weight-normal">CardMaestro is a platform to buy, sell, and trade Magic The Gathering cards</p>
+    <h1 class="display-4 font-weight-normal">Card Maestro</h1>
+    <p class="lead font-weight-normal">Card Maestro is a platform to buy, sell, and trade Magic The Gathering cards</p>
     <p class="lead font-weight-normal">Build your collection, add to your wishlist and trade with other people</p>
     
     <a class="btn btn-outline-primary btn-lg mr-2 ml-2 mt-2" href=<%=login_path%>>Login</a>
     <a class="btn btn-outline-secondary btn-lg mr-2 ml-2 mt-2" href=<%=signup_path%>>Sign Up</a>
     
   </div>
-  <div class="product-device shadow-sm d-none d-md-block"></div>
+  
   <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
-</div>
-
-<div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-  <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-    <div class="my-3 py-3">
-      <h2 class="display-5">Add To Collection</h2>
-      <p class="lead">You can add cards to your collection or wishlist</p>
-    </div>
-    <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-  </div>
-  <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="display-5">View Your Collection</h2>
-      <p class="lead">View your collection and wishlist</p>
-    </div>
-    <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-  </div>
-  <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="display-5">Trade Cards</h2>
-      <p class="lead">Contact users and start trading cards!</p>
-    </div>
-    <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-  </div>
 </div>
 
 <div class="container-fluid">
@@ -54,14 +41,40 @@
 
         <hr class="featurette-divider">
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">Trade with other players <span class="text-muted">Get in touch.</span></h2>
-            <p class="lead">Search for cards in your wishlist, contact other users and arrange a meeting to trade your desired cards</p>
+         <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+           <h2 class="featurette-heading">View your Dashboard.<span class="text-muted"> Stay up to date</span></h2>
+            <p class="lead">View your dashboard to see the Most Desired Cards and Recommended Trades.</p>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 " style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             
-            <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+            <%=fa_icon "chevron-left 4x" %>
+              <img src="https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=136283&type=card"></img>
+              <img src="https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=130515&type=card"></img>
+            <%=fa_icon "chevron-right 4x" %>
+            
+           
+
+          </div>
+        </div>
+
+        <hr class="featurette-divider">
+        
+
+        <div class="row featurette">
+          <div class="col-md-5">
+            <h2 class="featurette-heading">Build Your Collection. <span class="text-muted">Collect them all.</span></h2>
+            <p class="lead">Add cards to your collection or wishlist. Manage your profile.</p>
+          
+            </div>
+          <div class="col-md-7">
+
+          <img src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129459&type=card"></img>
+          <%=fa_icon "plus 4x" %>
+
+            <img src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=136284&type=card"></img>
+            <%=fa_icon "plus 4x" %>
+             <img src="https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129629&type=card"></img>
 
           </div>
         </div>
@@ -70,12 +83,16 @@
 
         <div class="row featurette">
           <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Build Your Collection. <span class="text-muted">Collect them all.</span></h2>
-            <p class="lead">Add to your collection or wishlist. Manage your profile.</p>
+           <h2 class="featurette-heading">Trade with other players. <span class="text-muted">Get in touch.</span></h2>
+            <p class="lead">Search for cards in your wishlist, contact other users and arrange a meeting to trade your desired cards</p>
           </div>
           <div class="col-md-5 order-md-1">
+            <img src="https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=130553&type=card"></img>
+            <%=fa_icon "retweet 4x" %>
+             <img src="https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=130483&type=card"></img>
+           
             
-           <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+            
 
           </div>
         </div>
@@ -84,12 +101,36 @@
 
         <div class="row featurette">
           <div class="col-md-7">
-            <h2 class="featurette-heading">Inbox Functionality <span class="text-muted">Start messaging now.</span></h2>
+            <h2 class="featurette-heading">Inbox Functionality. <span class="text-muted">Start messaging now.</span></h2>
             <p class="lead">You can directly message another user to request a trade.</p>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 " style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             
-            <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+             <%=fa_icon "user 5x", class: "pull-left mx-5 mt-5" %>
+             <%=fa_icon "send 4x",class: "mx-2 mt-4 fa-rotate-45" %>
+             <%=fa_icon "envelope-open 5x",class:"mx-5 mt-5" %>
+            
+           
+
+          </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <hr class="featurette-divider">
+
+         <div class="row featurette">
+          <div class="col-md-7 order-md-2">
+           <h2 class="featurette-heading">Search for the cards you need. <span class="text-muted">Apply Filters</span></h2>
+            <p class="lead">Search for cards in your wishlist. Apply advanced search filters to narrow down your search.</p>
+          </div>
+          <div class="col-md-5 " style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+            
+             <%=fa_icon "user 5x", class: "pull-left mx-5 mt-5" %>
+             <%=fa_icon "search 4x",class: "mx-2 mb-5" %>
+             <%=fa_icon "clone 5x",class:"mx-5 mt-5" %>
+            
+           
 
           </div>
         </div>
