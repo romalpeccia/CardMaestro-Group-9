@@ -13,6 +13,7 @@ Some maintain collections of various cards, such as baseball (or more generally,
 
 # NOTE TO PROFESSOR / TAS marking : 
 # If you wish to try some of the functionality out without setting up all of the data, the accounts and all data we showed during the demo have been uploaded on heroku
+# https://cardmaestro-group-9.herokuapp.com/
 # you can test them out with the following users (password is password)
 # romal.peccia@mail.utoronto.ca      
 # cardmaestrodemo@gmail.com
