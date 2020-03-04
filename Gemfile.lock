@@ -215,7 +215,7 @@ GEM
       activerecord (>= 5.0)
     popper_js (1.14.5)
     public_suffix (4.0.1)
-    puma (3.12.1)
+    puma (3.12.4)
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
@@ -410,7 +410,7 @@ DEPENDENCIES
   mtg_sdk
   paypal-sdk-rest
   pg
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 6.0.0)
   rails-erd
   rails-jquery-autocomplete
